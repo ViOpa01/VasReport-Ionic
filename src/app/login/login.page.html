@@ -1,0 +1,50 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title>login</ion-title>
+  </ion-toolbar>
+</ion-header> -->
+
+<div class="back-style">
+  <div class="logo">
+    <img src="assets/logo.svg" />
+    <h5>Sign in to your account</h5>
+  </div>
+  <!--Body-->
+  <form [formGroup]=loginForm>
+    <div class="container">
+      <ion-item class="transparent">
+
+        <ion-label position="floating">
+          <ion-icon item-left name="person"> </ion-icon>
+          Username
+        </ion-label>
+        <ion-input type="text" formControlName="email"
+          [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)">
+        </ion-input>
+      </ion-item>
+
+      <ion-item class="transparent">
+        <ion-label position="floating">
+          <ion-icon item-left name="finger-print" item-right> </ion-icon>
+          Password
+        </ion-label>
+        <ion-input type="password" formControlName="password"
+          [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.dirty || submitAttempt)">
+        </ion-input>
+        <ion-icon class="showPass" name="eye" (click)="showPassword()"> </ion-icon>
+      </ion-item>
+      <!-- <p text-center>Forgot Password?</p> -->
+    </div>
+
+    <ion-grid text-center>
+
+      <ion-row>
+        <ion-col>
+          <ion-button [disabled]="loginForm.invalid" color="dark" expand="full" shape="round" fill="outline"
+            (click)="signIn()">LOGIN</ion-button>
+        </ion-col>
+      </ion-row>
+
+    </ion-grid>
+  </form>
+</div>
