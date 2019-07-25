@@ -1,53 +1,83 @@
 <div class="header" fixed ion-fixed>
-  <p text-center class="wite-color font-13">Good Day, Admin</p>
-  <div class="main-header" text-center>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <span class="font-13">Total Amount</span>
-          <p class="big-text"> &#x20A6;140,000,000.00</p>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <div class="row">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-badge color="dark" class="position">
+          <ion-icon name="person"></ion-icon>
+        </ion-badge>
+      </ion-col>
+      <ion-col>
+        <p text-center class="wite-color font-13">Good Day, Admin</p>
+      </ion-col>
+      <ion-col style="text-align: right !important">
+        <ion-badge color="light" class="position">
+          <ion-icon name="notifications"></ion-icon>
+        </ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-card class="card-margin">
+    <ion-card-header>
+      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+      <hr>
+    </ion-card-header>
 
+    <ion-card-content>
       <ion-grid>
         <ion-row>
           <ion-col>
-            <Span class="success">Successful <ion-badge color="success" class="position">98%</ion-badge></Span>
-            <p class="sub-text mt-ve" text-center> 6051</p>
+
           </ion-col>
           <ion-col>
-            <span class="fail">Failed <ion-badge color="dark" class="position">2%</ion-badge>
 
-            </span>
-            <p class="sub-text mt-ve" text-center>10</p>
+          </ion-col>
+          <ion-col>
+
           </ion-col>
         </ion-row>
       </ion-grid>
-    </div>
-
-  </div>
+    </ion-card-content>
+  </ion-card>
 </div>
 <ion-content padding>
-  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem laboriosam neque unde odio architecto earum ullam
-  esse quae quos, beatae, quaerat nemo exercitationem nesciunt adipisci tempora deleniti nam ex fugiat!
-  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus distinctio non ea porro, suscipit tenetur
-  deleniti eveniet. Atque animi soluta blanditiis at praesentium? Laboriosam ipsam, obcaecati repudiandae molestias
-  repellendus distinctio.
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex dolorem ducimus magnam delectus? Iste tempora
-  necessitatibus, possimus tempore exercitationem mollitia nihil veritatis recusandae! Error, culpa rerum obcaecati ad
-  minus veniam?
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa exercitationem nisi nobis consequuntur at suscipit
-  expedita quod provident ducimus illo illum, possimus ut dolor vero enim eligendi veniam officiis perspiciatis?
-  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eveniet incidunt, esse vel neque asperiores magni magnam
-  totam amet possimus atque? Esse rem minima repellat ipsum aut expedita itaque similique possimus!
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores eaque sed minus similique, quam ipsam, at dolore
-  velit debitis nesciunt iusto obcaecati? Corporis, minima? Consectetur veritatis fugiat neque necessitatibus autem!
-  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolor excepturi quia deserunt saepe voluptate, tempore ex
-  iure laudantium vitae sint sequi laboriosam quisquam ipsa maxime aperiam cupiditate dolores mollitia hic!
-  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quisquam consequuntur deleniti saepe velit magnam nihil
-  incidunt accusantium unde ratione eaque, nobis modi, veritatis ullam enim quaerat quidem ab corporis expedita?
-  Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam aperiam velit eaque minus accusamus tenetur
-  dignissimos ut aut culpa et impedit odio itaque odit est, nulla doloremque iusto, ipsam ipsum!
+
+  <ion-toolbar>
+    <ion-slides pager="true">
+      <ion-slide class="step-one">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in awhile,
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+
+      <ion-slide class="step-two">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in awhile,
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+
+      <ion-slide class="step-three">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content>
+            Keep close to Nature's heart... and break clear away, once in awhile,
+          </ion-card-content>
+        </ion-card>
+      </ion-slide>
+    </ion-slides>
+  </ion-toolbar>
 </ion-content>

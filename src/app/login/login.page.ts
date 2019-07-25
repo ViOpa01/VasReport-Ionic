@@ -31,7 +31,7 @@ export class LoginPage implements OnInit {
   checkLogin() {
     let user = this.authService.isAuthenticated();
     if (user) {
-      this.router.navigate(['/tabs']);
+      this.router.navigate(['/tabs/tab1']);
     }
   }
 

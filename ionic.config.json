@@ -1,5 +1,7 @@
 {
   "name": "VasTab",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

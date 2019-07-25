@@ -48,7 +48,6 @@ const routes: Routes = [
         redirectTo: '/login',
         pathMatch: 'full'
       },
-      { path: 'login', loadChildren: './login/login.module#LoginPageModule' }
     ]
   },
  
