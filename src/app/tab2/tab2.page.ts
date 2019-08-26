@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { SearchModalPage } from '../component/search-modal/search-modal.page';
+
 
 @Component({
   selector: 'app-tab2',
@@ -7,6 +10,13 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
 
-  constructor() {}
-
+  constructor(public modalController:ModalController) {}
+  
+  async search() {
+    const modal = await this.modalController.create({
+      component: SearchModalPage,
+      cssClass:'select-modal'
+    });
+    return await modal.present();
+  }
 }

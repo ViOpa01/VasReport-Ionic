@@ -1,1 +1,63 @@
+.header{
+    // border-radius: 0px 0px 14px 14px;
+    height: 55px;
+    color: #fff;
+    background: #8A2387;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #F27121, #E94057, #8A2387);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #8A2387, rgb(76, 39, 160)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+.m-t-t{
+    position: relative;
+    top: 11px;
+}
 
+.blue-background{
+    height: 80px;
+    background: #120A6B;
+    width: 100%;
+}
+.upper-trans-box{
+    position: relative;
+    border: 1px solid #fff;
+    padding: 5px;
+    border-radius: 7px;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.trans-text{
+    position: relative;
+    top: -5px;
+    color: #000;
+}
+.font-trans{
+    font-size: 10px;
+    position: relative;
+    top: -7px;
+}
+.success{
+    color: yellowgreen;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .fail{
+    color: #a22c0c;
+    font-size: 11px;
+  }
+  .product-price{
+    color: #000;
+    font-weight: 600;
+    position: relative;
+    top: 8px;
+    font-size: 20px;
+    left: -7px
+  }
+  .product-title{
+    color: #000;
+  }
+
+//   .select-modal {
+//     background: rgba(0, 0, 0, 0.5) !important;
+//     padding: 20% 10%  !important;
+//     height: 400px;
+//  }

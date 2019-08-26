@@ -1,83 +1,297 @@
-<div class="header" fixed ion-fixed>
-  <ion-grid>
-    <ion-row>
+<!-- start header  -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <img src="assets/logo.svg" style="width: 20%;" />
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- end headers -->
+
+<!-- start content -->
+<ion-content>
+  <div class="">
+    <!-- start select date range  -->
+    <ion-row class="neg-margin">
       <ion-col>
-        <ion-badge color="dark" class="position">
-          <ion-icon name="person"></ion-icon>
-        </ion-badge>
-      </ion-col>
-      <ion-col>
-        <p text-center class="wite-color font-13">Good Day, Admin</p>
-      </ion-col>
-      <ion-col style="text-align: right !important">
-        <ion-badge color="light" class="position">
-          <ion-icon name="notifications"></ion-icon>
-        </ion-badge>
+        <ion-item>
+          <ion-label style="background: #2D9CDB !important; padding: 10.5px; color: #2D9CDB; " text-center>Date
+          </ion-label>
+          <ion-select value="Day"
+            style="background: #2d9cdb; color: #fff; padding: 10.41px; border-left: #2d9cdb; margin-left: -2px;"
+            okText="Okay" cancelText="Dismiss" [(ngModel)]="date" (ngModelChange)="optionsFn($event)">
+            <ion-select-option value="Day" selected="true">Day</ion-select-option>
+            <ion-select-option value="Week">Week</ion-select-option>
+            <ion-select-option value="Month">Month</ion-select-option>
+          </ion-select>
+        </ion-item>
       </ion-col>
     </ion-row>
-  </ion-grid>
-  <ion-card class="card-margin">
-    <ion-card-header>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-      <hr>
-    </ion-card-header>
 
-    <ion-card-content>
-      <ion-grid>
-        <ion-row>
-          <ion-col>
+    <!-- end select date range -->
 
+    <!--  start of current and previous date -->
+    <ion-row text-center class="neg-margin">
+      <ion-col style="padding-right: 0px;">
+        <ion-card style="box-shadow: none !important; border: 1px solid #aaaaaa; margin-right:0px;" [ngClass]="{
+          'no-border' : firstStyle == 0,
+          'bordered' : secondStyle == 0
+          }">
+          <ion-card-content>
+            <span color="primary" (click)="firstTabClick(date)">{{date == null ? 'Today': date}}</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col style="padding-left: 0px;">
+        <ion-card style="box-shadow: none !important; margin-left: 0px;" [ngClass]="{
+          'no-border' : firstStyle == 1,
+          'bordered' : secondStyle == 1
+          
+          }">
+          <ion-card-content>
+            <span color="primary" (click)="secondTabClick(second)"> {{ date == 'Day' ? 'Yesterday':second }}</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- end of current and previous date  -->
+
+    <ion-row class="neg-margin-12">
+      <ion-col>
+        <!-- start of overall transaction -->
+        <ion-card class="height-100">
+          <ion-card-header>
+            <ion-card-subtitle>
+              <ion-row class="font-11">
+                <ion-col>
+                  <span>Total Transaction</span>
+                </ion-col>
+                <ion-col offset="2">
+                  <div  *ngIf="isData">
+                    <span  *ngIf="!isLoading" text-right [ngClass]="{
+                            'danger' : changeColor < 1, 
+                            'success' : changeColor >= 1
+                            }">{{ changeColor | percent }}
+                    </span>
+                    <span style="font-size: 11px;"> Previous Day</span>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="loader" text-center>
+              <!-- Dots -->
+              <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
+            </div>
+            <ion-row class="font-11" *ngIf="isData">
+              <ion-col>
+                <span  *ngIf="!isLoading">{{totalCount | thousandSuff }}</span> Transaction
+              </ion-col>
+              <ion-col offset="4" class="mega-money">
+                <span class="mega">&#8358; {{ totalAmount | thousandSuff : 1 }}</span>
+              </ion-col>
+            </ion-row>
+            <span *ngIf="!isData" class="no-data-overall">No Data Available</span>
+          </ion-card-content>
+        </ion-card>
+        <!-- end of overall transaction -->
+
+        <!-- start of transaction summary -->
+        <ion-row class="font-11 neg-margin-12">
+          <ion-col style="padding-right:4px;">
+            <ion-card style="margin-right:0px; margin-left: 6px;" class="height-100">
+              <ion-card-header class="ion-card-contents">
+                <ion-card-subtitle>
+                  <ion-row class="font-11 pull-left" >
+                    <ion-col>
+                      <span>Successful</span>
+                    </ion-col>
+                    <ion-col>
+                      <div class="success circle">
+                        <span class="text-position">{{ successPercent ==  undefined  ?  'Nil' : successPercent | percent }}</span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content class="ion-card-contents">
+                <div class="loader" text-center>
+                  <!-- Dots -->
+                  <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
+                </div>
+                <ion-row class="font-9 pull-left" style="margin-top:30px;" *ngIf="isData">
+                  <ion-col size="6">
+                    <span *ngIf="!isLoading"> {{ successCount |  thousandSuff }} Trans</span>
+                  </ion-col>
+                  <ion-col size="6">
+                    <span text-right class="text-money-position">&#8358;{{ successAmount | thousandSuff : 2}}</span>
+                  </ion-col>
+                </ion-row>
+                <span *ngIf="!isData" class="no-data">No Data Available</span>
+
+              </ion-card-content>
+            </ion-card>
           </ion-col>
-          <ion-col>
-
-          </ion-col>
-          <ion-col>
-
+          <ion-col style="padding-left:4px;">
+            <ion-card style="margin-left:0px; margin-right:6px;" class="height-100">
+              <ion-card-header class="ion-card-contents">
+                <ion-card-subtitle>
+                  <ion-row class="font-11 pull-left">
+                    <ion-col>
+                      <span>Failed</span>
+                    </ion-col>
+                    <ion-col>
+                      <div class="danger-bg circle">
+                        <span class="text-position">{{ failPercent ==  undefined  ?  'Nil' : failPercent | percent }}</span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content class="ion-card-contents">
+                <div class="loader" text-center>
+                  <!-- Dots -->
+                  <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
+                </div>
+                <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isData">
+                  <ion-col size="6">
+                    <span *ngIf="!isLoading"> {{failCount | thousandSuff}} Trans</span>
+                  </ion-col>
+                  <ion-col size="6">
+                    <span text-right class="text-money-position" *ngIf="!isLoading">&#8358; {{ failAmount | thousandSuff : 2 }}</span>
+                  </ion-col>
+                </ion-row>
+                <span *ngIf="!isData" class="no-data">No Data Available</span>
+              </ion-card-content>
+            </ion-card>
           </ion-col>
         </ion-row>
-      </ion-grid>
-    </ion-card-content>
-  </ion-card>
-</div>
-<ion-content padding>
+        <!-- end of transaction Summary -->
+      </ion-col>
+    </ion-row>
+    
+  </div>
+<!-- slider wrapper and background -->
+  <div class="slide-bg">
+    <!-- slider header -->
+    <span>Top 5</span>
+    <!-- end slider ending -->
 
-  <ion-toolbar>
-    <ion-slides pager="true">
-      <ion-slide class="step-one">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-          </ion-card-header>
+    <!-- slideer content start -->
+    <ion-slides [options]="sliderConfig" class="slide-bg">
+      <ion-slide>
+        <div>
+          <ion-card class="ion-card-margin">
+            <ion-card-header class="ion-card-contents">
+              <ion-card-title class="font-11" color="primary">
+                Channel
+              </ion-card-title>
+              <ion-card-content class="ion-card-contents">
+                <!-- List Full Lines -->
+                <ion-list lines="full" class="font-9">
+                  <div *ngIf="channelData">
+                    <ion-row>
+                      <ion-col *ngFor="let menu of channelHeader">
+                        <span size="3" class="font-11 weight">{{menu}}</span>
+                      </ion-col>
+                    </ion-row>
 
-          <ion-card-content>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-          </ion-card-content>
-        </ion-card>
+
+                    <div *ngFor="let menu of channelData" >
+                      <ion-row>
+                        <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.fail}}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total}}</ion-col>
+                      </ion-row>
+                    </div>
+
+                  </div>
+                </ion-list>
+
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </div>
       </ion-slide>
 
-      <ion-slide class="step-two">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-          </ion-card-header>
+      <ion-slide>
+        <div>
+          <ion-card class="ion-card-margin">
+            <ion-card-header class="ion-card-contents">
+              <ion-card-title class="font-11" color="primary">
+                Product
+              </ion-card-title>
+              <ion-card-content class="ion-card-contents">
+                <!-- List Full Lines -->
+                <ion-list lines="full" class="font-9">
+                  <div *ngIf="channelData">
+                    <ion-row>
+                      <ion-col *ngFor="let menu of channelHeader">
+                        <span size="3" class="font-11 weight">{{menu}}</span>
+                      </ion-col>
+                    </ion-row>
 
-          <ion-card-content>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-          </ion-card-content>
-        </ion-card>
+
+                    <div *ngFor="let menu of channelData" >
+                      <ion-row>
+                        <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.fail}}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total}}</ion-col>
+                      </ion-row>
+                    </div>
+
+                  </div>
+                </ion-list>
+
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </div>
       </ion-slide>
 
-      <ion-slide class="step-three">
-        <ion-card>
-          <ion-card-header>
-            <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-          </ion-card-header>
+      <ion-slide>
+        <div>
+          <ion-card class="ion-card-margin">
+            <ion-card-header class="ion-card-contents">
+              <ion-card-title class="font-11" color="primary">
+                Payment Method
+              </ion-card-title>
+              <ion-card-content class="ion-card-contents">
+                <!-- List Full Lines -->
+                <ion-list lines="full" class="font-9">
+                  <div *ngIf="channelData">
+                    <ion-row>
+                      <ion-col *ngFor="let menu of channelHeader">
+                        <span size="3" class="font-11 weight">{{menu}}</span>
+                      </ion-col>
+                    </ion-row>
 
-          <ion-card-content>
-            Keep close to Nature's heart... and break clear away, once in awhile,
-          </ion-card-content>
-        </ion-card>
+
+                    <div *ngFor="let menu of channelData">
+                      <ion-row>
+                        <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.fail}}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total}}</ion-col>
+                      </ion-row>
+                    </div>
+
+                  </div>
+                </ion-list>
+
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </div>
       </ion-slide>
+
     </ion-slides>
-  </ion-toolbar>
+    <!-- end slider content -->
+  </div>
+  <!-- end slider wrapper and background -->
 </ion-content>
+<!-- end the contents -->

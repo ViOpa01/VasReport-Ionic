@@ -1,9 +1,160 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Tab Two
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div class="header" fixed ion-fixed>
+  <ion-grid>
+    <ion-row class="m-t-t">
+      <ion-col>
+        <span>Transaction</span>
+      </ion-col>
 
-<ion-content></ion-content>
+      <ion-col size-lg offset="7">
+        <span item-end>
+          <ion-icon name="search" item-end text-right (click)="search()"></ion-icon>
+        </span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>
+<ion-row>
+  <div class="blue-background">
+    <ion-row text-center class="m-t-t">
+      <ion-col>
+        <!-- to be design inside componet -->
+        <div class="upper-trans-box">
+          <span class="font-trans">Total Amount</span>
+          <div class="trans-text">&#8358;1340M</div>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="upper-trans-box">
+          <span class="font-trans success">Successful</span>
+          <div class="trans-text">&#8358;134M</div>
+        </div>
+      </ion-col>
+      <ion-col>
+        <div class="upper-trans-box">
+          <span class="font-trans fail">Failed</span>
+          <div class="trans-text">&#8358;13K</div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </div>
+</ion-row>
+
+<ion-content padding>
+  <ion-card>
+    <ion-card-content>
+      <ion-row>
+        <ion-col>
+          <p class="product-title">Multichoice</p>
+          <ion-card-subtitle>546372</ion-card-subtitle>
+        </ion-col>
+        <ion-col text-center>
+          <span class="product-price">&#8358;1,340</span>
+        </ion-col>
+        <ion-col>
+          <span>27/7/2019</span>
+          <div>
+              <ion-badge color="success">Successful</ion-badge>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+      <ion-card-content>
+        <ion-row>
+          <ion-col>
+            <p class="product-title">Airtime</p>
+            <ion-card-subtitle>546372</ion-card-subtitle>
+          </ion-col>
+          <ion-col text-center>
+            <span class="product-price">&#8358;100</span>
+          </ion-col>
+          <ion-col>
+            <span>27/7/2019</span>
+            <div>
+                <ion-badge color="warning">Pending</ion-badge>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content>
+          <ion-row>
+            <ion-col>
+              <p class="product-title">TRansfer</p>
+              <ion-card-subtitle>546372</ion-card-subtitle>
+            </ion-col>
+            <ion-col text-center>
+              <span class="product-price">&#8358;1,700</span>
+            </ion-col>
+            <ion-col>
+              <span>27/7/2019</span>
+              <div>
+                  <ion-badge color="danger">Failed</ion-badge>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-card-content>
+      </ion-card>
+      <ion-card>
+          <ion-card-content>
+            <ion-row>
+              <ion-col>
+                <p class="product-title">Multichoice</p>
+                <ion-card-subtitle>546372</ion-card-subtitle>
+              </ion-col>
+              <ion-col text-center>
+                <span class="product-price">&#8358;1,340</span>
+              </ion-col>
+              <ion-col>
+                <span>27/7/2019</span>
+                <div>
+                    <ion-badge color="success">Successful</ion-badge>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card>
+            <ion-card-content>
+              <ion-row>
+                <ion-col>
+                  <p class="product-title">Multichoice</p>
+                  <ion-card-subtitle>546372</ion-card-subtitle>
+                </ion-col>
+                <ion-col text-center>
+                  <span class="product-price">&#8358;1,340</span>
+                </ion-col>
+                <ion-col>
+                  <span>27/7/2019</span>
+                  <div>
+                      <ion-badge color="success">Successful</ion-badge>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-card-content>
+          </ion-card>
+          <ion-card>
+              <ion-card-content>
+                <ion-row>
+                  <ion-col>
+                    <p class="product-title">Multichoice</p>
+                    <ion-card-subtitle>546372</ion-card-subtitle>
+                  </ion-col>
+                  <ion-col text-center>
+                    <span class="product-price">&#8358;1,340</span>
+                  </ion-col>
+                  <ion-col>
+                    <span>27/7/2019</span>
+                    <div>
+                        <ion-badge color="success">Successful</ion-badge>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+</ion-content>
