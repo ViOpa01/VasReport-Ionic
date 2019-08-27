@@ -12,7 +12,7 @@ export class Tab1Page implements OnInit {
 
 
   isLoading: boolean;
-  isData : boolean;
+  isData: boolean;
   date: string = 'Day';
   changeColor: number;
   channelHeader: string[];
@@ -78,36 +78,36 @@ export class Tab1Page implements OnInit {
   defaultData(date) {
     this.getSummary(date);
   }
-  optionsFn(event) {
+  async optionsFn(event) {
     this.date = event;
     if (this.date == 'Day') {
 
       this.second = 'Yesterday';
       //logic to fetch the data for today and yesterday
-      this.getSummary(this.date);
+      await this.getSummary(this.date.toLowerCase());
 
     } else if (this.date == 'Week') {
       this.second = 'Last Week';
       //logic to fetch the data for current week and Last Week
-
+      await this.getSummary(this.date.toLowerCase());
     } else if (this.date == 'Month') {
       this.second = 'Last Month';
       //logic to fetch the data for current month  and last month
-
+      await this.getSummary(this.date.toLowerCase());
     }
     console.log(this.second);
   }
 
- async firstTabClick(event) {
+  async firstTabClick(event) {
     this.firstdDate = event;
     this.secondStyle = 0;
     this.firstStyle = 1;
-    if(event){
+    if (event) {
       await this.getSummary(event.toLowerCase());
     }
     if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
-      await this.getSummary(this.secondDate.toLowerCase());
+      // await this.getSummary(this.secondDate.toLowerCase());
     }
     console.log(this.firstdDate);
   }
@@ -116,14 +116,18 @@ export class Tab1Page implements OnInit {
     this.secondDate = event;
     this.secondStyle = 1;
     this.firstStyle = 0;
-    if(event){
-      await this.getSummary(event.toLowerCase());
+    if (event) {
+      this.secondDate = event.replace(" ", "_").toLowerCase();
+      console.log('second Parameter : ' + this.secondDate);
+      // await this.getSummary(event.toLowerCase());
     }
-    if (this.secondDate == null || this.secondDate == undefined) {
+    else if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
-      await this.getSummary(this.secondDate.toLowerCase());
+      this.secondDate = this.secondDate.replace(" ", "_");
+      console.log('second Parameter : ' + this.secondDate);
+      // await this.getSummary(this.secondDate.toLowerCase());
     }
-    console.log(this.secondStyle);
+
   }
   getSummary(date) {
     this.isLoading = true;
