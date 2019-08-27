@@ -12,85 +12,41 @@ import { LoaderService } from './loader.service';
 export class DashboardService {
   requestUrlSuccessful = Endpoint.SUMMARY.successful;
   requestUrlFailed = Endpoint.SUMMARY.failed;
-  
-  constructor(private http: HttpClient, private storage: StorageService, public loader:LoaderService) { }
+  queryFailed: any[];
+  querySuccess: any[];
+  constructor(private http: HttpClient, private storage: StorageService, public loader: LoaderService) { }
 
   summary(date): Observable<any> {
-    
-    let responseSuccess = this.http.get(this.requestUrlSuccessful+`${date.toLowerCase()}/successful`);
-    let responseFailed = this.http.get(this.requestUrlFailed+`${date.toLowerCase()}/failed`);
-    
-    console.log(responseSuccess)
+
+    let responseSuccess = this.http.get(this.requestUrlSuccessful + `${date.toLowerCase()}/successful`);
+    let responseFailed = this.http.get(this.requestUrlFailed + `${date.toLowerCase()}/failed`);
+
+    // console.log(responseSuccess)
     // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
     return forkJoin([responseSuccess, responseFailed]);
   }
 
-  channels(): Observable<any> {
-    this.loader.showLoader();
-    return this.http.get(Endpoint.SUMMARY.successful,
-      {
-        headers: {
-          'Content-Type': 'application/json',
 
-        }
-      }).pipe(
-        map(data => {
-          // console.log('This is my data', data)
-          //hide loader and display the data
-          this.loader.hideLoader();
-          return data;
-        }), catchError(error => {
-          console.log(error);
-          //if there is error fetching the data close the loader
-          this.loader.hideLoader();
-          return throwError(error.message);
+  getTopFive(date, type, arrayLength): Observable<any> {
 
-        }));
-  }
+    this.queryFailed = [];
+    this.querySuccess = [];
 
-  product(): Observable<any> {
-    this.loader.showLoader();
-    return this.http.get(Endpoint.SUMMARY.successful,
-      {
-        headers: {
-          'Content-Type': 'application/json',
+    arrayLength.forEach(element => {
+      let responseSuccess = this.http.get(Endpoint.BASE_URL.base + `${type.toLowerCase()}/${date.toLowerCase()}/${element.toLowerCase()}/successful`);
+      let responseFailed = this.http.get(Endpoint.BASE_URL.base + `${type.toLowerCase()}/${date.toLowerCase()}/${element.toLowerCase()}/failed`);
+      // console.log(responseSuccess);
+      this.querySuccess.push(responseSuccess);
+      this.queryFailed.push(responseFailed);
+    });
 
-        }
-      }).pipe(
-        map(data => {
-          // console.log('This is my data', data)
-          //hide loader and display the data
-          this.loader.hideLoader();
-          return data;
-        }), catchError(error => {
-          console.log(error);
-          //if there is error fetching the data close the loader
-          this.loader.hideLoader();
-          return throwError(error.message);
+    let queryArray = [this.querySuccess, this.queryFailed];
 
-        }));
-  }
-  paymentMethod(): Observable<any> {
-    this.loader.showLoader();
-    return this.http.get(Endpoint.SUMMARY.successful,
-      {
-        headers: {
-          'Content-Type': 'application/json',
+    console.log(`array to query One: ${queryArray}`);
+    // console.log(`array to query Two: ` + this.queryFailed);
 
-        }
-      }).pipe(
-        map(data => {
-          // console.log('This is my data', data)
-          //hide loader and display the data
-          this.loader.hideLoader();
-          return data;
-        }), catchError(error => {
-          console.log(error);
-          //if there is error fetching the data close the loader
-          this.loader.hideLoader();
-          return throwError(error.message);
-
-        }));
+    // Observable.forkJoin (RxJS 5) changes to just forkJoin() in RxJS 6
+    return forkJoin(queryArray);
   }
 
 }

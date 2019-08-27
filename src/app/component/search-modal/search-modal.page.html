@@ -17,25 +17,6 @@
         <ion-label position="floating">End Date</ion-label>
         <ion-datetime formControlName="end" [(ngModel)]="end" displayFormat="DD-MM-YYYY" (ionChange)="dateChangeEnd($event)"></ion-datetime>
       </ion-item>
-
-      <ion-list>
-        <ion-radio-group>
-          <ion-col>
-            <ion-label class="radio-text">All</ion-label>
-            <ion-radio formControlName="type" [(ngModel)]="type" value="all" checked></ion-radio>
-          </ion-col>
-
-          <ion-col>
-            <ion-label class="radio-text">Success</ion-label>
-            <ion-radio formControlName="type" [(ngModel)]="type" value="Success"></ion-radio>
-          </ion-col>
-
-          <ion-col>
-            <ion-label class="radio-text">Fail</ion-label>
-            <ion-radio value="failed" formControlName="type" [(ngModel)]="type"></ion-radio>
-          </ion-col>
-        </ion-radio-group>
-      </ion-list>
       <ion-row>
         <ion-col>
           <ion-button color="secondary" expand="full" shape="round">SEarch</ion-button>

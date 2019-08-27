@@ -10,12 +10,14 @@ export class SearchModalPage implements OnInit {
   transForm: FormGroup;
   start = new Date().toISOString();
   end = new Date().toISOString();
+  date:any;
   constructor(public modalController: ModalController, public FormBuilder: FormBuilder) {
     this.transForm = FormBuilder.group({
-      type: ['', Validators.compose([Validators.required])],
       start: ['', Validators.compose([Validators.required])],
       end: ['', Validators.compose([Validators.required])],
-    });    
+      // date: ['', Validators.compose([Validators.required])],
+
+    });
   }
 
   dateChangeStart(date) {
@@ -43,6 +45,5 @@ export class SearchModalPage implements OnInit {
 
   logForm() {
 
-  }s
+  } s
 }
- 

@@ -13,6 +13,9 @@ export const Endpoint = {
     SUMMARY: {
         successful:  `${summary}/`,
         failed:  `${summary}/`,
+    },
 
+    BASE_URL: {
+        base: `${BASE_URL}/`
     }
 }

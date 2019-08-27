@@ -11,6 +11,9 @@ import { Endpoint } from '../common/endpoints';
 export class Tab1Page implements OnInit {
 
 
+  querySuccess: any;
+  queryFailed:any;
+
   isLoading: boolean;
   isData: boolean;
   date: string = 'Day';
@@ -31,6 +34,10 @@ export class Tab1Page implements OnInit {
   successAmount: any;
   failAmount: any;
 
+
+  //percentage change
+  percentChange: any;
+
   //response holder for success and  fail  percentage
   successPercent: any;
   failPercent: any;
@@ -39,8 +46,6 @@ export class Tab1Page implements OnInit {
   second: any;
 
   //first Tab Data
-  firstTabData: any;
-  secondTabData: any;
   firstdDate: any;
   secondDate: any;
   secondStyle: any;
@@ -60,10 +65,13 @@ export class Tab1Page implements OnInit {
 
   constructor(public dashboardService: DashboardService, private toast: ToastController) { }
 
+  productArray: any = ['CARD', 'MCARD', 'CASH'];
+
   async ngOnInit() {
     await this.defaultData(this.date);
+    await this.getTopfive('day', 'payments', this.productArray);
     this.changeColor = 0.3;
-    console.log(this.changeColor);
+    // console.log(this.changeColor);
     this.channelHeader = ['Channel', 'Success', 'Fail', 'Total']; 4
     this.channelData = [
       { 'name': 'POS', 'successful': '90K', 'fail': '10K', 'total': '100K' },
@@ -72,7 +80,7 @@ export class Tab1Page implements OnInit {
       { 'name': 'ANDROID', 'successful': '90K', 'fail': '10K', 'total': '100K' },
       { 'name': 'ANDROID POS', 'successful': '90K', 'fail': '10K', 'total': '100K' },
     ];
-    console.log(this.isData);
+    // console.log(this.productArray.length);
   }
 
   defaultData(date) {
@@ -119,7 +127,7 @@ export class Tab1Page implements OnInit {
     if (event) {
       this.secondDate = event.replace(" ", "_").toLowerCase();
       console.log('second Parameter : ' + this.secondDate);
-      await this.getSummary(event.toLowerCase());
+      await this.getSummary(this.secondDate.toLowerCase());
     }
     else if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
@@ -133,7 +141,7 @@ export class Tab1Page implements OnInit {
     this.isLoading = true;
     this.isData = false;
     this.dashboardService.summary(date).subscribe(resposeList => {
-      console.log('This is my Response List', resposeList);
+      // console.log('This is my Response List', resposeList);
 
       this.isLoading = false;
       this.isData = true;
@@ -158,7 +166,7 @@ export class Tab1Page implements OnInit {
       this.failPercent = (this.failCount / this.totalCount);
 
 
-      console.log(`Total Count is: ${(this.totalCount)} and Total Amount ${(this.totalAmount)}`);
+      // console.log(`Total Count is: ${(this.totalCount)} and Total Amount ${(this.totalAmount)}`);
       // this.presentToast(this.response);
 
     }, error => {
@@ -168,5 +176,16 @@ export class Tab1Page implements OnInit {
     });
   }
 
+  getTopfive(date, type, arrayLength) {
+    this.isLoading = true;
+    this.isData = false;
+    this.dashboardService.getTopFive(date, type, arrayLength).subscribe(resposeList =>{
+      console.log('This is my Response List', resposeList);
+    },error => {
+      this.isLoading = false;
+      this.isData = false;
+      console.log('Error now: ' + error.message)
+    });
+  }
 
 }
