@@ -68,8 +68,8 @@
                   <span>Total Transaction</span>
                 </ion-col>
                 <ion-col offset="2">
-                  <div  *ngIf="isData">
-                    <span  *ngIf="!isLoading" text-right [ngClass]="{
+                  <div *ngIf="isData">
+                    <span *ngIf="!isLoading" text-right [ngClass]="{
                             'danger' : changeColor < 1, 
                             'success' : changeColor >= 1
                             }">{{ changeColor | percent }}
@@ -87,10 +87,10 @@
             </div>
             <ion-row class="font-11" *ngIf="isData">
               <ion-col>
-                <span  *ngIf="!isLoading">{{totalCount | thousandSuff }}</span> Transaction
+                <span *ngIf="!isLoading">{{totalCount | thousandSuff }}</span> Transaction
               </ion-col>
               <ion-col offset="4" class="mega-money">
-                <span class="mega">&#8358; {{ totalAmount | thousandSuff : 1 }}</span>
+                <span class="mega">&#8358; {{ totalAmount | thousandSuff :1 }}</span>
               </ion-col>
             </ion-row>
             <span *ngIf="!isData" class="no-data-overall">No Data Available</span>
@@ -104,13 +104,14 @@
             <ion-card style="margin-right:0px; margin-left: 6px;" class="height-100">
               <ion-card-header class="ion-card-contents">
                 <ion-card-subtitle>
-                  <ion-row class="font-11 pull-left" >
+                  <ion-row class="font-11 pull-left">
                     <ion-col>
                       <span>Successful</span>
                     </ion-col>
                     <ion-col>
                       <div class="success circle">
-                        <span class="text-position">{{ successPercent ==  undefined  ?  'Nil' : successPercent | percent }}</span>
+                        <span
+                          class="text-position">{{ successPercent ==  undefined  ?  'Nil' : successPercent | percent }}</span>
                       </div>
                     </ion-col>
                   </ion-row>
@@ -121,12 +122,13 @@
                   <!-- Dots -->
                   <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
                 </div>
-                <ion-row class="font-9 pull-left" style="margin-top:30px;" *ngIf="isData">
+                <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isData">
                   <ion-col size="6">
-                    <span *ngIf="!isLoading"> {{ successCount |  thousandSuff }} Trans</span>
+                    <span *ngIf="!isLoading"> {{successCount | thousandSuff}} Trans</span>
                   </ion-col>
                   <ion-col size="6">
-                    <span text-right class="text-money-position">&#8358;{{ successAmount | thousandSuff : 2}}</span>
+                    <span text-right class="text-money-position" *ngIf="!isLoading">&#8358;
+                      {{ successAmount | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
                 <span *ngIf="!isData" class="no-data">No Data Available</span>
@@ -144,7 +146,8 @@
                     </ion-col>
                     <ion-col>
                       <div class="danger-bg circle">
-                        <span class="text-position">{{ failPercent ==  undefined  ?  'Nil' : failPercent | percent }}</span>
+                        <span
+                          class="text-position">{{ failPercent ==  undefined  ?  'Nil' : failPercent | percent }}</span>
                       </div>
                     </ion-col>
                   </ion-row>
@@ -160,7 +163,8 @@
                     <span *ngIf="!isLoading"> {{failCount | thousandSuff}} Trans</span>
                   </ion-col>
                   <ion-col size="6">
-                    <span text-right class="text-money-position" *ngIf="!isLoading">&#8358; {{ failAmount | thousandSuff : 2 }}</span>
+                    <span text-right class="text-money-position" *ngIf="!isLoading">&#8358;
+                      {{ failAmount | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
                 <span *ngIf="!isData" class="no-data">No Data Available</span>
@@ -171,12 +175,12 @@
         <!-- end of transaction Summary -->
       </ion-col>
     </ion-row>
-    
+
   </div>
-<!-- slider wrapper and background -->
+  <!-- slider wrapper and background -->
   <div class="slide-bg">
     <!-- slider header -->
-    <span>Top 5</span>
+    <span style="margin-left: 15px; font-weight: 800">Top 5</span>
     <!-- end slider ending -->
 
     <!-- slideer content start -->
@@ -199,7 +203,7 @@
                     </ion-row>
 
 
-                    <div *ngFor="let menu of channelData" >
+                    <div *ngFor="let menu of channelData">
                       <ion-row>
                         <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
                         <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
@@ -235,7 +239,7 @@
                     </ion-row>
 
 
-                    <div *ngFor="let menu of channelData" >
+                    <div *ngFor="let menu of channelData">
                       <ion-row>
                         <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
                         <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>

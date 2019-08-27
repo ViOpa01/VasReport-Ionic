@@ -119,13 +119,13 @@ export class Tab1Page implements OnInit {
     if (event) {
       this.secondDate = event.replace(" ", "_").toLowerCase();
       console.log('second Parameter : ' + this.secondDate);
-      // await this.getSummary(event.toLowerCase());
+      await this.getSummary(event.toLowerCase());
     }
     else if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
       this.secondDate = this.secondDate.replace(" ", "_");
       console.log('second Parameter : ' + this.secondDate);
-      // await this.getSummary(this.secondDate.toLowerCase());
+      await this.getSummary(this.secondDate.toLowerCase());
     }
 
   }

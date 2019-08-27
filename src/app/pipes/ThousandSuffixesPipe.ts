@@ -7,7 +7,7 @@ export class ThousandSuffixesPipe implements PipeTransform {
 
     transform(input: any, args?: any): any {
         var exp, rounded,
-            suffixes = ['k', 'M', 'B', 'T', 'P', 'E'];
+            suffixes = ['K', 'M', 'B', 'T', 'P', 'E'];
 
         if (Number.isNaN(input)) {
             return null;
