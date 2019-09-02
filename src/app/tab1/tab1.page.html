@@ -49,7 +49,7 @@
           
           }">
           <ion-card-content>
-            <span color="primary" (click)="secondTabClick(second)"> {{ date == 'Day' ? 'Yesterday':second }}</span>
+            <span color="primary" (click)="secondTabClick(second)"> {{ date == 'Day' ? 'Yesterday': second }}</span>
           </ion-card-content>
         </ion-card>
       </ion-col>
@@ -67,14 +67,16 @@
                 <ion-col>
                   <span>Total Transaction</span>
                 </ion-col>
-                <ion-col offset="2">
-                  <div *ngIf="isData">
-                    <span *ngIf="!isLoading" text-right [ngClass]="{
-                            'danger' : changeColor < 1, 
-                            'success' : changeColor >= 1
-                            }">{{ changeColor | percent }}
+                <ion-col offset="2" *ngIf="isPresent">
+                  <div *ngIf="isDataSummary">
+
+                    <span *ngIf="!isLoadingSummary" text-right [ngClass]="{
+                          'danger' : percentChange < 1, 
+                          'success' : percentChange >= 1
+                          }">{{ percentChange | percent }}
                     </span>
                     <span style="font-size: 11px;"> Previous Day</span>
+
                   </div>
                 </ion-col>
               </ion-row>
@@ -83,17 +85,17 @@
           <ion-card-content>
             <div class="loader" text-center>
               <!-- Dots -->
-              <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
+              <ion-spinner name="dots" *ngIf="isLoadingSummary"></ion-spinner>
             </div>
-            <ion-row class="font-11" *ngIf="isData">
+            <ion-row class="font-11" *ngIf="isDataSummary">
               <ion-col>
-                <span *ngIf="!isLoading">{{totalCount | thousandSuff }}</span> Transaction
+                <span *ngIf="!isLoadingSummary">{{totalCount | thousandSuff }}</span> Transaction
               </ion-col>
               <ion-col offset="4" class="mega-money">
                 <span class="mega">&#8358; {{ totalAmount | thousandSuff :1 }}</span>
               </ion-col>
             </ion-row>
-            <span *ngIf="!isData" class="no-data-overall">No Data Available</span>
+            <span *ngIf="!isDataSummary" class="no-data-overall">No Data Available</span>
           </ion-card-content>
         </ion-card>
         <!-- end of overall transaction -->
@@ -120,18 +122,18 @@
               <ion-card-content class="ion-card-contents">
                 <div class="loader" text-center>
                   <!-- Dots -->
-                  <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
+                  <ion-spinner name="dots" *ngIf="isLoadingSummary"></ion-spinner>
                 </div>
-                <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isData">
+                <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isDataSummary">
                   <ion-col size="6">
-                    <span *ngIf="!isLoading"> {{successCount | thousandSuff}} Trans</span>
+                    <span *ngIf="!isLoadingSummary"> {{successCount | thousandSuff}} Trans</span>
                   </ion-col>
                   <ion-col size="6">
-                    <span text-right class="text-money-position" *ngIf="!isLoading">&#8358;
+                    <span text-right class="text-money-position" *ngIf="!isLoadingSummary">&#8358;
                       {{ successAmount | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
-                <span *ngIf="!isData" class="no-data">No Data Available</span>
+                <span *ngIf="!isDataSummary" class="no-data">No Data Available</span>
 
               </ion-card-content>
             </ion-card>
@@ -156,18 +158,18 @@
               <ion-card-content class="ion-card-contents">
                 <div class="loader" text-center>
                   <!-- Dots -->
-                  <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner>
+                  <ion-spinner name="dots" *ngIf="isLoadingSummary"></ion-spinner>
                 </div>
-                <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isData">
+                <ion-row class="font-11 pull-left" style="margin-top:30px;">
                   <ion-col size="6">
-                    <span *ngIf="!isLoading"> {{failCount | thousandSuff}} Trans</span>
+                    <span *ngIf="!isLoadingSummary"> {{failCount | thousandSuff}} Trans</span>
                   </ion-col>
                   <ion-col size="6">
-                    <span text-right class="text-money-position" *ngIf="!isLoading">&#8358;
+                    <span text-right class="text-money-position" *ngIf="!isLoadingSummary">&#8358;
                       {{ failAmount | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
-                <span *ngIf="!isData" class="no-data">No Data Available</span>
+                <span *ngIf="!isDataSummary" class="no-data">No Data Available</span>
               </ion-card-content>
             </ion-card>
           </ion-col>
@@ -186,8 +188,8 @@
     <!-- slideer content start -->
     <ion-slides [options]="sliderConfig" class="slide-bg">
       <ion-slide>
-        <div>
-          <ion-card class="ion-card-margin">
+        <div style="width: 205px !important;">
+          <ion-card class="ion-card-margin" style=" min-height: 230px;">
             <ion-card-header class="ion-card-contents">
               <ion-card-title class="font-11" color="primary">
                 Channel
@@ -195,20 +197,23 @@
               <ion-card-content class="ion-card-contents">
                 <!-- List Full Lines -->
                 <ion-list lines="full" class="font-9">
-                  <div *ngIf="channelData">
+                  <div *ngIf="channelHeader">
                     <ion-row>
                       <ion-col *ngFor="let menu of channelHeader">
-                        <span size="3" class="font-11 weight">{{menu}}</span>
+                        <span size="3" class="font-11">{{menu}}</span>
                       </ion-col>
                     </ion-row>
 
+                    <!-- Bubbles -->
+                    <ion-spinner name="bubbles" *ngIf="isLoadingChannel"></ion-spinner>
 
-                    <div *ngFor="let menu of channelData">
-                      <ion-row>
-                        <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.fail}}</ion-col>
-                        <ion-col size="2" class="font-11 table">{{menu.total}}</ion-col>
+
+                    <div *ngFor="let menu of outputChannel">
+                      <ion-row class="weight">
+                        <ion-col size="4" class="font-11 table" text-left>{{menu.name }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
                       </ion-row>
                     </div>
 
@@ -222,8 +227,8 @@
       </ion-slide>
 
       <ion-slide>
-        <div>
-          <ion-card class="ion-card-margin">
+        <div style="width: 205px !important;">
+          <ion-card class="ion-card-margin" style=" min-height: 230px;">
             <ion-card-header class="ion-card-contents">
               <ion-card-title class="font-11" color="primary">
                 Product
@@ -231,20 +236,20 @@
               <ion-card-content class="ion-card-contents">
                 <!-- List Full Lines -->
                 <ion-list lines="full" class="font-9">
-                  <div *ngIf="channelData">
+                  <div *ngIf="productHeader">
                     <ion-row>
-                      <ion-col *ngFor="let menu of channelHeader">
-                        <span size="3" class="font-11 weight">{{menu}}</span>
+                      <ion-col *ngFor="let menu of productHeader">
+                        <span size="3" class="font-11">{{menu}}</span>
                       </ion-col>
                     </ion-row>
-
-
-                    <div *ngFor="let menu of channelData">
-                      <ion-row>
-                        <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.fail}}</ion-col>
-                        <ion-col size="2" class="font-11 table">{{menu.total}}</ion-col>
+                     <!-- Bubbles -->
+                     <ion-spinner name="bubbles" *ngIf="isLoadingProduct"></ion-spinner>
+                    <div *ngFor="let menu of outputProduct">
+                      <ion-row class="weight">
+                        <ion-col size="4" class="font-11 table" text-left style="font-size: 8px;">{{menu.name }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
                       </ion-row>
                     </div>
 
@@ -257,9 +262,9 @@
         </div>
       </ion-slide>
 
-      <ion-slide>
-        <div>
-          <ion-card class="ion-card-margin">
+       <ion-slide>
+        <div style="width: 205px !important;">
+          <ion-card class="ion-card-margin" style=" min-height: 230px;">
             <ion-card-header class="ion-card-contents">
               <ion-card-title class="font-11" color="primary">
                 Payment Method
@@ -267,20 +272,21 @@
               <ion-card-content class="ion-card-contents">
                 <!-- List Full Lines -->
                 <ion-list lines="full" class="font-9">
-                  <div *ngIf="channelData">
+                  <div *ngIf="channelHeader">
                     <ion-row>
-                      <ion-col *ngFor="let menu of channelHeader">
-                        <span size="3" class="font-11 weight">{{menu}}</span>
+                      <ion-col *ngFor="let menu of paymentHeader">
+                        <span size="3" class="font-11">{{menu}}</span>
                       </ion-col>
                     </ion-row>
 
-
-                    <div *ngFor="let menu of channelData">
-                      <ion-row>
-                        <ion-col size="4" class="font-11 table">{{menu.name}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.successful}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.fail}}</ion-col>
-                        <ion-col size="2" class="font-11 table">{{menu.total}}</ion-col>
+                     <!-- Bubbles -->
+                     <ion-spinner name="bubbles" *ngIf="isLoadingPayment"></ion-spinner>
+                    <div *ngFor="let menu of outputPayment">
+                      <ion-row class="weight">
+                        <ion-col size="4" class="font-11 table" text-left style="font-size: 8px;">{{menu.name}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff}}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff}}</ion-col>
                       </ion-row>
                     </div>
 
@@ -292,7 +298,6 @@
           </ion-card>
         </div>
       </ion-slide>
-
     </ion-slides>
     <!-- end slider content -->
   </div>

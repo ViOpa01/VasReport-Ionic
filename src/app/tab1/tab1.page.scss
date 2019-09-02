@@ -40,9 +40,7 @@ body{
   position: relative;
   top: -4%;
 }
-.danger::before{
-  content: "-";
-}
+
 .text-position{
   position: relative;
   top: 16px;
@@ -53,7 +51,7 @@ body{
   position: relative;
     top: 3%;
     right: -5px;
-    font-size: 13.5px;
+    font-size: 13px;
     font-weight: 900;
 }
 
@@ -63,7 +61,7 @@ body{
 }
 
 .font-11{
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .font-9{
@@ -97,6 +95,7 @@ body{
 
 .ion-card-contents{
   padding: 3px;
+  // min-height: 220px;
 }
 --item-native {
   padding-left: 1px !important;
@@ -137,6 +136,7 @@ ion-slide{
   padding: 1px;
   margin-bottom: 10px;
   border-top: 1px solid #eeeeee;
+  text-transform: uppercase;
 }
 .sub-mega-money{
   font-size: 12px;
