@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
-import { LoaderService } from '../services/loader.service';
+import { LoaderService } from '../../services/loader.service';
 
 @Component({
   selector: 'app-login',

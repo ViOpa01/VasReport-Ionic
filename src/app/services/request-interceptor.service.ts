@@ -35,7 +35,7 @@ export class RequestInterceptorService implements HttpInterceptor {
         if (token) {
             request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
             request = request.clone({ headers: request.headers.set('token' , `${token}`) });
-            console.log(`token value ${token}`);
+            // console.log(`token value ${token}`);
         }
 
 

@@ -17,5 +17,9 @@ export const Endpoint = {
 
     BASE_URL: {
         base: `${BASE_URL}/`
+    },
+    TRANSACTION: {
+        transaction: `${BASE_URL}/transaction/details`
     }
+
 }

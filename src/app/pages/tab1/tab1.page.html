@@ -32,24 +32,28 @@
 
     <!--  start of current and previous date -->
     <ion-row text-center class="neg-margin">
-      <ion-col style="padding-right: 0px;">
-        <ion-card style="box-shadow: none !important; border: 1px solid #aaaaaa; margin-right:0px;" [ngClass]="{
+      <ion-col style="padding-right: 0px;" >
+        <ion-card (click)="firstTabClick(date)" style="box-shadow: none !important; border: 1px solid #aaaaaa; margin-right:0px;" [ngClass]="{
           'no-border' : firstStyle == 0,
           'bordered' : secondStyle == 0
           }">
-          <ion-card-content>
-            <span color="primary" (click)="firstTabClick(date)">{{date == null ? 'Today': date}}</span>
+          <ion-card-content style="box-shadow: none !important; border: 1px solid #aaaaaa; margin-right:0px;" [ngClass]="{
+            'no-border' : firstStyle == 0,
+            'bordered' : secondStyle == 0
+            }">
+             
+            <span color="primary" >{{date == null ? 'Today': date}}</span>
           </ion-card-content>
         </ion-card>
       </ion-col>
-      <ion-col style="padding-left: 0px;">
-        <ion-card style="box-shadow: none !important; margin-left: 0px;" [ngClass]="{
+      <ion-col style="padding-left: 0px;" >
+        <ion-card (click)="secondTabClick(second)" style="box-shadow: none !important; margin-left: 0px;" [ngClass]="{
           'no-border' : firstStyle == 1,
           'bordered' : secondStyle == 1
           
           }">
           <ion-card-content>
-            <span color="primary" (click)="secondTabClick(second)"> {{ date == 'Day' ? 'Yesterday': second }}</span>
+            <span color="primary"> {{ date == 'Day' ? 'Yesterday': second }}</span>
           </ion-card-content>
         </ion-card>
       </ion-col>

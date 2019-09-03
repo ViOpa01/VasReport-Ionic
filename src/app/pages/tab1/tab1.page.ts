@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from '../services/dashboard.service';
+import { DashboardService } from '../../services/dashboard.service';
 import { ToastController } from '@ionic/angular';
-import { Endpoint } from '../common/endpoints';
+import { Endpoint } from '../../common/endpoints';
 
 @Component({
   selector: 'app-tab1',

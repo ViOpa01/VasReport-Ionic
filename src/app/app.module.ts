@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptorService } from './services/request-interceptor.service';
 import { Network } from '@ionic-native/network/ngx';
+import { InfoModalPageModule } from './component/info-modal/info-modal.module';
+import { SearchModalPageModule } from './component/search-modal/search-modal.module';
 
 
 @NgModule({
@@ -21,6 +23,8 @@ import { Network } from '@ionic-native/network/ngx';
     IonicModule.forRoot(), 
     AppRoutingModule,
     HttpClientModule,
+    InfoModalPageModule,
+    SearchModalPageModule
   ],
   providers: [
     StatusBar,

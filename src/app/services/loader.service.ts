@@ -9,24 +9,18 @@ export class LoaderService {
   loaderToShow: any;
   constructor(public loadingController: LoadingController, public toast:ToastController) { }
 
-  showLoader() {
-    this.loaderToShow = this.loadingController.create({
+  async showLoader() {
+    this.loaderToShow =  await this.loadingController.create({
       message: 'Please Wait',
       spinner: 'dots',
       // showBackdrop:false
-    }).then((res) => {
-      res.present();
-
-      res.onDidDismiss().then((dis) => {
-        console.log('Loading dismissed!');
-        this.hideLoader();
-      });
     });
-    this.hideLoader();
+
+    await this.loaderToShow.present();
   }
 
-  async hideLoader() {
-    await this.loadingController.dismiss(true);
+   hideLoader() {
+     this.loadingController.dismiss(true);
   }
 
   async presentToast(message) {

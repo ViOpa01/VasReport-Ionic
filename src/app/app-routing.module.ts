@@ -8,11 +8,10 @@ const routes: Routes = [
     redirectTo: 'login',
     pathMatch: 'full'
   },
-  { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' , canActivate: [AuthGuard] },
-  { path: 'transactions', loadChildren: './pages/transactions/transactions.module#TransactionsPageModule' },
-  { path: 'tab4', loadChildren: './tab4/tab4.module#Tab4PageModule' },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
-  { path: 'search-modal', loadChildren: './component/search-modal/search-modal.module#SearchModalPageModule' },
+  { path: '', loadChildren: './pages/tabs/tabs.module#TabsPageModule' , canActivate: [AuthGuard] },
+  { path: 'tab4', loadChildren: './pages/tab4/tab4.module#Tab4PageModule' },
+  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
+  { path: 'info-modal', loadChildren: './component/info-modal/info-modal.module#InfoModalPageModule' },
   { path: 'search-modal', loadChildren: './component/search-modal/search-modal.module#SearchModalPageModule' }
 ];
 @NgModule({
