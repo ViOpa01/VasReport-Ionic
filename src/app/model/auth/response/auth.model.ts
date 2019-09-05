@@ -1,5 +1,9 @@
 export interface LoginResponseModel {
-    access_token?: string;
-    token_type?: string;
-    expires_at?: string;
+    token?: string;
+    name?: string;
+    username?: string;
+    email?: string;
+    is_admin?: number;
+    default_product?: any;
+    walletData?: string[];
 }

@@ -17,23 +17,26 @@ export class AuthService {
     private storageService: StorageService) { }
 
   signIn(loginRequest: LoginRequestModel): Observable<LoginResponseModel> {
-    return this.http.post("https://vas.itexapp.com/api/v1/auth/login", loginRequest,
+    return this.http.post(Endpoint.AUTH.login, loginRequest,
       {
         headers: {
           'Content-Type': 'application/json'
         }
       }).pipe(
         map(data => {
+          // console.log(data.token)
           this.processLogin(data);
           return data;
-        }), catchError(error => {
-          console.log(error);
+      }), catchError(error => {
+          // console.log(error);
           return throwError(error.message);
         }));
   }
 
   processLogin(response: LoginResponseModel) {
-    this.storageService.set(Constants.STORAGE_VARIABLES.TOKEN, response);
+    this.storageService.set(Constants.STORAGE_VARIABLES.TOKEN, response.token);
+    console.log('show the response token', response.token)
+    
   }
 
   isAuthenticated(): boolean {
@@ -42,9 +45,9 @@ export class AuthService {
     }
 
     const login = this.storageService.get<LoginResponseModel>(Constants.STORAGE_VARIABLES.TOKEN);
-    if (login.access_token && login.expires_at) {
-      var expireInDate = new Date(login.expires_at);
-      return expireInDate > (new Date());
+    if (login.token && login.is_admin) {
+      // var expireInDate = new Date(login.expires_at);
+      // return expireInDate > (new Date());
     }
 
     return true;

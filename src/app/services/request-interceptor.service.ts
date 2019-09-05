@@ -25,18 +25,17 @@ export class RequestInterceptorService implements HttpInterceptor {
     isRefreshingToken: boolean = false;
     tokenSubject: BehaviorSubject<string> = new BehaviorSubject<string>(null);
     loaderToShow: any;
-    constructor(
-        private storageService: StorageService,
-        public errorDialogService: AlertService,
-        public loadingController: LoadingController) {
+    constructor(private storageService: StorageService) {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        let token: LoginResponseModel = this.storageService.get<LoginResponseModel>(Constants.STORAGE_VARIABLES.TOKEN);
+        let token = this.storageService.get(Constants.STORAGE_VARIABLES.TOKEN);
 
         if (token) {
-            request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token.access_token) });
+            request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
+            request = request.clone({ headers: request.headers.set('token' , `${token}`) });
+            // console.log(`token value ${token}`);
         }
 
 
@@ -47,45 +46,29 @@ export class RequestInterceptorService implements HttpInterceptor {
 
         request = request.clone({ headers: request.headers.set('Accept', 'application/json') });
 
-        this.showLoader();
+        //start loading page with preloader
+        // this.showLoader();
         return next.handle(request).pipe(
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
                     // console.log('event--->>>', event);
-                    this.hideLoader();
+                    //end loading page with preloader if successful
+                    // this.hideLoader();
                     // this.errorDialogService.openDialog(event);
                 }
                 return event;
             }),
             catchError((error: HttpErrorResponse) => {
-                console.log(error);
+                // console.log(error);
                 let data = {};
                 data = {
                     reason: error && error.error && error.error.reason ? error.error.reason : '',
                     status: error.status
                 };
                 // this.errorDialogService.presentToast(data);
-                this.hideLoader();
+                //end loading page with preloader if failed
+                // this.hideLoader();
                 return throwError(error);
             }));
-    }
-
-    showLoader() {
-        this.loaderToShow = this.loadingController.create({
-            message: 'Pease Wait',
-            spinner: 'dots',
-            showBackdrop:false
-        }).then((res) => {
-            res.present();
-
-            res.onDidDismiss().then((dis) => {
-                console.log('Loading dismissed!');
-            });
-        });
-        this.hideLoader();        
-    }
-
-    hideLoader() {
-        this.loadingController.dismiss(true);
     }
 }

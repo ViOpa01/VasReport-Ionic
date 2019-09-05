@@ -1,0 +1,144 @@
+body{
+  background: #E5E5E5 !important;
+}
+.height-100{
+  height: 100px !important;
+}
+.neg-margin{
+  margin-top: -7px !important;
+}
+
+.neg-margin-12{
+  margin-top: -15px !important;
+}
+.slide-bg{
+  background: #F4F7FE;
+    padding-top: 19px;
+}
+.bordered{
+  border: 1px solid #aaa;
+}
+
+.no-border{
+  border: 1px solid transparent !important;
+}
+.switchBox{
+  border: 1px solid #aaa;
+}
+.success{
+  color: #ffffff;
+  background: #219653;
+}
+.danger-bg{
+  color: #ffffff;
+  background: #EB5757;
+}
+.danger{
+  color: #EB5757 !important;
+  font-size: 9px;
+  font-size: 11px;
+  position: relative;
+  top: -4%;
+}
+
+.text-position{
+  position: relative;
+  top: 16px;
+  font-size: 16px;
+  right: -12px;
+}
+.text-money-position{
+  position: relative;
+    top: 3%;
+    right: -5px;
+    font-size: 13px;
+    font-weight: 900;
+}
+
+.loader{
+  position: relative;
+  top: 20%;
+}
+
+.font-11{
+  font-size: 10px;
+}
+
+.font-9{
+  font-size: 9px;
+}
+
+.no-data{
+  position: relative;
+  top: 30px;
+  text-align: center;
+  left: 13px;
+  font-size: 10px;
+}
+
+.no-data-overall{
+  position: relative;
+  top: 9px;
+  left: 13px;
+}
+.mega-money{
+  font-size: 19px;
+  font-weight: 900;
+  text-align: right;
+}
+
+.mega{
+  right: 20px;
+    position: relative;
+    top: -8px;
+}
+
+.ion-card-contents{
+  padding: 2px;
+  // min-height: 220px;
+}
+--item-native {
+  padding-left: 1px !important;
+}
+
+.sub-heading{
+  color: #eeeeee;
+  font-weight: 600;
+  // background: #aaaaaa;
+  border-radius: 5px;
+}
+.pull-left{
+  position: relative;
+  // left: -15px;
+}
+
+.circle{
+  position: absolute;
+    right: 6px;
+    top: 10%;
+    border: 1px solid #aaa;
+    border-radius: 50%;
+    height:52px;
+    width: 52px;
+}
+
+ion-slide{
+  padding: 0px;
+}
+
+.ion-card-margin{
+  margin: 0px;
+}
+.weight{
+  font-weight: 800;
+}
+.table{
+  padding: 1px;
+  margin-bottom: 10px;
+  border-top: 1px solid #eeeeee;
+  text-transform: uppercase;
+}
+.sub-mega-money{
+  font-size: 12px;
+  font-weight: 800;
+}

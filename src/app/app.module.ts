@@ -10,7 +10,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RequestInterceptorService } from './services/request-interceptor.service';
-
+import { Network } from '@ionic-native/network/ngx';
+import { InfoModalPageModule } from './component/info-modal/info-modal.module';
+import { SearchModalPageModule } from './component/search-modal/search-modal.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,14 +21,18 @@ import { RequestInterceptorService } from './services/request-interceptor.servic
     BrowserModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    InfoModalPageModule,
+    SearchModalPageModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
-    RequestInterceptorService
+    RequestInterceptorService,
+    Network,
+    
   ],
   bootstrap: [AppComponent]
 })

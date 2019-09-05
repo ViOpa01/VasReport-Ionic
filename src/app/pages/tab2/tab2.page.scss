@@ -1,0 +1,81 @@
+
+.neg-margin{
+  margin-top: -21px !important;
+}
+
+.no-pad-right{
+  padding-right: 0px;
+}
+
+.no-pad-left {
+  padding-left: 0px;
+}
+
+.card-left{
+  margin-right: 5px;
+  margin-left: 5px;
+}
+.card-right{
+  margin-left: 5px;
+   margin-right: 5px;
+}
+
+.pad-bottom{
+  padding-bottom: 2px;
+  padding-top:3px; 
+}
+.weight{
+  font-weight: 800;
+}
+.success-color{
+  color: #219653;
+}
+
+.failed-color{
+  color: #EB5757;
+}
+ion-card-subtitle{
+  font-size: 10px;  
+  text-align: left;
+  position: relative;
+  left: -8px;
+}
+
+ion-col > span{
+  font-size: 11px;
+}
+.trans-background{
+  background: #0099F0;
+  box-shadow: 0px 3px 5px rgba(110, 110, 110, 0.44);
+  border-radius: 2px;
+  color: #ffffff;
+  padding: 4px 0px 4px 0px;
+  margin-bottom: 5px;
+}
+
+/* Custom Skeleton Line Height and Margin */
+.custom-skeleton ion-skeleton-text {
+  line-height: 13px;
+}
+
+.custom-skeleton ion-skeleton-text:last-child {
+  margin-bottom: -1px;
+}
+.neg-margin-2{
+  margin-top: -10px;
+}
+
+.active-user-card{
+  position: relative;
+  top: 6px;
+  right: -6px;
+}
+
+.count-style-card{
+  position: relative;
+  left: -10px;
+}
+.money-style-card{
+  position: relative;
+  right: -25px;
+}

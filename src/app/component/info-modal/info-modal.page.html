@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="font-size: 11px; color: #696464 ">
+      <div class="left">
+        <p class="title-head">{{name}}</p>
+        <p>{{ category }}</p>
+      </div>
+      <div class="right" (click)="closeDetailsModal()">
+        <span>
+          <ion-icon name="close" item-end class="round"></ion-icon>
+        </span>
+      </div>
+
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-style" padding>
+  <ion-grid>
+    <ion-row>
+      <span class="head">Product Details</span>
+    </ion-row>
+
+    <div class="pad-5">
+      <ion-row>
+        <ion-col size="8">Terminal ID</ion-col>
+        <ion-col class="weight">{{terminalId}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Agent ID</ion-col>
+        <ion-col class="weight">{{agentId}}</ion-col>
+      </ion-row>
+    </div>
+
+    <ion-row>
+      <span class="head">Contact Details</span>
+    </ion-row>
+
+    <div class="pad-5">
+      <ion-row>
+        <ion-col size="8">Name</ion-col>
+        <ion-col class="weight">{{name}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Phone number</ion-col>
+        <ion-col class="weight">{{phoneNumber}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">Account number</ion-col>
+        <ion-col class="weight">{{accountNumber}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Address</ion-col>
+        <ion-col class="weight">{{address}}</ion-col>
+      </ion-row>
+    </div>
+
+
+    <div class="pad-5">
+      <ion-row>
+        <ion-col size="8">Biller name</ion-col>
+        <ion-col class="weight">{{billerName}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Channel</ion-col>
+        <ion-col class="weight">{{channel}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">Provider name</ion-col>
+        <ion-col class="weight">{{providerName}}</ion-col>
+      </ion-row>
+      <ion-row style="line-height: 0px;">
+        <ion-col size="8">Reference</ion-col>
+        <ion-col class="weight">{{reference}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Sequence</ion-col>
+        <ion-col class="weight">{{sequence}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">Message</ion-col>
+        <ion-col class="weight">{{message}}</ion-col>
+      </ion-row>
+    </div>
+    <ion-row>
+      <span class="head">Transaction Details</span>
+    </ion-row>
+
+    <div class="pad-5">
+      <ion-row>
+        <ion-col size="8">AuthCode</ion-col>
+        <ion-col class="weight">{{authCode}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Stan</ion-col>
+        <ion-col class="weight">{{stan}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">RRN</ion-col>
+        <ion-col class="weight">{{RRN}}</ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</ion-content>

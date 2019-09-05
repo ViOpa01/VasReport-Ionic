@@ -1,0 +1,310 @@
+<!-- start header  -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <img src="assets/logo.svg" style="width: 20%;" />
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<!-- end headers -->
+
+<!-- start content -->
+<ion-content>
+  <div class="">
+    <!-- start select date range  -->
+    <ion-row class="neg-margin">
+      <ion-col>
+        <ion-item>
+          <ion-label style="background: #2D9CDB !important; padding: 10.5px; color: #2D9CDB; " text-center>Date
+          </ion-label>
+          <ion-select value="Day"
+            style="background: #2d9cdb; color: #fff; padding: 10.41px; border-left: #2d9cdb; margin-left: -2px;"
+            okText="Okay" cancelText="Dismiss" [(ngModel)]="date" (ngModelChange)="optionsFn($event)">
+            <ion-select-option value="Day" selected="true">Day</ion-select-option>
+            <ion-select-option value="Week">Week</ion-select-option>
+            <ion-select-option value="Month">Month</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <!-- end select date range -->
+
+    <!--  start of current and previous date -->
+    <ion-row text-center class="neg-margin">
+      <ion-col style="padding-right: 0px;" >
+        <ion-card (click)="firstTabClick(date)" style="box-shadow: none !important; border: 1px solid #aaaaaa; margin-right:0px;" [ngClass]="{
+          'no-border' : firstStyle == 0,
+          'bordered' : secondStyle == 0
+          }">
+          <ion-card-content style="box-shadow: none !important; border: 1px solid #aaaaaa; margin-right:0px;" [ngClass]="{
+            'no-border' : firstStyle == 0,
+            'bordered' : secondStyle == 0
+            }">
+             
+            <span color="primary" >{{date == null ? 'Today': date}}</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col style="padding-left: 0px;" >
+        <ion-card (click)="secondTabClick(second)" style="box-shadow: none !important; margin-left: 0px;" [ngClass]="{
+          'no-border' : firstStyle == 1,
+          'bordered' : secondStyle == 1
+          
+          }">
+          <ion-card-content>
+            <span color="primary"> {{ date == 'Day' ? 'Yesterday': second }}</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+
+    <!-- end of current and previous date  -->
+
+    <ion-row class="neg-margin-12">
+      <ion-col>
+        <!-- start of overall transaction -->
+        <ion-card class="height-100">
+          <ion-card-header>
+            <ion-card-subtitle>
+              <ion-row class="font-11">
+                <ion-col>
+                  <span>Total Transaction</span>
+                </ion-col>
+                <ion-col offset="2" *ngIf="isPresent">
+                  <div *ngIf="isDataSummary">
+
+                    <span *ngIf="!isLoadingSummary" text-right [ngClass]="{
+                          'danger' : percentChange < 1, 
+                          'success' : percentChange >= 1
+                          }">{{ percentChange | percent }}
+                    </span>
+                    <span style="font-size: 11px;"> Previous Day</span>
+
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="loader" text-center>
+              <!-- Dots -->
+              <ion-spinner name="dots" *ngIf="isLoadingSummary"></ion-spinner>
+            </div>
+            <ion-row class="font-11" *ngIf="isDataSummary">
+              <ion-col>
+                <span *ngIf="!isLoadingSummary">{{totalCount | thousandSuff }}</span> Transaction
+              </ion-col>
+              <ion-col offset="4" class="mega-money">
+                <span class="mega">&#8358; {{ totalAmount | thousandSuff :1 }}</span>
+              </ion-col>
+            </ion-row>
+            <span *ngIf="!isDataSummary" class="no-data-overall">No Data Available</span>
+          </ion-card-content>
+        </ion-card>
+        <!-- end of overall transaction -->
+
+        <!-- start of transaction summary -->
+        <ion-row class="font-11 neg-margin-12">
+          <ion-col style="padding-right:4px;">
+            <ion-card style="margin-right:0px; margin-left: 6px;" class="height-100">
+              <ion-card-header class="ion-card-contents">
+                <ion-card-subtitle>
+                  <ion-row class="font-11 pull-left">
+                    <ion-col>
+                      <span>Successful</span>
+                    </ion-col>
+                    <ion-col>
+                      <div class="success circle">
+                        <span
+                          class="text-position">{{ successPercent ==  undefined  ?  'Nil' : successPercent | percent }}</span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content class="ion-card-contents">
+                <div class="loader" text-center>
+                  <!-- Dots -->
+                  <ion-spinner name="dots" *ngIf="isLoadingSummary"></ion-spinner>
+                </div>
+                <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isDataSummary">
+                  <ion-col size="6">
+                    <span *ngIf="!isLoadingSummary"> {{successCount | thousandSuff}} Trans</span>
+                  </ion-col>
+                  <ion-col size="6">
+                    <span text-right class="text-money-position" *ngIf="!isLoadingSummary">&#8358;
+                      {{ successAmount | thousandSuff :1  }}</span>
+                  </ion-col>
+                </ion-row>
+                <span *ngIf="!isDataSummary" class="no-data">No Data Available</span>
+
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+          <ion-col style="padding-left:4px;">
+            <ion-card style="margin-left:0px; margin-right:6px;" class="height-100">
+              <ion-card-header class="ion-card-contents">
+                <ion-card-subtitle>
+                  <ion-row class="font-11 pull-left">
+                    <ion-col>
+                      <span>Failed</span>
+                    </ion-col>
+                    <ion-col>
+                      <div class="danger-bg circle">
+                        <span
+                          class="text-position">{{ failPercent ==  undefined  ?  'Nil' : failPercent | percent }}</span>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-card-subtitle>
+              </ion-card-header>
+              <ion-card-content class="ion-card-contents">
+                <div class="loader" text-center>
+                  <!-- Dots -->
+                  <ion-spinner name="dots" *ngIf="isLoadingSummary"></ion-spinner>
+                </div>
+                <ion-row class="font-11 pull-left" style="margin-top:30px;">
+                  <ion-col size="6">
+                    <span *ngIf="!isLoadingSummary"> {{failCount | thousandSuff}} Trans</span>
+                  </ion-col>
+                  <ion-col size="6">
+                    <span text-right class="text-money-position" *ngIf="!isLoadingSummary">&#8358;
+                      {{ failAmount | thousandSuff :1  }}</span>
+                  </ion-col>
+                </ion-row>
+                <span *ngIf="!isDataSummary" class="no-data">No Data Available</span>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <!-- end of transaction Summary -->
+      </ion-col>
+    </ion-row>
+
+  </div>
+  <!-- slider wrapper and background -->
+  <div class="slide-bg">
+    <!-- slider header -->
+    <span style="margin-left: 15px; font-weight: 800">Top 5</span>
+    <!-- end slider ending -->
+
+    <!-- slideer content start -->
+    <ion-slides [options]="sliderConfig" class="slide-bg">
+      <ion-slide>
+        <div style="width: 205px !important;">
+          <ion-card class="ion-card-margin" style=" min-height: 230px;">
+            <ion-card-header class="ion-card-contents">
+              <ion-card-title class="font-11" color="primary">
+                Channel
+              </ion-card-title>
+              <ion-card-content class="ion-card-contents">
+                <!-- List Full Lines -->
+                <ion-list lines="full" class="font-9">
+                  <div *ngIf="channelHeader">
+                    <ion-row>
+                      <ion-col *ngFor="let menu of channelHeader">
+                        <span size="3" class="font-11">{{menu}}</span>
+                      </ion-col>
+                    </ion-row>
+
+                    <!-- Bubbles -->
+                    <ion-spinner name="bubbles" *ngIf="isLoadingChannel"></ion-spinner>
+
+
+                    <div *ngFor="let menu of outputChannel">
+                      <ion-row class="weight">
+                        <ion-col size="4" class="font-11 table" text-left>{{menu.name }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
+                      </ion-row>
+                    </div>
+
+                  </div>
+                </ion-list>
+
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-slide>
+
+      <ion-slide>
+        <div style="width: 205px !important;">
+          <ion-card class="ion-card-margin" style=" min-height: 230px;">
+            <ion-card-header class="ion-card-contents">
+              <ion-card-title class="font-11" color="primary">
+                Product
+              </ion-card-title>
+              <ion-card-content class="ion-card-contents">
+                <!-- List Full Lines -->
+                <ion-list lines="full" class="font-9">
+                  <div *ngIf="productHeader">
+                    <ion-row>
+                      <ion-col *ngFor="let menu of productHeader">
+                        <span size="3" class="font-11">{{menu}}</span>
+                      </ion-col>
+                    </ion-row>
+                     <!-- Bubbles -->
+                     <ion-spinner name="bubbles" *ngIf="isLoadingProduct"></ion-spinner>
+                    <div *ngFor="let menu of outputProduct">
+                      <ion-row class="weight">
+                        <ion-col size="4" class="font-11 table" text-left style="font-size: 8px;">{{menu.name }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
+                      </ion-row>
+                    </div>
+
+                  </div>
+                </ion-list>
+
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-slide>
+
+       <ion-slide>
+        <div style="width: 205px !important;">
+          <ion-card class="ion-card-margin" style=" min-height: 230px;">
+            <ion-card-header class="ion-card-contents">
+              <ion-card-title class="font-11" color="primary">
+                Payment Method
+              </ion-card-title>
+              <ion-card-content class="ion-card-contents">
+                <!-- List Full Lines -->
+                <ion-list lines="full" class="font-9">
+                  <div *ngIf="channelHeader">
+                    <ion-row>
+                      <ion-col *ngFor="let menu of paymentHeader">
+                        <span size="3" class="font-11">{{menu}}</span>
+                      </ion-col>
+                    </ion-row>
+
+                     <!-- Bubbles -->
+                     <ion-spinner name="bubbles" *ngIf="isLoadingPayment"></ion-spinner>
+                    <div *ngFor="let menu of outputPayment">
+                      <ion-row class="weight">
+                        <ion-col size="4" class="font-11 table" text-left style="font-size: 8px;">{{menu.name}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff}}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff}}</ion-col>
+                      </ion-row>
+                    </div>
+
+                  </div>
+                </ion-list>
+
+              </ion-card-content>
+            </ion-card-header>
+          </ion-card>
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <!-- end slider content -->
+  </div>
+  <!-- end slider wrapper and background -->
+</ion-content>
+<!-- end the contents -->
