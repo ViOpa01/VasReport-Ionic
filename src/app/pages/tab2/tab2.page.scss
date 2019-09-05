@@ -36,7 +36,11 @@
 }
 ion-card-subtitle{
   font-size: 10px;  
+  text-align: left;
+  position: relative;
+  left: -8px;
 }
+
 ion-col > span{
   font-size: 11px;
 }
@@ -55,5 +59,23 @@ ion-col > span{
 }
 
 .custom-skeleton ion-skeleton-text:last-child {
-  margin-bottom: 5px;
+  margin-bottom: -1px;
+}
+.neg-margin-2{
+  margin-top: -10px;
+}
+
+.active-user-card{
+  position: relative;
+  top: 6px;
+  right: -6px;
+}
+
+.count-style-card{
+  position: relative;
+  left: -10px;
+}
+.money-style-card{
+  position: relative;
+  right: -25px;
 }

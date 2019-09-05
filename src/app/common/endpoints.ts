@@ -20,6 +20,9 @@ export const Endpoint = {
     },
     TRANSACTION: {
         transaction: `${BASE_URL}/transaction/details`
+    },
+    TRANSACTION_SUMMARY: {
+        transaction_summary: `${BASE_URL}/transaction/details/summary`
     }
 
 }

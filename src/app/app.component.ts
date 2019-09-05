@@ -1,33 +1,69 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
-import { Platform } from '@ionic/angular';
+import { Platform, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
 import { ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LoaderService } from './services/loader.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
 })
 export class AppComponent {
+  @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
+  
+  // This property will save the callback which we can unsubscribe when we leave this view
+  public unsubscribeBackEvent: any;
+  
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private network: Network,
-    private  toast:ToastController
+    private  toast:ToastController,
+    private router: Router,
+    public generic:LoaderService
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
+      // this.statusBar.styleDefault();
       this.statusBar.styleDefault();
+      if (this.platform.is('android')) {
+          this.statusBar.overlaysWebView(false);
+          this.statusBar.backgroundColorByHexString('#000000');
+      }
       this.splashScreen.hide();
       this.checkNetwork();
     });
   }
+
+ async  onYesHandler(){
+    return await navigator['app'].exitApp();
+  }
+
+   
+  //Called when view is left
+  ionViewWillLeave() {
+    this.platform.backButton.subscribeWithPriority(0, () => {
+      if (this.routerOutlet && this.routerOutlet.canGoBack()) {
+        this.routerOutlet.pop();
+        // console.log(this.router.url);
+        this.presentToast('current Url' + this.router.url );
+      } else if (this.router.url === '/login') { 
+        // or if that doesn't work, try
+        navigator['app'].exitApp();
+      } else {
+        this.presentToast('Did you want to exit the app ?');
+      }
+    });
+  }
+ 
 
   checkNetwork() {
     // watch network for a disconnection
@@ -58,6 +94,7 @@ export class AppComponent {
     // stop connect watch
     connectSubscription.unsubscribe();
   }
+
   async presentToast(message) {
     const toast = await this.toast.create({
       message: message,

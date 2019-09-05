@@ -237,8 +237,8 @@ export class Tab1Page implements OnInit {
 
       //summary of the data for previous  success and fail
 
-      this.previousTotal = parseInt(this.previousSuccess.data.count) + parseInt(this.previousFailed.data.count);
-      this.percentChange = ((this.totalCount - this.previousTotal) / this.previousTotal);
+      this.previousTotal = parseInt(this.previousSuccess.data.amount) + parseInt(this.previousFailed.data.amount);
+      this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
 
       // console.log('previous data: ' + this.successAmount);
 

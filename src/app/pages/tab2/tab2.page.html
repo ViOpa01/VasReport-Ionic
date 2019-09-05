@@ -18,77 +18,105 @@
 
 <!-- end headers -->
 <ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <!-- start of cards for the transaction pages -->
-  <ion-row class="neg-margin">
-    <ion-col class="no-pad-right">
-      <ion-card class="card-left">
-        <ion-card-header class="pad-bottom">
-          <ion-card-subtitle>Active User</ion-card-subtitle>
-        </ion-card-header>
+  <div *ngIf="isLoadingSummary">
 
-        <ion-card-content text-right>
-          <span class="weight">333</span>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-    <ion-col class="no-pad-left">
-      <ion-card class="card-right">
-        <ion-card-header class="pad-bottom">
-          <ion-card-subtitle>Total Transaction</ion-card-subtitle>
-        </ion-card-header>
+    <div class="ion-paddings custom-skeleton">
+      <ion-row class="neg-margin-2">
+        <ion-col>
+          <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+        </ion-col>
+        <ion-col>
+          <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <ion-row class="neg-margin-2">
+        <ion-col>
+          <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+        </ion-col>
+        <ion-col>
+          <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+    </div>
+  </div>
 
-        <ion-card-content class="pad-bottom">
-          <ion-row>
-            <ion-col>
-              <span class="weight">333</span>
-            </ion-col>
-            <ion-col>
-              <span class="weight">&#8358; 12M</span>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-  </ion-row>
+  <div *ngIf="isDataSummary">
+    <ion-row class="neg-margin">
+      <ion-col class="no-pad-right">
+        <ion-card class="card-left">
+          <ion-card-header class="pad-bottom">
+            <ion-card-subtitle>Active User</ion-card-subtitle>
+          </ion-card-header>
 
-  <ion-row class="neg-margin">
-    <ion-col class="no-pad-right">
-      <ion-card class="card-left">
-        <ion-card-header class="pad-bottom">
-          <ion-card-subtitle>Successful Transaction</ion-card-subtitle>
-        </ion-card-header>
+          <ion-card-content text-right>
+            <span class="weight active-user-card" >{{ uniqueUser  }}</span>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col class="no-pad-left">
+        <ion-card class="card-right">
+          <ion-card-header class="pad-bottom">
+            <ion-card-subtitle>Total Transaction</ion-card-subtitle>
+          </ion-card-header>
 
-        <ion-card-content class="pad-bottom">
-          <ion-row>
-            <ion-col>
-              <span class="weight">333</span>
-            </ion-col>
-            <ion-col>
-              <span class="weight">&#8358; 12M</span>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-    <ion-col class="no-pad-left">
-      <ion-card class="card-right">
-        <ion-card-header class="pad-bottom">
-          <ion-card-subtitle>Failed Transaction</ion-card-subtitle>
-        </ion-card-header>
+          <ion-card-content class="pad-bottom">
+            <ion-row>
+              <ion-col>
+                <span class="weight count-style-card">{{summaryTotalCount | thousandSuff}}</span>
+              </ion-col>
+              <ion-col>
+                <span class="weight money-style-card">&#8358; {{summaryTotalAmount | thousandSuff }}</span>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
 
-        <ion-card-content class="pad-bottom">
-          <ion-row>
-            <ion-col>
-              <span class="weight">333</span>
-            </ion-col>
-            <ion-col>
-              <span class="weight">&#8358; 12M</span>
-            </ion-col>
-          </ion-row>
-        </ion-card-content>
-      </ion-card>
-    </ion-col>
-  </ion-row>
+    <ion-row class="neg-margin">
+      <ion-col class="no-pad-right">
+        <ion-card class="card-left">
+          <ion-card-header class="pad-bottom">
+            <ion-card-subtitle>Successful Transaction</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content class="pad-bottom">
+            <ion-row>
+              <ion-col>
+                <span class="weight count-style-card">{{ summarySuccessCount | thousandSuff}}</span>
+              </ion-col>
+              <ion-col>
+                <span class="weight money-style-card">&#8358; {{ summarySuccessAmount | thousandSuff }}</span>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col class="no-pad-left">
+        <ion-card class="card-right">
+          <ion-card-header class="pad-bottom">
+            <ion-card-subtitle>Failed Transaction</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content class="pad-bottom">
+            <ion-row>
+              <ion-col>
+                <span class="weight count-style-card">{{summaryFailCount | thousandSuff }}</span>
+              </ion-col>
+              <ion-col>
+                <span class="weight money-style-card">&#8358; {{ summaryFailAmount | thousandSuff}}</span>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </div>
   <!-- end of cards for the transaction pages -->
 
   <!-- beginning of headers for transaction -->

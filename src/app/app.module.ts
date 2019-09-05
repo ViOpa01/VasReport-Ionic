@@ -14,7 +14,6 @@ import { Network } from '@ionic-native/network/ngx';
 import { InfoModalPageModule } from './component/info-modal/info-modal.module';
 import { SearchModalPageModule } from './component/search-modal/search-modal.module';
 
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -24,7 +23,7 @@ import { SearchModalPageModule } from './component/search-modal/search-modal.mod
     AppRoutingModule,
     HttpClientModule,
     InfoModalPageModule,
-    SearchModalPageModule
+    SearchModalPageModule,
   ],
   providers: [
     StatusBar,

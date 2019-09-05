@@ -25,6 +25,12 @@ export class TransactionService {
   }
 
   getSummary(transModel):Observable<any>{
-    return transModel;
+    return this.http.post(Endpoint.TRANSACTION_SUMMARY.transaction_summary, transModel).pipe(
+      map( data => {
+        return data;
+      }, error => {
+        console.log('There is an error getting Data ):' + error.message)
+      })
+    );
   }
 }
