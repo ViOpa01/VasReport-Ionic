@@ -1,24 +1,78 @@
 <ion-content padding>
-    <ion-grid>
-        <span>Select Date</span>
-        <ion-row>
-            <ion-col size="3">
-                <span (click)="getDate('today')">
-                    <ion-badge color="primary">Today</ion-badge>
-                </span>
-            </ion-col>
-            <ion-col size="4">
-                <span (click)="getDate('yesterday')">
-                    <ion-badge color="secondary">Yesterday</ion-badge>
-                </span>
-            </ion-col>
-            <ion-col>
-                <span (click)="openCalendar()">
-                    <ion-badge color="primary">Custom Date</ion-badge>
-                </span>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <form [formGroup]="searchForm">
+        <ion-grid>
+            <span>Select Date</span>
+            <ion-row>
+                <ion-col size="3">
+                    <span (click)="getDate('today')">
+                        <ion-badge color="primary">Today</ion-badge>
+                    </span>
+                </ion-col>
+                <ion-col size="4">
+                    <span (click)="getDate('yesterday')">
+                        <ion-badge color="secondary">Yesterday</ion-badge>
+                    </span>
+                </ion-col>
+                <ion-col>
+                    <span (click)="openCalendar()">
+                        <ion-badge color="primary">Custom Date</ion-badge>
+                    </span>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-item>
+                        <ion-label position="floating">Terminal ID</ion-label>
+                        <ion-input formControlName="terminalId"></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col>
+                    <ion-item>
+                        <ion-label position="floating">Agent ID</ion-label>
+                        <ion-input formControlName="walletId"></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-item>
+                        <ion-label position="floating">Terminal ID</ion-label>
+                        <ion-input></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col>
+                    <ion-item>
+                        <ion-label position="floating">Agent ID</ion-label>
+                        <ion-input></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-item>
+                        <ion-label position="floating">Terminal ID</ion-label>
+                        <ion-input></ion-input>
+                    </ion-item>
+                </ion-col>
+                <ion-col>
+                    <ion-item>
+                        <ion-label position="floating">Agent ID</ion-label>
+                        <ion-input></ion-input>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <ion-button fill="outline" expand="full" (click)="searchTrans()">
+                        <!-- Advanced: explicity set the icon for each platform -->
+                        <ion-icon ios="ios-search" md="md-search"></ion-icon>
+                        Search
+                    </ion-button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </form>
+
 
 
 </ion-content>

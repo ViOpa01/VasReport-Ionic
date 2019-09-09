@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
 import { ToastController } from '@ionic/angular';
 import { Endpoint } from '../../common/endpoints';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -88,14 +89,47 @@ export class Tab1Page implements OnInit {
   outputPayment: any[] = [];
 
   sliderConfig = {
-    slidesPerView: 1.6,
+    slidesPerView: 1.7,
     spaceBetween: 1,
     centeredSlides: false,
     loop: false
   };
 
 
-  constructor(public dashboardService: DashboardService, private toast: ToastController) { }
+  constructor(public dashboardService: DashboardService, private toast: ToastController, public network:Network) { 
+    this.checkNetwork();
+  }
+
+  checkNetwork() {
+    // watch network for a disconnection
+    this.network.onDisconnect().subscribe(() => {
+       this.toast.create({
+        message: 'disconnect',
+        duration: 3000
+      });
+      console.log('network was disconnected :-(');
+    });
+
+    this.network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      this.toast.create({
+        message: 'Connected',
+        duration: 3000
+      });
+      // We just got a connection but we need to wait briefly
+      // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+      setTimeout(() => {
+        if (this.network.type === 'wifi') {
+          console.log('we got a wifi connection, woohoo!');
+          this.toast.create({
+            message: 'Connected to wifi',
+            duration: 3000
+          });
+        }
+      }, 3000);
+    });
+  }
 
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
     'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
@@ -240,7 +274,8 @@ export class Tab1Page implements OnInit {
       this.previousTotal = parseInt(this.previousSuccess.data.amount) + parseInt(this.previousFailed.data.amount);
       this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
 
-      // console.log('previous data: ' + this.successAmount);
+      console.log(`previous total : ${this.previousTotal} and current total is : ${this.totalAmount}`);
+      console.log(this.percentChange)
 
     }, error => {
       this.isLoadingSummary = false;

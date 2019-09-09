@@ -75,11 +75,11 @@
                   <div *ngIf="isDataSummary">
 
                     <span *ngIf="!isLoadingSummary" text-right [ngClass]="{
-                          'danger' : percentChange < 1, 
-                          'success' : percentChange >= 1
+                          'danger' : percentChange < 0, 
+                          'success' : percentChange >= 0
                           }">{{ percentChange | percent }}
                     </span>
-                    <span style="font-size: 11px;"> Previous Day</span>
+                    <span style="font-size: 11px;"> Previous {{ date }}</span>
 
                   </div>
                 </ion-col>
