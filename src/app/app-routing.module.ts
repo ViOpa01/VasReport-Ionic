@@ -12,7 +12,8 @@ const routes: Routes = [
   { path: 'tab4', loadChildren: './pages/tab4/tab4.module#Tab4PageModule' },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'info-modal', loadChildren: './component/info-modal/info-modal.module#InfoModalPageModule' },
-  { path: 'search-modal', loadChildren: './component/search-modal/search-modal.module#SearchModalPageModule' }
+  { path: 'search-modal', loadChildren: './component/search-modal/search-modal.module#SearchModalPageModule' },
+  { path: 'service-status', loadChildren: './pages/service-status/service-status.module#ServiceStatusPageModule' }
 ];
 @NgModule({
   imports: [

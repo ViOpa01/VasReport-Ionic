@@ -34,7 +34,7 @@ export class SearchModalPage implements OnInit {
   walletId: any;
 
 
-  deafaultDate: any =  (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
+  deafaultDate: any =  new Date().toISOString().split('T')[0]
 
   constructor(public modalCtrl: ModalController, public transService: TransactionService, public formBuilder: FormBuilder) {
     this.searchForm = formBuilder.group({
@@ -44,7 +44,7 @@ export class SearchModalPage implements OnInit {
   }
 
   ngOnInit() {
-
+    console.log(new Date().toISOString().split('T')[0])
   }
   searchTrans() {
     this.payload = {
@@ -87,7 +87,8 @@ export class SearchModalPage implements OnInit {
       pickMode: 'range',
       title: 'Select Date Range',
       canBackwardsSelected: true,
-      defaultDate: this.deafaultDate
+      defaultDate: this.deafaultDate,
+      to:this.deafaultDate,
       // defaultDateRange: 
     };
 

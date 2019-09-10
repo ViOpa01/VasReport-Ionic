@@ -23,6 +23,11 @@ export const Endpoint = {
     },
     TRANSACTION_SUMMARY: {
         transaction_summary: `${BASE_URL}/transaction/details/summary`
+    },
+
+    SERVICE_STATUS : {
+        SWITCH: 'http://197.253.19.75:8029/service/status/'
     }
+
 
 }

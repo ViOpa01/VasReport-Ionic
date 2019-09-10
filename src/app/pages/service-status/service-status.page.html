@@ -1,0 +1,75 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab4"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="header-title">Service Status</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Toggles in a List -->
+  <div *ngIf="isLoadingStatus">
+
+    <div class="ion-padding custom-skeleton">
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+      
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+    </div>
+
+
+  </div>
+  <p text-center *ngIf="!isDataStatus">Oppps Network Error !</p>
+  <ion-list style="font-size: 10px;" *ngIf="isDataStatus">
+    <ion-item *ngFor="let el of services">
+      <ion-avatar slot="end">
+        <ion-toggle (click)="callSwitch(el.service, el.status)" color="secondary"
+          checked="{{ el.status == 'ON' ? 'true' : 'false' }}"></ion-toggle>
+      </ion-avatar>
+      <ion-label>
+        <h4 class="heading">{{ el.service}}</h4>
+        <span class="sub-heading">Balance </span>
+        <span [ngClass]="{
+          'badge-danger' : el.IntBalance <= 1000000,
+          'badge-warning' : el.IntBalance > 1000001 && el.IntBalance < 5000000,
+          'badge-success' : el.IntBalance > 5000000,
+          'badge-info' : el.IntBalance == 0
+        }"> &#x20A6;{{ el.IntBalance | thousandSuff }} </span>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -3,7 +3,8 @@ import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { SearchModalPage } from '../../component/search-modal/search-modal.page';
 import { TransactionService } from '../../services/transaction.service';
 import { InfoModalPage } from '../../component/info-modal/info-modal.page';
-
+import { SockectService } from '../../services/sockect.service';
+import { present } from '@ionic/core/dist/types/utils/overlays';
 
 @Component({
   selector: 'app-tab2',
@@ -39,6 +40,9 @@ export class Tab2Page implements OnInit {
   page: any = 1;
   // dateRange: any;
 
+  private subs: any;
+  dataSocket: any[];
+
   DateObj = new Date();
   dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
   newRange = `${this.dateRange} - ${this.dateRange}`;
@@ -63,18 +67,31 @@ export class Tab2Page implements OnInit {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  constructor(public modalController: ModalController, private transService: TransactionService) {
+  constructor(public modalController: ModalController, private transService: TransactionService, private socket: SockectService) {
   }
 
   ngOnInit() {
 
-    // console.log(this.payload);
-    // console.log('current Date Range', `${this.newRange}`);
+
     this.transactionSummary(this.payload);
     this.transactionDetails(this.payload, this.page);
+
+    //socket data comming from server
+    this.getSocketData();
   }
 
 
+  async getSocketData() {
+    await setTimeout(() => {
+      console.log('for socket data');
+       this.socket.getMessage().subscribe((Socketdata: any) => {
+        console.log("this is socket data", Socketdata.data)
+        this.trans.unshift(Socketdata.data);
+        console.log(`transactions ${this.trans.length}`);
+        // this.data.sort((a,b)=>{a.})
+      });
+    }, 30000);
+  }
 
   async transactionDetails(payload, page) {
     this.isDataTransaction = false;
@@ -164,7 +181,7 @@ export class Tab2Page implements OnInit {
       component: SearchModalPage,
       cssClass: 'select-modal',
     });
-    searchModal.onDidDismiss().then((data)=>{
+    searchModal.onDidDismiss().then((data) => {
       // this.trans = data.data; 
       console.log((data.data));
 
@@ -173,7 +190,7 @@ export class Tab2Page implements OnInit {
     })
     return await searchModal.present();
   }
-  
+
 
   doRefresh(event) {
     setTimeout(() => {
@@ -183,6 +200,7 @@ export class Tab2Page implements OnInit {
       console.log(`current page is : ${this.page}`)
       event.target.complete();
     }, 2000);
+    this.getSocketData();
   }
 
   loadMoreTrans(event) {

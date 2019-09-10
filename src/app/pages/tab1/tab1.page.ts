@@ -275,7 +275,7 @@ export class Tab1Page implements OnInit {
       this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
 
       console.log(`previous total : ${this.previousTotal} and current total is : ${this.totalAmount}`);
-      console.log(this.percentChange)
+      console.log('change '+ (this.totalAmount - this.previousTotal))
 
     }, error => {
       this.isLoadingSummary = false;
