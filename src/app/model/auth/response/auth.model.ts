@@ -6,4 +6,5 @@ export interface LoginResponseModel {
     is_admin?: number;
     default_product?: any;
     walletData?: string[];
+    error?:string;
 }

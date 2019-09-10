@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToastController } from '@ionic/angular';
 import { LoaderService } from '../../services/loader.service';
+import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,9 @@ export class LoginPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
-    public loader:LoaderService) {
-    this.checkLogin();
+    public loader: LoaderService,
+    public network: Network) {
+    
     this.loginForm = formBuilder.group({
       email: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])],
@@ -30,20 +32,15 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.hideShowPassword();
+    // this.hideShowPassword();
   }
 
   hideShowPassword() {
     // console.log('password click');
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
-  }
+    // console.log(this.passwordType);
 
-  checkLogin() {
-    let user = this.authService.isAuthenticated();
-    if (user) {
-      this.router.navigate(['/tabs/tab1']);
-    }
   }
 
   validateAllFormFields(formGroup: FormGroup) {
@@ -69,15 +66,18 @@ export class LoginPage implements OnInit {
         username: this.loginForm.value.email,
         password: this.loginForm.value.password
       }).subscribe(user => {
+        if (user.error) {
+          console.log('Error Present', user.error);
+        }
         console.log(JSON.stringify(user));
         //hide loader and navigate to dash board Page
-        this.loader.hideLoader();
         this.user = user;
-        // this.presentToast(JSON.stringify(user));
+        this.loader.hideLoader();
         this.router.navigate(['/tabs/tab1'])
       }, error => {
-        console.log('Error now: ' + error.message)
-        this.presentToast(JSON.stringify(error));
+        console.log('Error now: ' + error.message);
+        this.loader.hideLoader();
+        this.presentToast('Opps Server Error Check you Network Connectivity!');
       });
   }
 

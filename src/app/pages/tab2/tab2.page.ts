@@ -77,20 +77,32 @@ export class Tab2Page implements OnInit {
     this.transactionDetails(this.payload, this.page);
 
     //socket data comming from server
-    this.getSocketData();
+    setTimeout(() => {
+      console.log('for socket data');
+      this.getSocketData();
+    }, 3000);
   }
 
 
   async getSocketData() {
-    await setTimeout(() => {
-      console.log('for socket data');
-       this.socket.getMessage().subscribe((Socketdata: any) => {
-        console.log("this is socket data", Socketdata.data)
-        this.trans.unshift(Socketdata.data);
-        console.log(`transactions ${this.trans.length}`);
-        // this.data.sort((a,b)=>{a.})
-      });
-    }, 30000);
+    await this.socket.getMessage().subscribe((Socketdata: any) => {
+      console.log("this is socket data", Socketdata.data)
+      this.trans.unshift(Socketdata.data);
+
+      if (Socketdata.data.status == "failed") {
+        this.summaryFailAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalCount = this.summaryTotalCount + 1;
+        this.summaryFailCount = this.summarySuccessCount + 1;
+      } else if (Socketdata.data.status == "successful") {
+        this.summaryTotalAmount += Socketdata.data.nairaAmount;
+        this.summarySuccessAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalCount = this.summaryTotalCount + 1;
+        this.summarySuccessCount = this.summarySuccessCount + 1;
+      }
+      console.log(`transactions ${this.trans.length}`);
+      // this.data.sort((a,b)=>{a.})
+    });
   }
 
   async transactionDetails(payload, page) {

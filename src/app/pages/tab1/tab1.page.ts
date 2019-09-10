@@ -104,14 +104,14 @@ export class Tab1Page implements OnInit {
     // watch network for a disconnection
     this.network.onDisconnect().subscribe(() => {
        this.toast.create({
-        message: 'disconnect',
+        message: 'Network disconnect',
         duration: 3000
       });
       console.log('network was disconnected :-(');
     });
 
     this.network.onConnect().subscribe(() => {
-      console.log('network connected!');
+      // console.log('network connected!');
       this.toast.create({
         message: 'Connected',
         duration: 3000
@@ -238,7 +238,7 @@ export class Tab1Page implements OnInit {
   }
   getSummary(date) {
     this.isLoadingSummary = true;
-    this.isDataSummary = false;
+    // this.isDataSummary = false;
     this.isPresent = true;
     // let present:boolean = tru
     this.dashboardService.summary(date).subscribe(resposeList => {
