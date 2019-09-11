@@ -24,7 +24,7 @@ export class AuthService {
         }
       }).pipe(
         map(data => {
-          // console.log(data.token)
+          console.log(data.hasOwnProperty('error'));
           this.processLogin(data);
           return data;
       }), catchError(error => {
@@ -35,7 +35,7 @@ export class AuthService {
 
   processLogin(response: LoginResponseModel) {
     this.storageService.set(Constants.STORAGE_VARIABLES.TOKEN, response.token);
-    console.log('show the response token', response.token)
+    // console.log('show the response token', response.token)
     
   }
 
@@ -49,7 +49,6 @@ export class AuthService {
       // var expireInDate = new Date(login.expires_at);
       // return expireInDate > (new Date());
     }
-
     return true;
   }
 

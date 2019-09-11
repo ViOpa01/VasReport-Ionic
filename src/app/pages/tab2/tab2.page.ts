@@ -3,7 +3,8 @@ import { ModalController, IonInfiniteScroll } from '@ionic/angular';
 import { SearchModalPage } from '../../component/search-modal/search-modal.page';
 import { TransactionService } from '../../services/transaction.service';
 import { InfoModalPage } from '../../component/info-modal/info-modal.page';
-
+import { SockectService } from '../../services/sockect.service';
+import { present } from '@ionic/core/dist/types/utils/overlays';
 
 @Component({
   selector: 'app-tab2',
@@ -37,10 +38,16 @@ export class Tab2Page implements OnInit {
   uniqueUser: any;
 
   page: any = 1;
-  dateRange: any;
+  // dateRange: any;
 
+  private subs: any;
+  dataSocket: any[];
+
+  DateObj = new Date();
+  dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
+  newRange = `${this.dateRange} - ${this.dateRange}`;
   payload = {
-    "dateRange": "2019/09/5 - 2019/09/5",
+    "dateRange": this.newRange,
     "terminalId": "",
     "walletId": "",
     "accountNumber": "",
@@ -53,31 +60,56 @@ export class Tab2Page implements OnInit {
     "product": "",
     "transactionType": "",
     "transactionStatus": "",
-    "transactionChannel": "=",
+    "transactionChannel": "",
     "searchField": "",
     "viewPage": "2",
   };
 
-
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  constructor(public modalController: ModalController, private transService: TransactionService) { }
-
-  ngOnInit() {
-    let DateObj = new Date();
-    this.dateRange = DateObj;
-    // this.dateRange = (String) (DateObj.getFullYear() + '/' + ('0' + (DateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + DateObj.getDate()).slice(-2));
-    // console.log('current Date Range', `${this.dateRange} - ${this.dateRange}`);
-    this.transactionSummary();
-    this.transactionDetails(this.page);
+  constructor(public modalController: ModalController, private transService: TransactionService, private socket: SockectService) {
   }
 
- 
+  ngOnInit() {
 
-  async transactionDetails(page) {
+
+    this.transactionSummary(this.payload);
+    this.transactionDetails(this.payload, this.page);
+
+    //socket data comming from server
+    setTimeout(() => {
+      console.log('for socket data');
+      this.getSocketData();
+    }, 3000);
+  }
+
+
+  async getSocketData() {
+    await this.socket.getMessage().subscribe((Socketdata: any) => {
+      console.log("this is socket data", Socketdata.data)
+      this.trans.unshift(Socketdata.data);
+
+      if (Socketdata.data.status == "failed") {
+        this.summaryFailAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalCount = this.summaryTotalCount + 1;
+        this.summaryFailCount = this.summarySuccessCount + 1;
+      } else if (Socketdata.data.status == "successful") {
+        this.summaryTotalAmount += Socketdata.data.nairaAmount;
+        this.summarySuccessAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalCount = this.summaryTotalCount + 1;
+        this.summarySuccessCount = this.summarySuccessCount + 1;
+      }
+      console.log(`transactions ${this.trans.length}`);
+      // this.data.sort((a,b)=>{a.})
+    });
+  }
+
+  async transactionDetails(payload, page) {
     this.isDataTransaction = false;
     this.isLoadingTransaction = true;
-    await this.transService.getTransactionsDetails(this.payload, page).subscribe(data => {
+
+    await this.transService.getTransactionsDetails(payload, page).subscribe(data => {
       this.isDataTransaction = true;
       // console.log('data: ' + data.data.totalCount)
       this.isLoadingTransaction = false;
@@ -91,10 +123,10 @@ export class Tab2Page implements OnInit {
   }
 
 
-  async transactionSummary() {
+  async transactionSummary(payload) {
     this.isDataSummary = false;
     this.isLoadingSummary = true;
-    await this.transService.getSummary(this.payload).subscribe(data => {
+    await this.transService.getSummary(payload).subscribe(data => {
       this.isDataSummary = true;
       this.isLoadingSummary = false;
 
@@ -160,30 +192,34 @@ export class Tab2Page implements OnInit {
     const searchModal = await this.modalController.create({
       component: SearchModalPage,
       cssClass: 'select-modal',
-      componentProps: {
-        "paramID": 123,
-        "paramTitle": "Test Title"
-      }
     });
-    return await searchModal.present();
+    searchModal.onDidDismiss().then((data) => {
+      // this.trans = data.data; 
+      console.log((data.data));
 
+      this.transactionSummary(data.data);
+      this.transactionDetails(data.data, this.page);
+    })
+    return await searchModal.present();
   }
+
 
   doRefresh(event) {
     setTimeout(() => {
       console.log('Async operation has ended');
-      this.transactionDetails(this.page = 1);
-      this.transactionSummary();
+      this.transactionDetails(this.payload, this.page = 1);
+      this.transactionSummary(this.payload);
       console.log(`current page is : ${this.page}`)
       event.target.complete();
     }, 2000);
+    this.getSocketData();
   }
 
   loadMoreTrans(event) {
     setTimeout(() => {
       console.log('Begin async operation');
       this.page = this.page + 1;
-      this.transactionDetails(this.page);
+      this.transactionDetails(this.payload, this.page);
       console.log(`current page is : ${this.page}`)
       event.target.complete();
     }, 500);

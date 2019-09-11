@@ -75,11 +75,11 @@
                   <div *ngIf="isDataSummary">
 
                     <span *ngIf="!isLoadingSummary" text-right [ngClass]="{
-                          'danger' : percentChange < 1, 
-                          'success' : percentChange >= 1
+                          'danger' : percentChange < 0, 
+                          'success' : percentChange >= 0
                           }">{{ percentChange | percent }}
                     </span>
-                    <span style="font-size: 11px;"> Previous Day</span>
+                    <span style="font-size: 11px;"> Previous {{ date }}</span>
 
                   </div>
                 </ion-col>
@@ -137,7 +137,7 @@
                       {{ successAmount | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
-                <span *ngIf="!isDataSummary" class="no-data">No Data Available</span>
+                <!-- <span *ngIf="!isDataSummary" class="no-data">No Data Available</span> -->
 
               </ion-card-content>
             </ion-card>
@@ -173,7 +173,7 @@
                       {{ failAmount | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
-                <span *ngIf="!isDataSummary" class="no-data">No Data Available</span>
+                <!-- <span *ngIf="!isDataSummary" class="no-data">No Data Available</span> -->
               </ion-card-content>
             </ion-card>
           </ion-col>

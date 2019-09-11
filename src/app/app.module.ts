@@ -13,6 +13,21 @@ import { RequestInterceptorService } from './services/request-interceptor.servic
 import { Network } from '@ionic-native/network/ngx';
 import { InfoModalPageModule } from './component/info-modal/info-modal.module';
 import { SearchModalPageModule } from './component/search-modal/search-modal.module';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { StorageService } from "./services/storage.service";
+
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { Constants } from './common/constant';
+
+export function jwtOptionsFactory(storage: StorageService) {
+  return {
+    tokenGetter: () => {
+      return storage.get(Constants.STORAGE_VARIABLES.TOKEN);
+    }
+  }
+}
+
+const config: SocketIoConfig = { url: 'http://197.253.19.76:8002', options: { query: { "token": "59fj9439ewdi93" }} };
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,6 +39,14 @@ import { SearchModalPageModule } from './component/search-modal/search-modal.mod
     HttpClientModule,
     InfoModalPageModule,
     SearchModalPageModule,
+    SocketIoModule.forRoot(config),
+    JwtModule.forRoot({
+      jwtOptionsProvider: {
+        provide: JWT_OPTIONS,
+        useFactory: jwtOptionsFactory,
+        deps: [StorageService]
+      }
+    })
   ],
   providers: [
     StatusBar,

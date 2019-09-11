@@ -28,6 +28,9 @@ body{
 .success{
   color: #ffffff;
   background: #219653;
+  margin-right: 2px;
+  padding: 2px 2px 2px 4px;
+  border-radius: 6px;
 }
 .danger-bg{
   color: #ffffff;
@@ -141,4 +144,8 @@ ion-slide{
 .sub-mega-money{
   font-size: 12px;
   font-weight: 800;
+}
+.select-text{
+  position: absolute !important;
+  left: 45% !important;
 }

@@ -14,20 +14,21 @@ import { LoaderService } from './services/loader.service';
 })
 export class AppComponent {
   @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
-  
+
   // This property will save the callback which we can unsubscribe when we leave this view
   public unsubscribeBackEvent: any;
-  
+
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private network: Network,
-    private  toast:ToastController,
+    private toast: ToastController,
     private router: Router,
-    public generic:LoaderService
+    public generic: LoaderService
   ) {
     this.initializeApp();
+    this.checkNetwork();
   }
 
   initializeApp() {
@@ -35,27 +36,26 @@ export class AppComponent {
       // this.statusBar.styleDefault();
       this.statusBar.styleDefault();
       if (this.platform.is('android')) {
-          this.statusBar.overlaysWebView(false);
-          this.statusBar.backgroundColorByHexString('#000000');
+        this.statusBar.overlaysWebView(false);
+        this.statusBar.backgroundColorByHexString('#000000');
       }
       this.splashScreen.hide();
-      this.checkNetwork();
     });
   }
 
- async  onYesHandler(){
+  async  onYesHandler() {
     return await navigator['app'].exitApp();
   }
 
-   
+
   //Called when view is left
   ionViewWillLeave() {
     this.platform.backButton.subscribeWithPriority(0, () => {
       if (this.routerOutlet && this.routerOutlet.canGoBack()) {
         this.routerOutlet.pop();
         // console.log(this.router.url);
-        this.presentToast('current Url' + this.router.url );
-      } else if (this.router.url === '/login') { 
+        this.presentToast('current Url' + this.router.url);
+      } else if (this.router.url === '/login') {
         // or if that doesn't work, try
         navigator['app'].exitApp();
       } else {
@@ -63,21 +63,16 @@ export class AppComponent {
       }
     });
   }
- 
+
 
   checkNetwork() {
     // watch network for a disconnection
-    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
-      console.log('network was disconnected :-(');
+    this.network.onDisconnect().subscribe(() => {
       this.presentToast('network was disconnected :-(');
+      console.log('network was disconnected :-(');
     });
 
-    // stop disconnect watch
-    disconnectSubscription.unsubscribe();
-
-
-    // watch network for a connection
-    let connectSubscription = this.network.onConnect().subscribe(() => {
+    this.network.onConnect().subscribe(() => {
       console.log('network connected!');
       this.presentToast('network connected :-(');
       // We just got a connection but we need to wait briefly
@@ -90,9 +85,6 @@ export class AppComponent {
         }
       }, 3000);
     });
-
-    // stop connect watch
-    connectSubscription.unsubscribe();
   }
 
   async presentToast(message) {

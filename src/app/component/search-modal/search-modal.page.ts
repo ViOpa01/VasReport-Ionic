@@ -7,6 +7,9 @@ import {
   DayConfig,
   CalendarResult
 } from 'ion2-calendar';
+import { TransactionService } from 'src/app/services/transaction.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-search-modal',
@@ -15,24 +18,68 @@ import {
 })
 export class SearchModalPage implements OnInit {
   dateRanges: any;
+  isDataTransaction: boolean;
+  isLoadingTransaction: boolean;
+  trans: any;
+  payload: any;
+  page: number = 1;
 
-  constructor(public modalCtrl: ModalController) { }
+  newRange: any;
+  dateRange: any;
 
-  ngOnInit() {
-    this.dateRanges = new Date();
+  DateObj = new Date();
+
+  searchForm: FormGroup;
+  terminalId: any;
+  walletId: any;
+
+
+  deafaultDate: any =  new Date().toISOString().split('T')[0]
+
+  constructor(public modalCtrl: ModalController, public transService: TransactionService, public formBuilder: FormBuilder) {
+    this.searchForm = formBuilder.group({
+      terminalId: ['', Validators.min],
+      walletId: ['', Validators.min],
+    });
   }
 
+  ngOnInit() {
+    console.log(new Date().toISOString().split('T')[0])
+  }
+  searchTrans() {
+    this.payload = {
+      "dateRange": this.newRange,
+      "terminalId": this.searchForm.value.terminalId,
+      "walletId": this.searchForm.value.walletId,
+      "accountNumber": "",
+      "paymentMethod": "",
+      "cardRRN": "",
+      "transactionReference": "",
+      "phoneNumber": "",
+      "sequenceNumber": "",
+      "debitReference": "",
+      "product": "",
+      "transactionType": "",
+      "transactionStatus": "",
+      "transactionChannel": "",
+      "searchField": "",
+      "viewPage": "2",
+    };
+    this.modalCtrl.dismiss(this.payload);
+  }
   getDate(date) {
-    let DateObj = new Date();
+
     if (date == 'today') {
-      this.dateRanges = (String)(DateObj.getFullYear() + '/' + ('0' + (DateObj.getMonth() + 1)).slice(-2) + '/' + ('0' + DateObj.getDate()).slice(-2));
-      console.log('today');
+
+      this.dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
+      this.newRange = `${this.dateRange} - ${this.dateRange}`;
+     
+      this.deafaultDate = this.newRange;
     } else if (date == 'yesterday') {
-      this.dateRanges = (String)(DateObj.getFullYear() + '/' + ('0' + (DateObj.getMonth() + 1)).slice(-2) + '/' + (DateObj.getDate()-1));
-      console.log(this.dateRanges);
+      this.dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + (this.DateObj.getDate() - 1));
+      this.newRange = `${this.dateRange} - ${this.dateRange}`;
     }
-    console.log(this.dateRanges);
-    
+    console.log('date range' + this.newRange);
   }
 
   async openCalendar() {
@@ -40,6 +87,8 @@ export class SearchModalPage implements OnInit {
       pickMode: 'range',
       title: 'Select Date Range',
       canBackwardsSelected: true,
+      defaultDate: this.deafaultDate,
+      to:this.deafaultDate,
       // defaultDateRange: 
     };
 
@@ -55,6 +104,15 @@ export class SearchModalPage implements OnInit {
     const from: CalendarResult = date.from;
     const to: CalendarResult = date.to;
 
-    console.log(date, from.string, '-', to.string);
+    let strFrom = from.string;
+    let strTo = to.string;
+    let splittedFrom = strFrom.split("-", 3);
+    let splittedTo = strTo.split("-", 3);
+
+    this.newRange = `${splittedFrom[0]}/${splittedFrom[1]}/${splittedFrom[2]} - ${splittedTo[0]}/${splittedTo[1]}/${splittedTo[2]}`;
+
+    console.log(this.newRange)
   }
+
+
 }
