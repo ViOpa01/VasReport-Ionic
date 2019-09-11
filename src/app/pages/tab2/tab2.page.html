@@ -8,7 +8,7 @@
         </ion-col>
         <ion-col size-lg offset="8" (click)="openSearchModal()">
           <span item-end>
-            <ion-icon name="search" item-end text-right style="font-size: 20px;"></ion-icon>
+            <ion-icon name="search" item-end text-right style="font-size: 25px;" class="my-primary"></ion-icon>
           </span>
         </ion-col>
       </ion-row>
@@ -91,7 +91,7 @@
                 <span class="weight count-style-card">{{ summarySuccessCount}}</span>
               </ion-col>
               <ion-col>
-                <span class="weight money-style-card">&#8358; {{ summarySuccessAmount | thousandSuff }}</span>
+                <span class="weight money-style-card success">&#8358; {{ summarySuccessAmount | thousandSuff }}</span>
               </ion-col>
             </ion-row>
           </ion-card-content>
@@ -109,7 +109,7 @@
                 <span class="weight count-style-card">{{summaryFailCount | thousandSuff }}</span>
               </ion-col>
               <ion-col>
-                <span class="weight money-style-card">&#8358; {{ summaryFailAmount | thousandSuff}}</span>
+                <span class="weight money-style-card failed">&#8358; {{ summaryFailAmount | thousandSuff}}</span>
               </ion-col>
             </ion-row>
           </ion-card-content>

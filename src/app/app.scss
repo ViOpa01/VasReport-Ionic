@@ -5,7 +5,7 @@
 // file can hold Sass mixins, functions, and placeholder classes to be imported 
 // and used throughout the application.
 body{
-     font-family: 'Ubuntu', sans-serif;
+     font-family: 'Ubuntu', sans-serif !important;
 }
 
 .select-modal {
@@ -25,4 +25,15 @@ body{
 ion-select  .select-text{
     position: absolute;
     left: 50%;
+}
+
+.failed{
+    color: #EB5757;
+}
+.success{
+    color: #219653;
+}
+
+.my-primary{
+    color:#2F80ED;
 }

@@ -56,19 +56,16 @@ export class LoginPage implements OnInit {
 
   signIn() {
     this.submitAttempt = true;
-    this.loader.showLoader();
     if (!this.loginForm.valid) {
       this.validateAllFormFields(this.loginForm);
       return;
     }
+    this.loader.showLoader();
     this.authService.signIn(
       {
         username: this.loginForm.value.email,
         password: this.loginForm.value.password
       }).subscribe(user => {
-        if (user.error) {
-          console.log('Error Present', user.error);
-        }
         console.log(JSON.stringify(user));
         //hide loader and navigate to dash board Page
         this.user = user;

@@ -238,7 +238,6 @@ export class Tab1Page implements OnInit {
   }
   getSummary(date) {
     this.isLoadingSummary = true;
-    // this.isDataSummary = false;
     this.isPresent = true;
     // let present:boolean = tru
     this.dashboardService.summary(date).subscribe(resposeList => {
