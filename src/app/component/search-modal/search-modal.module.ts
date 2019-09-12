@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { SearchModalPage } from './search-modal.page';
-import { CalendarModule } from 'ion2-calendar';
 
 const routes: Routes = [
   {
@@ -21,7 +20,6 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    CalendarModule,
     ReactiveFormsModule,
     FormsModule
   ],
