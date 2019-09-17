@@ -34,6 +34,7 @@ export class SearchModalPage implements OnInit {
   phoneNumber: any;
   terminalId: any;
   walletId: any;
+  cardRRN:any;
   
   deafaultDate: any = new Date().toISOString().split('T')[0]
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
@@ -49,6 +50,8 @@ export class SearchModalPage implements OnInit {
   constructor(public modalCtrl: ModalController, public transService: TransactionService, public formBuilder: FormBuilder) {
     this.searchForm = formBuilder.group({
       filter: ['', Validators.min],
+      start: ['', Validators.min],
+      end: ['', Validators.min]
     });
   }
 
@@ -56,19 +59,23 @@ export class SearchModalPage implements OnInit {
 
   }
   searchTrans() {
+    //start date from the form
+    this.start = this.searchForm.value.start.split('-');
+    this.start = `${this.start[0]}/${this.start[1]}/${this.start[2]}`
+
+    //end date from the form
+    this.end = this.searchForm.value.end.split('-');
+    this.end = `${this.end[0]}/${this.end[1]}/${this.end[2]}`
+    
+    //date range to be passed to the form
     this.range = `${this.start} - ${this.end}`;
-    if(this.range = undefined){
-      console.log('no date');
-      
-    }
-    console.log(this.range);
     this.payload = {
       "dateRange": this.range,
       "terminalId": this.terminalId ? this.terminalId : '',
       "walletId": this.walletId ? this.walletId : '',
       "accountNumber": this.accountNumber ? this.accountNumber : '',
       "paymentMethod": this.paymentMethod ? this.paymentMethod : '',
-      "cardRRN": "",
+      "cardRRN": this.cardRRN ? this.cardRRN : '',
       "transactionReference": this.transactionReference ? this.transactionReference : '',
       "phoneNumber": this.phoneNumber ? this.phoneNumber : '',
       "sequenceNumber": this.sequenceNumber ? this.sequenceNumber : '',
@@ -80,22 +87,16 @@ export class SearchModalPage implements OnInit {
       "searchField": "",
       "viewPage": "",
     };
-
-    console.log(this.payload);
-
-    return;
     this.modalCtrl.dismiss(this.payload);
   }
 
   startDate(event) {
     this.start = event.detail.value.split('T')[0].split('-');
-    this.start = `${this.start[0]}/${this.start[1]}/${this.start[2]}`;
     console.log('start Date : ' + this.start);
   }
 
   endDate(event) {
-    this.end = event.detail.value.split('T')[0].split('-');
-    this.end = `${this.end[0]}/${this.end[1]}/${this.end[2]}`
+    this.end = event.detail.value.split('T')[0];
     console.log('End Date : ' + this.end);
   }
 
@@ -138,25 +139,27 @@ export class SearchModalPage implements OnInit {
     this.filterValue = this.searchForm.value.filter
     if (this.filter == 'sequenceNumber') {
       this.sequenceNumber = this.filterValue;
-      // console.log('yes seq = ', this.filterValue);
+      console.log('yes seq = ', this.filterValue);
     } else if (this.filter == 'transactionReference') {
       this.transactionReference = this.filterValue;
-      // console.log('yes trans', this.filterValue);
+      console.log('yes trans', this.filterValue);
     } else if (this.filter == 'debitReference') {
       this.debitReference = this.filterValue;
-      // console.log('yes refe', this.filterValue);
+      console.log('yes refe', this.filterValue);
     } else if (this.filter == 'terminalId') {
       this.terminalId = this.filterValue;
-      // console.log('yes terminal', this.filterValue);
+      console.log('yes terminal', this.filterValue);
     } else if (this.filter == 'walletId') {
       this.walletId = this.filterValue;
-      // console.log('yes walle', this.filterValue);
+      console.log('yes walle', this.filterValue);
     } else if (this.filter == 'accountNumber') {
       this.accountNumber = this.filterValue;
-      // console.log('yes acct', this.filterValue);
+      console.log('yes acct', this.filterValue);
     } else if (this.filter == 'phoneNumber') {
       this.phoneNumber = this.filterValue;
-      // console.log('yes num', this.filterValue);
+      console.log('yes num', this.filterValue);
+    }else if(this.filter == 'cardRRN'){
+      this.cardRRN = this.filterValue;
     }
 
   }

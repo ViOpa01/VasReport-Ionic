@@ -31,9 +31,8 @@ export class RequestInterceptorService implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
         let token = this.storageService.get(Constants.STORAGE_VARIABLES.TOKEN);
-
         if (token) {
-            request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
+            // request = request.clone({ headers: request.headers.set('Authorization', 'Bearer ' + token) });
             request = request.clone({ headers: request.headers.set('token' , `${token}`) });
             // console.log(`token value ${token}`);
         }

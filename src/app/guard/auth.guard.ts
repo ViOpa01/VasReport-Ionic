@@ -16,9 +16,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     let currentUser = this.authService.isAuthenticated();
-    console.log('Token Expire?', this.jwtHelper.isTokenExpired()); // true or false
-    console.log(this.jwtHelper.getTokenExpirationDate()); // date
-    if (!this.jwtHelper.isTokenExpired()) {
+    if (currentUser) {
       // authorised so return true
       return true;
     } else {

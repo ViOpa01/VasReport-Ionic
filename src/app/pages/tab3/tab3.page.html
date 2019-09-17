@@ -1,29 +1,129 @@
-<div class="header" fixed ion-fixed>
-  <ion-grid>
-    <ion-row class="m-t-t">
-      <ion-col>
-        <span>Reversal</span>
+<!-- start header  -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-row>
+        <ion-col>
+          <img src="assets/logo.svg" />
+        </ion-col>
+        <ion-col size-lg offset="8" (click)="openSearchModal()">
+          <span item-end>
+            <ion-icon name="search" item-end text-right style="font-size: 25px;" class="my-primary"></ion-icon>
+          </span>
+        </ion-col>
+      </ion-row>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- end headers -->
+<ion-content padding>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+
+
+  <div *ngIf="isDataTransaction">
+    <ion-row class="neg-margin">
+      <ion-col class="no-pad-left">
+        <ion-card class="card-right">
+          <ion-card-header class="pad-bottom">
+            <ion-card-subtitle>Reversed</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content class="pad-bottom">
+            <ion-row>
+              <ion-col>
+                <span class="weight count-style-card">{{ reversedAmount | thousandSuff }}</span>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col class="no-pad-left">
+        <ion-card class="card-right">
+          <ion-card-header class="pad-bottom">
+            <ion-card-subtitle>Failed Reversed</ion-card-subtitle>
+          </ion-card-header>
+
+          <ion-card-content class="pad-bottom">
+            <ion-row>
+              <ion-col>
+                <span class="weight count-style-card">{{ failedReversalAmount | thousandSuff }}</span>
+              </ion-col>
+            </ion-row>
+          </ion-card-content>
+        </ion-card>
       </ion-col>
     </ion-row>
-  </ion-grid>
-</div>
-<ion-content padding>
-  <ion-list>
-    <ion-item>
-      <ion-label>Pokémon Yellow</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Mega Man X</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>The Legend of Zelda</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Pac-Man</ion-label>
-    </ion-item>
-    <ion-item>
-      <ion-label>Super Mario World</ion-label>
-    </ion-item>
-  </ion-list>
+  </div>
+  <!-- end of cards for the transaction pages -->
 
+  <!-- beginning of headers for transaction -->
+  <div *ngIf="isLoadingTransaction">
+
+    <div class="ion-padding custom-skeleton">
+      <ion-row class="neg-margin-2">
+        <ion-col>
+          <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+        </ion-col>
+        <ion-col>
+          <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+        </ion-col>
+      </ion-row>
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+
+      <ion-skeleton-text animated style="width: 100%; height: 40px;"></ion-skeleton-text>
+      <ion-skeleton-text animated></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 88%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+      <ion-skeleton-text animated style="width: 100%"></ion-skeleton-text>
+    </div>
+
+
+  </div>
+  <ion-row class="weight">
+    <ion-col size="4"><span>Product</span></ion-col>
+    <ion-col size="3"><span>Terminal Id</span></ion-col>
+    <ion-col size="3"><span>Amount</span></ion-col>
+    <ion-col size="2"><span>Status</span></ion-col>
+  </ion-row>
+
+  <!-- <ion-row *ngIf="notFound">
+    <span class="weight">No Result(s) Found</span><ion-icon name="search"></ion-icon>
+  </ion-row> -->
+  <!-- end of hr=eaders for transaction -->
+  <!-- start of transaction body -->
+  <!-- <span *ngIf="!trans" class="no-data-overall">No Data Available</span> -->
+  <div *ngFor='let el of reveres'>
+    <ion-row class="trans-background" (click)="detailsModal(el)">
+      <ion-col size="4"><span>{{ el.channel }}</span></ion-col>
+      <ion-col size="3"><span>{{el.terminal }} </span></ion-col>
+      <ion-col size="2"><span>&#8358; {{ el.amount | thousandSuff }}</span></ion-col>
+      <ion-col size="3" text-right><span>{{ el.status}}</span></ion-col>
+    </ion-row>
+  </div>
+  <ion-infinite-scroll threshold="150px" (ionInfinite)="loadMoreTrans($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  <!-- end of transaction bodys -->
 </ion-content>

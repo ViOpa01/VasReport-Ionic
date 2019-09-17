@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { ToastController } from '@ionic/angular';
-import { Endpoint } from '../../common/endpoints';
-import { Network } from '@ionic-native/network/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -33,7 +30,6 @@ export class Tab1Page implements OnInit {
   isDataProduct: boolean;
 
   date: string = 'Day';
-  changeColor: number;
 
   //headers array for display
   channelHeader: string[];
@@ -45,24 +41,24 @@ export class Tab1Page implements OnInit {
   responseSuccess: any;
   responseFail: any;
 
-  previousSuccess: any;
-  previousFailed: any;
-  previousTotal: any;
+  previousSuccess: any = null;
+  previousFailed: any = null;
+  previousTotal: any = null;
 
   //response holder for success and  fail count
   successCount: any;
   failCount: any;
 
   //response holder for success and  fail  amount
-  successAmount: any;
-  failAmount: any;
+  successAmount: any = null;
+  failAmount: any = null;
 
   n
   //percentage change
-  percentChange: any;
+  percentChange: any = null;
 
   //response holder for success and  fail  percentage
-  successPercent: any;
+  successPercent: any ; 
   failPercent: any;
 
   //second tab button to determin the logic
@@ -75,7 +71,7 @@ export class Tab1Page implements OnInit {
   firstStyle: any;
 
   //total amount and count
-  totalAmount: any;
+  totalAmount: any = null;
   totalCount: any;
 
   //previous
@@ -96,40 +92,10 @@ export class Tab1Page implements OnInit {
   };
 
 
-  constructor(public dashboardService: DashboardService, private toast: ToastController, public network:Network) { 
-    this.checkNetwork();
+  constructor(public dashboardService: DashboardService) { 
+    
   }
 
-  checkNetwork() {
-    // watch network for a disconnection
-    this.network.onDisconnect().subscribe(() => {
-       this.toast.create({
-        message: 'Network disconnect',
-        duration: 3000
-      });
-      console.log('network was disconnected :-(');
-    });
-
-    this.network.onConnect().subscribe(() => {
-      // console.log('network connected!');
-      this.toast.create({
-        message: 'Connected',
-        duration: 3000
-      });
-      // We just got a connection but we need to wait briefly
-      // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
-      setTimeout(() => {
-        if (this.network.type === 'wifi') {
-          console.log('we got a wifi connection, woohoo!');
-          this.toast.create({
-            message: 'Connected to wifi',
-            duration: 3000
-          });
-        }
-      }, 3000);
-    });
-  }
 
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
     'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
@@ -152,14 +118,16 @@ export class Tab1Page implements OnInit {
 
   defaultData(date) {
     this.isPresent = true;
-    this.getSummary(date);
+    this.getSummary(date.toLowerCase());
   }
 
   async optionsFn(event) {
     this.date = event;
+    console.log
     this.secondStyle = 0;
     this.firstStyle = 1;
     this.isPresent = true;
+    this.previousTotal = null;
     if (this.date == 'Day') {
 
       this.second = 'Yesterday';
@@ -239,9 +207,11 @@ export class Tab1Page implements OnInit {
   getSummary(date) {
     this.isLoadingSummary = true;
     this.isPresent = true;
+    this.isDataSummary = false;
     // let present:boolean = tru
+    
+    this.previousTotal = null;
     this.dashboardService.summary(date).subscribe(resposeList => {
-      // console.log('This is my Response List', resposeList);
 
       this.isLoadingSummary = false;
       this.isDataSummary = true;
@@ -269,17 +239,22 @@ export class Tab1Page implements OnInit {
       this.failPercent = (this.failCount / this.totalCount);
 
       //summary of the data for previous  success and fail
+      
+      // console.log('end previous success : ' , this.previousSuccess);
+      // console.log('end previous fail : ' , this.previousFailed);
+      // console.log('end present total : ' , this.totalAmount);
 
-      this.previousTotal = parseInt(this.previousSuccess.data.amount) + parseInt(this.previousFailed.data.amount);
+      const previousSuccess = parseFloat(this.previousSuccess.data.amount);
+      const previousFailed = parseFloat(this.previousFailed.data.amount);
+      this.previousTotal =  previousSuccess + previousFailed;
+
       this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
 
-      console.log(`previous total : ${this.previousTotal} and current total is : ${this.totalAmount}`);
-      console.log('change '+ (this.totalAmount - this.previousTotal))
 
     }, error => {
       this.isLoadingSummary = false;
       this.isDataSummary = false;
-      console.log('Error now: ' + error.message)
+      console.log('Error now: ' + error.error)
     });
   }
 

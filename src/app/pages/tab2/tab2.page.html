@@ -157,10 +157,11 @@
     <ion-col size="3"><span>Amount</span></ion-col>
     <ion-col size="2"><span>Status</span></ion-col>
   </ion-row>
+  
+  <!-- <ion-row *ngIf="notFound">
+    <span class="weight">No Result(s) Found</span><ion-icon name="search"></ion-icon>
+  </ion-row> -->
   <!-- end of hr=eaders for transaction -->
-  <!-- <div text-center>
-    <ion-spinner name="bubbles" *ngIf="isLoadingTransaction"></ion-spinner>
-  </div> -->
   <!-- start of transaction body -->
   <!-- <span *ngIf="!trans" class="no-data-overall">No Data Available</span> -->
   <div *ngFor='let el of trans'>

@@ -29,6 +29,11 @@ export class LoginPage implements OnInit {
       email: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])],
     });
+
+    let auth = this.authService.isAuthenticated();
+    if(auth){
+      this.router.navigate(['/tabs/tab1']);
+    }
   }
 
   ngOnInit() {
@@ -70,18 +75,20 @@ export class LoginPage implements OnInit {
         //hide loader and navigate to dash board Page
         this.user = user;
         this.loader.hideLoader();
-        this.router.navigate(['/tabs/tab1'])
+        this.router.navigate(['/tabs/tab1']);
+        
       }, error => {
-        console.log('Error now: ' + error.message);
         this.loader.hideLoader();
-        this.presentToast('Opps Server Error Check you Network Connectivity!');
+        console.log('Error: ' + JSON.stringify(error.error.error));
+        this.presentToast(error.error.error);
       });
   }
 
   async presentToast(message) {
     const toast = await this.toast.create({
       message: message,
-      duration: 2000
+      duration: 2000,
+      position:'bottom'
     });
     await toast.present();
   }

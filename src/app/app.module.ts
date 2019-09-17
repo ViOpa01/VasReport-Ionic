@@ -16,8 +16,9 @@ import { SearchModalPageModule } from './component/search-modal/search-modal.mod
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { StorageService } from "./services/storage.service";
 
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Constants } from './common/constant';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { ReverseModalPageModule } from './component/reverse-modal/reverse-modal.module';
 
 export function jwtOptionsFactory(storage: StorageService) {
   return {
@@ -39,6 +40,7 @@ const config: SocketIoConfig = { url: 'http://197.253.19.76:8002', options: { qu
     HttpClientModule,
     InfoModalPageModule,
     SearchModalPageModule,
+    ReverseModalPageModule,
     SocketIoModule.forRoot(config),
     JwtModule.forRoot({
       jwtOptionsProvider: {

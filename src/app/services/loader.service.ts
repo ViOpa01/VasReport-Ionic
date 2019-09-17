@@ -19,8 +19,8 @@ export class LoaderService {
     await this.loaderToShow.present();
   }
 
-   hideLoader() {
-     this.loadingController.dismiss(true);
+   async hideLoader() {
+     await this.loadingController.dismiss(true);
   }
 
   async presentToast(message) {

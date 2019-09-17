@@ -69,19 +69,19 @@ export class AppComponent {
     // watch network for a disconnection
     this.network.onDisconnect().subscribe(() => {
       this.presentToast('network was disconnected :-(');
-      console.log('network was disconnected :-(');
+      // console.log('network was disconnected :-(');
     });
 
     this.network.onConnect().subscribe(() => {
-      console.log('network connected!');
-      this.presentToast('network connected :-(');
+      // console.log('network connected!');
+      // this.presentToast('network connected :-(');
       // We just got a connection but we need to wait briefly
       // before we determine the connection type. Might need to wait.
       // prior to doing any api requests as well.
       setTimeout(() => {
         if (this.network.type === 'wifi') {
-          console.log('we got a wifi connection, woohoo!');
-          this.presentToast('we got a wifi connection, woohoo!');
+          // console.log('we got a wifi connection, woohoo!');
+          // this.presentToast('we got a wifi connection, woohoo!');
         }
       }, 3000);
     });
