@@ -43,6 +43,7 @@ export class AuthService {
     if (!this.jwtHelper.isTokenExpired()) {
       return true;
     }
+    return false;
   }
 
   signOut() {

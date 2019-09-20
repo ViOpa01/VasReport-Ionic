@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ReversedService } from 'src/app/services/reversed.service';
 import { IonInfiniteScroll, ModalController } from '@ionic/angular';
 import { ReverseModalPage } from 'src/app/component/reverse-modal/reverse-modal.page';
-import { SearchModalPage } from 'src/app/component/search-modal/search-modal.page';
+import { ReversedSearchPage } from 'src/app/component/reversed-search/reversed-search.page';
 
 @Component({
   selector: 'app-tab3',
@@ -11,12 +11,13 @@ import { SearchModalPage } from 'src/app/component/search-modal/search-modal.pag
 })
 export class Tab3Page {
 
-  isDataTransaction:boolean;
-  isLoadingTransaction:any;
-  reveres:any[];
-  page:number = 1;
-  reversedAmount:any;
-  failedReversalAmount:any;
+  isDataTransaction: boolean;
+  isLoadingTransaction: any;
+  reveres: any[];
+  page: number = 1;
+  reversedAmount: any;
+  failedReversalAmount: any;
+  resultLength: any;
 
   DateObj = new Date();
   dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
@@ -25,25 +26,20 @@ export class Tab3Page {
     "dateRange": this.newRange,
     "terminalId": "",
     "walletId": "",
-    "accountNumber": "",
-    "paymentMethod": "",
-    "cardRRN": "",
-    "transactionReference": "",
-    "phoneNumber": "",
     "sequenceNumber": "",
-    "debitReference": "",
+    "transactionReference": "",
+    "paymentMethod": "",
     "product": "",
     "transactionType": "",
     "transactionStatus": "",
-    "transactionChannel": "",
-    "searchField": "",
-    "viewPage": "2",
+    "viewPage": "",
+    "download": false
   };
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
-  constructor(private reversedService:ReversedService, private modalController:ModalController) {}
+  constructor(private reversedService: ReversedService, private modalController: ModalController) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.reveresedTransactions(this.payload, this.page);
   }
   async reveresedTransactions(payload, page) {
@@ -57,7 +53,8 @@ export class Tab3Page {
       this.reveres = data.data.transactions;
       this.reversedAmount = data.data.reversedAmount;
       this.failedReversalAmount = data.data.failedReversalAmount;
-      console.log(this.reveres)
+      this.resultLength = data.data.lastPage;
+      console.log('last page', this.resultLength)
     }, error => {
       this.isDataTransaction = false;
       this.isLoadingTransaction = false;
@@ -88,14 +85,16 @@ export class Tab3Page {
 
   async openSearchModal() {
     const searchModal = await this.modalController.create({
-      component: SearchModalPage,
+      component: ReversedSearchPage,
       cssClass: 'select-modal',
-      backdropDismiss: false,
+      backdropDismiss: true,
     });
     searchModal.onDidDismiss().then((data) => {
-      this.reveres = data.data; 
-      console.log((data.data));
-      this.reveresedTransactions(data.data, this.page);
+      // this.reveres = data.data;
+      if (data.data != undefined) {
+        this.reveresedTransactions(data.data, this.page);
+      }
+
     })
     return await searchModal.present();
   }
@@ -117,6 +116,9 @@ export class Tab3Page {
       this.page = this.page + 1;
       this.reveresedTransactions(this.payload, this.page);
       console.log(`current page is : ${this.page}`)
+      if (this.resultLength == this.page) {
+        event.target.disabled = true;
+      }
       event.target.complete();
     }, 500);
   }

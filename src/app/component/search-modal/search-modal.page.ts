@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { TransactionService } from 'src/app/services/transaction.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -36,7 +35,9 @@ export class SearchModalPage implements OnInit {
   walletId: any;
   cardRRN:any;
   
-  deafaultDate: any = new Date().toISOString().split('T')[0]
+  deafaultDateOne: any = new Date().toISOString().split('T')[0];
+  deafaultDateTwo: any = new Date().toISOString().split('T')[0]
+
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
     'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
 
@@ -47,7 +48,7 @@ export class SearchModalPage implements OnInit {
   vendorArray: any = ['gisolutions', 'Karosealliance', 'ITEX', 'Payant', 'NowNow', 'MarsKonnect', 'FCube', 'XchangeBox', 'Daphty', 'Greystone', 'Callphone'];
   filterArray: any = ['cardRRN','transactionReference', 'sequenceNumber', 'debitReference', 'terminalId', 'walletId', 'accountNumber', 'phoneNumber'];
 
-  constructor(public modalCtrl: ModalController, public transService: TransactionService, public formBuilder: FormBuilder) {
+  constructor(public modalCtrl: ModalController,  public formBuilder: FormBuilder) {
     this.searchForm = formBuilder.group({
       filter: ['', Validators.min],
       start: ['', Validators.min],

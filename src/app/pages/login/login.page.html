@@ -27,13 +27,13 @@
 
       <ion-item class="transparent">
         <ion-label position="floating">
-          <ion-icon item-left name="finger-print" item-right> </ion-icon>
+          <ion-icon item-left name="lock" item-right> </ion-icon>
           Password
         </ion-label>
         <ion-input [type]="passwordType" formControlName="password"  #passwordinput clearOnEdit="false"
          [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.dirty || submitAttempt)">
         </ion-input>
-        <ion-icon item-end [name]="passwordIcon" class="showPass"  (click)="hideShowPassword()" > </ion-icon>
+        <ion-icon item-end [name]="passwordIcon" (keyup.enter) ="signIn()" class="showPass"  (click)="hideShowPassword()" > </ion-icon>
       </ion-item>
       <!-- <p text-center>Forgot Password?</p> -->
     </div>

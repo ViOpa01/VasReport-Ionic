@@ -2,8 +2,8 @@
   <ion-toolbar>
     <ion-title style="font-size: 11px; color: #696464 ">
       <div class="left">
-        <p class="title-head">{{name}}</p>
-        <p>{{ category }}</p>
+        <p class="title-head">{{channel}}</p>
+        <p>{{ channel }}</p>
       </div>
       <div class="right" (click)="closeReversedModal()">
         <span>
@@ -41,7 +41,7 @@
 
       <ion-row style="line-height: 0px;">
         <ion-col size="4">Reference</ion-col>
-        <ion-col class="weight">{{reference}}</ion-col>
+        <ion-col class="weight" style="line-height: 10px;">{{reference}}</ion-col>
       </ion-row>
 
       <ion-row>

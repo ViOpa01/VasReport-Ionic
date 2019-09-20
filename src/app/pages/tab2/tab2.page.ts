@@ -44,7 +44,7 @@ export class Tab2Page implements OnInit {
   private subs: any;
   dataSocket: any[];
 
-  notFound:boolean;
+  notFound: boolean;
 
   DateObj = new Date();
   dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
@@ -70,10 +70,10 @@ export class Tab2Page implements OnInit {
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  constructor(public modalController: ModalController, 
-    private transService: TransactionService, 
+  constructor(public modalController: ModalController,
+    private transService: TransactionService,
     private socket: SockectService,
-    public toast:LoaderService) {
+    public toast: LoaderService) {
   }
 
   ngOnInit() {
@@ -93,20 +93,18 @@ export class Tab2Page implements OnInit {
   async getSocketData() {
     await this.socket.getMessage().subscribe((Socketdata: any) => {
       console.log("this is socket data", Socketdata.data)
-      if(this.trans.length > 0){
-        this.trans.unshift(Socketdata.data);
+      this.trans.unshift(Socketdata.data);
 
-        if (Socketdata.data.status == "failed") {
-          this.summaryFailAmount += Socketdata.data.nairaAmount;
-          this.summaryTotalAmount += Socketdata.data.nairaAmount;
-          this.summaryTotalCount = this.summaryTotalCount + 1;
-          this.summaryFailCount = this.summarySuccessCount + 1;
-        } else if (Socketdata.data.status == "successful") {
-          this.summaryTotalAmount += Socketdata.data.nairaAmount;
-          this.summarySuccessAmount += Socketdata.data.nairaAmount;
-          this.summaryTotalCount = this.summaryTotalCount + 1;
-          this.summarySuccessCount = this.summarySuccessCount + 1;
-        }
+      if (Socketdata.data.status == "failed") {
+        this.summaryFailAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalCount = this.summaryTotalCount + 1;
+        this.summaryFailCount = this.summarySuccessCount + 1;
+      } else if (Socketdata.data.status == "successful") {
+        this.summaryTotalAmount += Socketdata.data.nairaAmount;
+        this.summarySuccessAmount += Socketdata.data.nairaAmount;
+        this.summaryTotalCount = this.summaryTotalCount + 1;
+        this.summarySuccessCount = this.summarySuccessCount + 1;
       }
       console.log(`transactions ${this.trans.length}`);
     });
@@ -122,11 +120,6 @@ export class Tab2Page implements OnInit {
       this.isLoadingTransaction = false;
       this.trans = data.data.transactions;
       console.log(this.trans);
-      
-      if(this.trans.length < 1){
-        this.notFound = true;
-        this.toast.presentToast('No Record Found ):')
-      }
       // console.log(this.trans)
     }, error => {
       this.isDataTransaction = false;
@@ -204,13 +197,17 @@ export class Tab2Page implements OnInit {
     const searchModal = await this.modalController.create({
       component: SearchModalPage,
       cssClass: 'select-modal',
-      backdropDismiss: false,
+      backdropDismiss: true,
     });
     searchModal.onDidDismiss().then((data) => {
-      this.trans = data.data; 
-      console.log((data.data));
-      this.transactionSummary(data.data);
-      this.transactionDetails(data.data, this.page);
+      // this.trans = data.data;
+
+      if (data.data != undefined) {
+        // console.log(data);
+        console.log((data.data));
+        this.transactionSummary(data.data);
+        this.transactionDetails(data.data, this.page);
+      }
     })
     return await searchModal.present();
   }

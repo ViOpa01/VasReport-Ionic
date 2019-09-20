@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
+import { Platform, IonRouterOutlet, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LoaderService } from 'src/app/services/loader.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-tab1',
@@ -8,7 +12,11 @@ import { DashboardService } from '../../services/dashboard.service';
 })
 export class Tab1Page implements OnInit {
 
-
+  // @BackButton()
+  // public onBackButton() {
+  //     alert('Back button pushed!');
+  //     return false;
+  // }
   querySuccess: any;
   queryFailed: any;
 
@@ -53,12 +61,11 @@ export class Tab1Page implements OnInit {
   successAmount: any = null;
   failAmount: any = null;
 
-  n
   //percentage change
   percentChange: any = null;
 
   //response holder for success and  fail  percentage
-  successPercent: any ; 
+  successPercent: any;
   failPercent: any;
 
   //second tab button to determin the logic
@@ -91,18 +98,23 @@ export class Tab1Page implements OnInit {
     loop: false
   };
 
-
-  constructor(public dashboardService: DashboardService) { 
-    
+  backButtonSubscription;
+  constructor(public dashboardService: DashboardService,
+     public platform: Platform, 
+     public router: Router, 
+     public loader: LoaderService,
+     public nav:NavController,
+     public authService:AuthService) {
   }
 
-
+  
+  
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
     'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
 
   channelArray: any = ['POS', 'WEB', 'ANDROID', 'ANDROIDPOS', 'ATM', 'DEFAULT', 'OTHERS'];
   paymentMethodArray: any = ['CARD', 'MCARD', 'CASH'];
-
+ 
   async ngOnInit() {
     await this.defaultData(this.date);
     await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
@@ -115,7 +127,9 @@ export class Tab1Page implements OnInit {
 
     // console.log(this.productArray.length);
   }
-
+  ngOnDestroy() {
+    navigator['app'].exitApp();
+  }
   defaultData(date) {
     this.isPresent = true;
     this.getSummary(date.toLowerCase());
@@ -149,7 +163,7 @@ export class Tab1Page implements OnInit {
       await this.getSummary(this.date.toLowerCase());
       await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
       await this.getTopfiveProduct(this.date, 'products', this.productArray);
-      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray); 
+      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
     }
     console.log('present : ' + this.isPresent);
   }
@@ -209,7 +223,7 @@ export class Tab1Page implements OnInit {
     this.isPresent = true;
     this.isDataSummary = false;
     // let present:boolean = tru
-    
+
     this.previousTotal = null;
     this.dashboardService.summary(date).subscribe(resposeList => {
 
@@ -239,14 +253,14 @@ export class Tab1Page implements OnInit {
       this.failPercent = (this.failCount / this.totalCount);
 
       //summary of the data for previous  success and fail
-      
+
       // console.log('end previous success : ' , this.previousSuccess);
       // console.log('end previous fail : ' , this.previousFailed);
       // console.log('end present total : ' , this.totalAmount);
 
       const previousSuccess = parseFloat(this.previousSuccess.data.amount);
       const previousFailed = parseFloat(this.previousFailed.data.amount);
-      this.previousTotal =  previousSuccess + previousFailed;
+      this.previousTotal = previousSuccess + previousFailed;
 
       this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
 

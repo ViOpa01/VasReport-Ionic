@@ -7,7 +7,8 @@
                     <ion-select value="select" style="text-transform: capitalize" okText="Okay" cancelText="Dismiss"
                         class="no-pad-input" (ionChange)="getFilter($event)">
                         <ion-select-option value="select">Select transaction</ion-select-option>
-                        <ion-select-option value="{{ item }}" *ngFor="let item of filterArray">{{ item }}
+                        <ion-select-option value="{{ item }}" *ngFor="let item of filterArray">
+                            {{ item.toLocaleUpperCase() }}
                         </ion-select-option>
                     </ion-select>
                 </ion-col>
@@ -19,13 +20,14 @@
             <ion-row class="margin-top">
                 <ion-col>
                     <ion-datetime class="date-style date-pad" placeholder="Start Date" displayFormat="YYYY/MM/DD"
-                        max="{{ deafaultDate }}" (ionChange)="startDate($event)" [(ngModel)]="deafaultDate"
-                        formControlName="start"></ion-datetime>
+                        max="{{ deafaultDateTwo }}" (ionChange)="startDate($event)" [(ngModel)]="deafaultDateOne"
+                        formControlName="start">
+                    </ion-datetime>
                 </ion-col>
                 <ion-col>
                     <ion-datetime class="date-style date-pad" placeholder="End Date" displayFormat="YYYY/MM/DD"
-                        max="{{ deafaultDate }}" min="{{ deafaultDate }}" (ionChange)="endDate($event)"
-                        [(ngModel)]="deafaultDate" formControlName="end"></ion-datetime>
+                        max="{{ deafaultDateTwo }}" min="{{ deafaultDateTwo }}" (ionChange)="endDate($event)"
+                        [(ngModel)]="deafaultDateTwo" formControlName="end"></ion-datetime>
                 </ion-col>
             </ion-row>
             <ion-row>
@@ -38,7 +40,8 @@
                     <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
                         (ionChange)="getChannel($event)">
                         <ion-select-option value="select">Select Channel</ion-select-option>
-                        <ion-select-option value="{{item }}" *ngFor="let item of channelArray">{{ item }}
+                        <ion-select-option value="{{item }}" *ngFor="let item of channelArray">
+                            {{ item.toLocaleUpperCase() }}
                         </ion-select-option>
                     </ion-select>
                 </ion-col>
@@ -57,8 +60,9 @@
                 <ion-col class="select-form-others" text-center>
                     <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
                         (ionChange)="getProduct($event)">
-                        <ion-select-option value="select">Select Channel</ion-select-option>
-                        <ion-select-option value="{{item }}" *ngFor="let item of productArray">{{ item }}
+                        <ion-select-option value="select">Select Product</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of productArray">
+                            {{ item.toLocaleUpperCase() }}
                         </ion-select-option>
                     </ion-select>
                 </ion-col>
@@ -68,7 +72,8 @@
                     <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
                         (ionChange)="getMethod($event)">
                         <ion-select-option value="select">Select Method</ion-select-option>
-                        <ion-select-option value="{{item }}" *ngFor="let item of paymentMethodArray">{{ item }}
+                        <ion-select-option value="{{item }}" *ngFor="let item of paymentMethodArray">
+                            {{ item.toLocaleUpperCase() }}
                         </ion-select-option>
                     </ion-select>
                 </ion-col>
@@ -79,7 +84,8 @@
                     <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
                         (ionChange)="getVendor($event)">
                         <ion-select-option value="select">Select Vendor</ion-select-option>
-                        <ion-select-option value="{{item }}" *ngFor="let item of vendorArray">{{ item }}
+                        <ion-select-option value="{{item }}" *ngFor="let item of vendorArray">
+                            {{ item.toLocaleUpperCase() }}
                         </ion-select-option>
                     </ion-select>
                 </ion-col>
@@ -89,7 +95,8 @@
                     <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
                         (ionChange)="getVendor($event)">
                         <ion-select-option value="select">Select Vendor Type</ion-select-option>
-                        <ion-select-option value="{{item }}" *ngFor="let item of vendorTypeArray">{{ item }}
+                        <ion-select-option value="{{item }}" *ngFor="let item of vendorTypeArray">
+                            {{ item.toLocaleUpperCase() }}
                         </ion-select-option>
                     </ion-select>
                 </ion-col>

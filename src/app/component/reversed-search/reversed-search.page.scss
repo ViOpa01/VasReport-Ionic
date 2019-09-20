@@ -1,0 +1,54 @@
+.select-form{
+    background: #FFFFFF;
+    border: 1px solid #2F80ED;
+    box-sizing: border-box;
+    border-radius: 5px 0px 0px 5px;
+    height: 30px;
+}
+.select-input{
+    background: #FFFFFF;
+    border: 1px solid #2F80ED;
+    box-sizing: border-box;
+    border-radius: 0px 5px 5px 0px;
+    height: 30px;
+}
+.no-pad-input{
+    padding: 0px !important;
+    font-size: 13px !important;
+}
+.position{
+    position: relative;
+    top: -10px;
+}
+
+.search-title{
+    position: relative;
+    top: -10px;
+}
+.date-style{
+    background: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    border-radius: 10px;
+    height: 30px;
+}
+.date-pad{
+    padding: 5px;
+    font-size: 13px;
+}
+
+.font-13{
+    font-size: 13px;
+}
+
+.select-form-others{
+    background: #FFFFFF;
+    border: 1px solid #aaaaaa;
+    box-sizing: border-box;
+    border-radius: 5px;
+    height: 30px;
+}
+
+.margin-top{
+    margin-top: 6px;
+}
