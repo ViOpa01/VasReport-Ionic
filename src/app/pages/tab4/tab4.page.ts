@@ -15,7 +15,6 @@ export class Tab4Page implements OnInit {
 
   logOut(){
     localStorage.removeItem('TOKEN');
-    localStorage.clear();
     this.nav.navigateRoot(['/login']);
   }
 }
