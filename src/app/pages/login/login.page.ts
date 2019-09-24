@@ -3,7 +3,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoaderService } from '../../services/loader.service';
-import { NavController } from '@ionic/angular';
 
 
 @Component({
@@ -17,45 +16,35 @@ export class LoginPage implements OnInit {
   user: any;
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
-  backButtonSubscription;
+  isChecked: any = localStorage.getItem('rememberMe');
+  username: any = localStorage.getItem('username');
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
-    public loader: LoaderService,
-    private navController: NavController) {
-    this.checkAuth();
-    this.loginForm = formBuilder.group({
+    public loader: LoaderService) {
+    this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])],
     });
-
+    
   }
 
-  checkAuth() {
-    let state = this.authService.isAuthenticated();
-    if (state) {
-      this.navController.navigateRoot(['/tabs/tab1']);
-    } else {
-      this.navController.navigateRoot('login')
-    }
-  }
 
   ngOnInit() {
     // this.hideShowPassword();
   }
-  ngOnDestroy() {
-    navigator['app'].exitApp();
-  }
+  checkBox(ev) {
+    this.isChecked = ev.detail.checked;
+    if (this.isChecked) {
+      localStorage.setItem('remeberMe', ev.detail.checked);
+      // console.log('i will save the value', this.isChecked);
 
-  ionViewWillEnter() {
-    if (localStorage.getItem('firstTime')) {
-      if (this.authService.isAuthenticated()) {
-        navigator['app'].exitApp();
-      }
     } else {
-      this.router.navigate(['tabs/tab1']);
+      localStorage.removeItem('remeberMe');
+      // console.log('I will remove the value', this.isChecked);
+
     }
 
   }
@@ -87,11 +76,11 @@ export class LoginPage implements OnInit {
         username: this.loginForm.value.email,
         password: this.loginForm.value.password
       }).subscribe(user => {
-        localStorage.setItem('firstTime', 'true')
+        localStorage.setItem('username', this.loginForm.value.email);
+        this.loader.hideLoader();
         // console.log(JSON.stringify(user));
         //hide loader and navigate to dash board Page
         this.user = user;
-        this.loader.hideLoader();
         this.router.navigate(['/tabs/tab1']);
 
       }, error => {

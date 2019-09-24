@@ -172,7 +172,7 @@
       <ion-col size="3"><span>{{ el.status}}</span></ion-col>
     </ion-row>
   </div>
-  <ion-infinite-scroll threshold="150px" (ionInfinite)="loadMoreTrans($event)">
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreTrans($event)">
     <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Loading more data...">
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>

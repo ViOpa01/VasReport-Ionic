@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 
-import { Platform, NavController } from '@ionic/angular';
+import { Platform, NavController, IonRouterOutlet } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Network } from '@ionic-native/network/ngx';
@@ -17,6 +17,7 @@ export class AppComponent {
   checkLogin: any;
   subscription: any;
 
+  @ViewChildren(IonRouterOutlet) routerOutlets: QueryList<IonRouterOutlet>;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -26,38 +27,39 @@ export class AppComponent {
     public authenticationService: AuthService,
     public navController: NavController,
     private router: Router,
-    private nav: NavController
   ) {
    
     this.initializeApp();
     this.checkNetwork();
+    this.backButtonEvent();
+
   }
 
   ngOnInit() { }
 
 
+  backButtonEvent() {
+    document.addEventListener("backbutton", () => {
+      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
+        if (outlet && outlet.canGoBack()) {
+          outlet.pop();
+        }else if(this.router.url === "tabs/tab1"){
+          navigator['app'].exitApp(); // work for ionic 4
+        } else if (!outlet.canGoBack()) {
+          navigator['app'].exitApp(); // work for ionic 4
+        }
+      });
+    });
+  }
+
   initializeApp() {
     this.platform.ready().then(() => {
       this.checkAuth();
-      this.platform.backButton.subscribeWithPriority(1000, () => {
-        this.loader.presentToast('back button press');
-        if (window.location.pathname == "/tabs/tab1") {
-          navigator['app'].exitApp();
-        }
-      });
       this.initializeStatusBar();
       this.splashScreen.hide();
     });
   }
-  private setAndroidBackButtonBehavior(deviceInfo): void {
-    if (deviceInfo.is("android")) {
-      this.platform.backButton.subscribe(() => {
-        if (window.location.pathname == "/tabs/tab1") {
-          navigator['app'].exitApp();
-        }
-      });
-    }
-  }
+ 
   initializeStatusBar() {
     this.statusBar.show();
     this.statusBar.overlaysWebView(false);

@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { Platform, IonRouterOutlet, NavController } from '@ionic/angular';
+import { Platform, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -12,11 +12,6 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class Tab1Page implements OnInit {
 
-  // @BackButton()
-  // public onBackButton() {
-  //     alert('Back button pushed!');
-  //     return false;
-  // }
   querySuccess: any;
   queryFailed: any;
 
@@ -127,9 +122,11 @@ export class Tab1Page implements OnInit {
 
     // console.log(this.productArray.length);
   }
-  ngOnDestroy() {
+  
+  ngOnDestroy(){ 
     navigator['app'].exitApp();
   }
+  
   defaultData(date) {
     this.isPresent = true;
     this.getSummary(date.toLowerCase());
