@@ -20,6 +20,7 @@ import { Constants } from './common/constant';
 import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { ReverseModalPageModule } from './component/reverse-modal/reverse-modal.module';
 import { ReversedSearchPageModule } from './component/reversed-search/reversed-search.module';
+import { ExcelService } from './services/excel.service';
 
 //back button plugin package
 // import { HardwareButtons } from '@scaffold-digital/ionic-hardware-buttons';
@@ -62,7 +63,7 @@ const config: SocketIoConfig = { url: 'http://197.253.19.76:8002', options: { qu
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     RequestInterceptorService,
     Network,
-    // HardwareButtons
+    ExcelService
   ],
   bootstrap: [AppComponent]
 })

@@ -6,7 +6,12 @@
         <ion-col>
           <img src="assets/logo.svg" />
         </ion-col>
-        <ion-col size-lg offset="8" (click)="openSearchModal()">
+        <ion-col size-lg  offset="6" (click)="downloaFile()">
+          <span item-end>
+            <ion-icon name="download" item-end text-right style="font-size: 25px;" class="my-primary"></ion-icon>
+          </span>
+        </ion-col>
+        <ion-col size-lg  (click)="openSearchModal()">
           <span item-end>
             <ion-icon name="search" item-end text-right style="font-size: 25px;" class="my-primary"></ion-icon>
           </span>

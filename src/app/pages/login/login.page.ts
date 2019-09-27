@@ -40,11 +40,9 @@ export class LoginPage implements OnInit {
     if (this.isChecked) {
       localStorage.setItem('remeberMe', ev.detail.checked);
       // console.log('i will save the value', this.isChecked);
-
     } else {
       localStorage.removeItem('remeberMe');
       // console.log('I will remove the value', this.isChecked);
-
     }
 
   }
@@ -76,17 +74,18 @@ export class LoginPage implements OnInit {
         username: this.loginForm.value.email,
         password: this.loginForm.value.password
       }).subscribe(user => {
-        localStorage.setItem('username', this.loginForm.value.email);
-        this.loader.hideLoader();
         // console.log(JSON.stringify(user));
         //hide loader and navigate to dash board Page
         this.user = user;
+        // localStorage.setItem('username', this.loginForm.value.email);
+        this.loader.hideLoader();
         this.router.navigate(['/tabs/tab1']);
 
       }, error => {
-        this.loader.hideLoader();
-        console.log('Error: ' + JSON.stringify(error.error.error));
+        // console.log('Error: ' + JSON.stringify(error.error.error));
         this.loader.presentToast(error.error.error);
+        this.loader.hideLoader();
+
       });
   }
 

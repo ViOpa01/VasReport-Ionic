@@ -16,7 +16,7 @@
           <ion-icon item-left name="person"> </ion-icon>
           Username 
         </ion-label>
-        <ion-input type="text" formControlName="email" value="{{username}}"
+        <ion-input type="text" formControlName="email" 
           [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)">
         </ion-input>
       </ion-item>
@@ -43,12 +43,12 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col >
+        <!-- <ion-col >
           <ion-item class="font-13" lines="none">
             <ion-label>Remeber Me</ion-label>
             <ion-checkbox color="secondary" class="check-box-margin" slot="start" checked="{{isChecked}}" (ionChange)="checkBox($event)"></ion-checkbox>
           </ion-item>
-        </ion-col>
+        </ion-col> -->
         <ion-col>
           <p text-right class="font-13" style="padding-top: 8px;">Forgot Password?</p>
         </ion-col>

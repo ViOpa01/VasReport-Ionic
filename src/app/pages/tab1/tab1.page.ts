@@ -4,6 +4,7 @@ import { Platform, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -86,6 +87,9 @@ export class Tab1Page implements OnInit {
   outputProduct: any[] = [];
   outputPayment: any[] = [];
 
+  //refreh the page after every 15 minutes
+  refresh:Subscription;
+
   sliderConfig = {
     slidesPerView: 1.7,
     spaceBetween: 1,
@@ -95,21 +99,21 @@ export class Tab1Page implements OnInit {
 
   backButtonSubscription;
   constructor(public dashboardService: DashboardService,
-     public platform: Platform, 
-     public router: Router, 
-     public loader: LoaderService,
-     public nav:NavController,
-     public authService:AuthService) {
+    public platform: Platform,
+    public router: Router,
+    public loader: LoaderService,
+    public nav: NavController,
+    public authService: AuthService) {
   }
 
-  
-  
+
+
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
     'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
 
   channelArray: any = ['POS', 'WEB', 'ANDROID', 'ANDROIDPOS', 'ATM', 'DEFAULT', 'OTHERS'];
   paymentMethodArray: any = ['CARD', 'MCARD', 'CASH'];
- 
+
   async ngOnInit() {
     await this.defaultData(this.date);
     await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
@@ -119,14 +123,21 @@ export class Tab1Page implements OnInit {
     this.channelHeader = ['Channel', 'Success', 'Fail', 'Total'];
     this.productHeader = ['Product', 'Success', 'Fail', 'Total'];
     this.paymentHeader = ['Payment', 'Success', 'Fail', 'Total'];
+    
+    this.refresh = interval(15* 60*1000).subscribe(() => {
+       this.defaultData(this.date);
+       this.getTopfiveChannel(this.date, 'channels', this.channelArray);
+       this.getTopfiveProduct(this.date, 'products', this.productArray);
+       this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
 
+    })
     // console.log(this.productArray.length);
   }
-  
-  ngOnDestroy(){ 
-    navigator['app'].exitApp();
+
+  ngOnDestroy() {
+    this.refresh.unsubscribe();
   }
-  
+
   defaultData(date) {
     this.isPresent = true;
     this.getSummary(date.toLowerCase());

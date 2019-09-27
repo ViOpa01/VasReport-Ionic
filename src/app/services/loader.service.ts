@@ -18,8 +18,18 @@ export class LoaderService {
     public alertController: AlertController,
     public platform: Platform,
     public modalCtrl: ModalController,
-    private router: Router,
   ) { }
+
+  async presentLoadingWithOptions() {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      duration: 5000,
+      message: 'Downloading ...',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    return await loading.present();
+  }
 
   async showLoader() {
     this.loaderToShow = await this.loadingController.create({
@@ -42,51 +52,6 @@ export class LoaderService {
     });
     await toast.present();
   }
-  async showAlert(message, onYesHandler) {
-    const alert = await this.alertController.create({
-      header: 'Confirm!',
-      message: message,
-      buttons: [
-        {
-          text: 'Cancel',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-            console.log('Confirm Cancel: blah');
-          }
-        }, {
-          text: 'Okay',
-          handler: onYesHandler
-        }
-      ]
-    });
 
-    await alert.present();
-  }
 
-  backButtonEvent() {
-    this.platform.backButton.subscribeWithPriority(999999999999999, async () => {
-      // close modal
-      try {
-        const element = await this.modalCtrl.getTop();
-        if (element) {
-          element.dismiss();
-          return;
-        }
-      } catch (error) {
-        console.log(error);
-
-      }
-
-      this.routerOutlets.forEach((outlet: IonRouterOutlet) => {
-        if (outlet && outlet.canGoBack()) {
-          outlet.pop();
-
-        } else if (this.router.url === '/tabs/tab1') {
-          this.presentToast('Exit App?')
-          navigator['app'].exitApp(); // work in ionic 4
-        }
-      });
-    });
-  }
 }

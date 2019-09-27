@@ -4,8 +4,9 @@ import { SearchModalPage } from '../../component/search-modal/search-modal.page'
 import { TransactionService } from '../../services/transaction.service';
 import { InfoModalPage } from '../../component/info-modal/info-modal.page';
 import { SockectService } from '../../services/sockect.service';
-import { present } from '@ionic/core/dist/types/utils/overlays';
 import { LoaderService } from 'src/app/services/loader.service';
+import { ExcelService } from 'src/app/services/excel.service';
+
 
 @Component({
   selector: 'app-tab2',
@@ -65,7 +66,28 @@ export class Tab2Page implements OnInit {
     "transactionStatus": "",
     "transactionChannel": "",
     "searchField": "",
-    "viewPage": "2",
+    "viewPage": "",
+    "download": false
+  };
+
+  payloadDownload = {
+    "dateRange": this.newRange,
+    "terminalId": "",
+    "walletId": "",
+    "accountNumber": "",
+    "paymentMethod": "",
+    "cardRRN": "",
+    "transactionReference": "",
+    "phoneNumber": "",
+    "sequenceNumber": "",
+    "debitReference": "",
+    "product": "",
+    "transactionType": "",
+    "transactionStatus": "",
+    "transactionChannel": "",
+    "searchField": "",
+    "viewPage": "",
+    "download": true
   };
 
   @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
@@ -73,12 +95,13 @@ export class Tab2Page implements OnInit {
   constructor(public modalController: ModalController,
     private transService: TransactionService,
     private socket: SockectService,
-    public toast: LoaderService) {
+    public toast: LoaderService,
+    public excelService: ExcelService) {
   }
 
   ngOnInit() {
 
-
+    // this.downloaFile(this.payload, this.page);
     this.transactionSummary(this.payload);
     this.transactionDetails(this.payload, this.page);
 
@@ -89,8 +112,28 @@ export class Tab2Page implements OnInit {
     }, 3000);
   }
 
+  exportAsXLSX(): void {
+    this.excelService.exportAsExcelFile(this.trans, 'sample');
+
+  }
+  async downloaFile() {
+    this.toast.presentLoadingWithOptions();
+    await this.transService.getTransactionsDetails(this.payloadDownload, this.page).subscribe(
+      response => {
+        const data = response.data.transactions;
+        // console.log('download data : ', data);
+        this.excelService.exportAsExcelFile(data, `Itex Report for ${this.payloadDownload.dateRange}`);
+        this.toast.hideLoader();
+      }, error => {
+        this.toast.hideLoader();
+        console.log(error);
+
+      }
+    );
+  }
 
   async getSocketData() {
+    this.socket.connect();
     await this.socket.getMessage().subscribe((Socketdata: any) => {
       console.log("this is socket data", Socketdata.data)
       this.trans.unshift(Socketdata.data);
@@ -119,7 +162,7 @@ export class Tab2Page implements OnInit {
       // console.log('data: ' + data.data.totalCount)
       this.isLoadingTransaction = false;
       this.trans = data.data.transactions;
-      console.log(this.trans);
+      // console.log(this.trans);
       // console.log(this.trans)
     }, error => {
       this.isDataTransaction = false;
@@ -201,7 +244,7 @@ export class Tab2Page implements OnInit {
     });
     searchModal.onDidDismiss().then((data) => {
       // this.trans = data.data;
-
+      this.socket.disconnect();
       if (data.data != undefined) {
         // console.log(data);
         console.log((data.data));
@@ -218,9 +261,9 @@ export class Tab2Page implements OnInit {
       console.log('Async operation has ended');
       this.transactionDetails(this.payload, this.page = 1);
       this.transactionSummary(this.payload);
-      console.log(`current page is : ${this.page}`)
-      event.target.complete();
+      // console.log(`current page is : ${this.page}`)
       this.getSocketData();
+      event.target.complete();
 
     }, 2000);
   }
