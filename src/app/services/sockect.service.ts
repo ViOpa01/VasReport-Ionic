@@ -20,4 +20,12 @@ export class SockectService {
         }));
   }
 
+  disconnect(){
+    return this.socket.disconnect();
+  }
+
+  connect(){
+    return this.socket.connect();
+  }
+
 }

@@ -16,8 +16,14 @@ import { SearchModalPageModule } from './component/search-modal/search-modal.mod
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { StorageService } from "./services/storage.service";
 
-import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { Constants } from './common/constant';
+import { JwtModule, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { ReverseModalPageModule } from './component/reverse-modal/reverse-modal.module';
+import { ReversedSearchPageModule } from './component/reversed-search/reversed-search.module';
+import { ExcelService } from './services/excel.service';
+
+//back button plugin package
+// import { HardwareButtons } from '@scaffold-digital/ionic-hardware-buttons';
 
 export function jwtOptionsFactory(storage: StorageService) {
   return {
@@ -34,11 +40,13 @@ const config: SocketIoConfig = { url: 'http://197.253.19.76:8002', options: { qu
   entryComponents: [],
   imports: [
     BrowserModule, 
-    IonicModule.forRoot(), 
+    IonicModule.forRoot({hardwareBackButton: false}), 
     AppRoutingModule,
     HttpClientModule,
     InfoModalPageModule,
     SearchModalPageModule,
+    ReversedSearchPageModule,
+    ReverseModalPageModule,
     SocketIoModule.forRoot(config),
     JwtModule.forRoot({
       jwtOptionsProvider: {
@@ -46,7 +54,7 @@ const config: SocketIoConfig = { url: 'http://197.253.19.76:8002', options: { qu
         useFactory: jwtOptionsFactory,
         deps: [StorageService]
       }
-    })
+    }),
   ],
   providers: [
     StatusBar,
@@ -55,8 +63,9 @@ const config: SocketIoConfig = { url: 'http://197.253.19.76:8002', options: { qu
     { provide: HTTP_INTERCEPTORS, useClass: RequestInterceptorService, multi: true },
     RequestInterceptorService,
     Network,
-    
+    ExcelService
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+// 

@@ -1,5 +1,5 @@
 {
-  "name": "VasTab",
+  "name": "vastab",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -33,11 +33,11 @@
     "cordova-plugin-network-information": "^2.0.2",
     "core-js": "^2.5.4",
     "crypto-js": "^3.1.9-1",
-    "ion2-calendar": "^3.0.0-rc.0",
-    "moment": "^2.24.0",
+    "file-saver": "^2.0.2",
     "ngx-socket-io": "^3.0.1",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
+    "xlsx": "^0.15.1",
     "zone.js": "~0.8.29"
   },
   "devDependencies": {

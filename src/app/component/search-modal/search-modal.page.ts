@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { CalendarComponentOptions } from 'ion2-calendar';
 import { ModalController } from '@ionic/angular';
-import {
-  CalendarModal,
-  CalendarModalOptions,
-  DayConfig,
-  CalendarResult
-} from 'ion2-calendar';
-import { TransactionService } from 'src/app/services/transaction.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-search-modal',
@@ -17,102 +8,160 @@ import { ThrowStmt } from '@angular/compiler';
   styleUrls: ['./search-modal.page.scss'],
 })
 export class SearchModalPage implements OnInit {
-  dateRanges: any;
-  isDataTransaction: boolean;
-  isLoadingTransaction: boolean;
-  trans: any;
+
   payload: any;
-  page: number = 1;
-
-  newRange: any;
-  dateRange: any;
-
-  DateObj = new Date();
+  start: any;
+  end: any;
+  range: any;
 
   searchForm: FormGroup;
+  //form Properties
+
+  transactionChannel: any;
+  transactionType: any;
+  product: any;
+  paymentMethod: any;
+  vendor: any;
+  vendorType: any;
+  filter: any;
+  filterValue: any;
+
+  transactionReference: any;
+  sequenceNumber: any
+  debitReference: any;
+  accountNumber: any;
+  phoneNumber: any;
   terminalId: any;
   walletId: any;
+  cardRRN:any;
+  
+  deafaultDateOne: any = new Date().toISOString().split('T')[0];
+  deafaultDateTwo: any = new Date().toISOString().split('T')[0]
 
+  productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
+    'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
 
-  deafaultDate: any =  new Date().toISOString().split('T')[0]
+  channelArray: any = ['POS', 'WEB', 'ANDROID', 'ANDROIDPOS', 'ATM', 'DEFAULT', 'OTHERS'];
+  paymentMethodArray: any = ['CARD', 'MCARD', 'CASH'];
+  TypeArray: any = ['postpaid', 'prepaid', 'smartcard', 'token', 'nonenergy'];
+  vendorTypeArray: any = ['B2B', 'ITEX'];
+  vendorArray: any = ['gisolutions', 'Karosealliance', 'ITEX', 'Payant', 'NowNow', 'MarsKonnect', 'FCube', 'XchangeBox', 'Daphty', 'Greystone', 'Callphone'];
+  filterArray: any = ['cardRRN','transactionReference', 'sequenceNumber', 'debitReference', 'terminalId', 'walletId', 'accountNumber', 'phoneNumber'];
 
-  constructor(public modalCtrl: ModalController, public transService: TransactionService, public formBuilder: FormBuilder) {
+  constructor(public modalCtrl: ModalController,  public formBuilder: FormBuilder) {
     this.searchForm = formBuilder.group({
-      terminalId: ['', Validators.min],
-      walletId: ['', Validators.min],
+      filter: ['', Validators.min],
+      start: ['', Validators.min],
+      end: ['', Validators.min]
     });
   }
 
   ngOnInit() {
-    console.log(new Date().toISOString().split('T')[0])
+
   }
   searchTrans() {
+    //start date from the form
+    this.start = this.searchForm.value.start.split('-');
+    this.start = `${this.start[0]}/${this.start[1]}/${this.start[2]}`
+
+    //end date from the form
+    this.end = this.searchForm.value.end.split('-');
+    this.end = `${this.end[0]}/${this.end[1]}/${this.end[2]}`
+    
+    //date range to be passed to the form
+    this.range = `${this.start} - ${this.end}`;
     this.payload = {
-      "dateRange": this.newRange,
-      "terminalId": this.searchForm.value.terminalId,
-      "walletId": this.searchForm.value.walletId,
-      "accountNumber": "",
-      "paymentMethod": "",
-      "cardRRN": "",
-      "transactionReference": "",
-      "phoneNumber": "",
-      "sequenceNumber": "",
-      "debitReference": "",
-      "product": "",
-      "transactionType": "",
+      "dateRange": this.range,
+      "terminalId": this.terminalId ? this.terminalId : '',
+      "walletId": this.walletId ? this.walletId : '',
+      "accountNumber": this.accountNumber ? this.accountNumber : '',
+      "paymentMethod": this.paymentMethod ? this.paymentMethod : '',
+      "cardRRN": this.cardRRN ? this.cardRRN : '',
+      "transactionReference": this.transactionReference ? this.transactionReference : '',
+      "phoneNumber": this.phoneNumber ? this.phoneNumber : '',
+      "sequenceNumber": this.sequenceNumber ? this.sequenceNumber : '',
+      "debitReference": this.debitReference ? this.debitReference : '',
+      "product": this.product ? this.product : '',
+      "transactionType": this.transactionType ? this.transactionType : '',
       "transactionStatus": "",
-      "transactionChannel": "",
+      "transactionChannel": this.transactionChannel ? this.transactionChannel : '',
       "searchField": "",
-      "viewPage": "2",
+      "viewPage": "",
     };
     this.modalCtrl.dismiss(this.payload);
   }
-  getDate(date) {
 
-    if (date == 'today') {
+  startDate(event) {
+    this.start = event.detail.value.split('T')[0].split('-');
+    console.log('start Date : ' + this.start);
+  }
 
-      this.dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
-      this.newRange = `${this.dateRange} - ${this.dateRange}`;
-     
-      this.deafaultDate = this.newRange;
-    } else if (date == 'yesterday') {
-      this.dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + (this.DateObj.getDate() - 1));
-      this.newRange = `${this.dateRange} - ${this.dateRange}`;
+  endDate(event) {
+    this.end = event.detail.value.split('T')[0];
+    console.log('End Date : ' + this.end);
+  }
+
+  getChannel(event) {
+    this.transactionChannel = event.detail.value;
+    console.log(this.transactionChannel);
+
+  }
+
+  getProduct(event) {
+    this.product = event.detail.value;
+    console.log(this.product);
+
+  }
+
+  getType(event) {
+    this.transactionType = event.detail.value;
+    console.log(this.transactionType);
+
+  }
+
+  getMethod(event) {
+    this.transactionType = event.detail.value;
+    console.log(this.transactionType);
+
+  }
+
+  getVendor(event) {
+    this.vendor = event.detail.value;
+    console.log(this.vendor);
+  }
+
+  getVendorType(event) {
+    this.vendorType = event.detail.value;
+    console.log(this.vendorType);
+  }
+
+  getFilter(event) {
+    this.filter = event.detail.value;
+    this.filterValue = this.searchForm.value.filter
+    if (this.filter == 'sequenceNumber') {
+      this.sequenceNumber = this.filterValue;
+      console.log('yes seq = ', this.filterValue);
+    } else if (this.filter == 'transactionReference') {
+      this.transactionReference = this.filterValue;
+      console.log('yes trans', this.filterValue);
+    } else if (this.filter == 'debitReference') {
+      this.debitReference = this.filterValue;
+      console.log('yes refe', this.filterValue);
+    } else if (this.filter == 'terminalId') {
+      this.terminalId = this.filterValue;
+      console.log('yes terminal', this.filterValue);
+    } else if (this.filter == 'walletId') {
+      this.walletId = this.filterValue;
+      console.log('yes walle', this.filterValue);
+    } else if (this.filter == 'accountNumber') {
+      this.accountNumber = this.filterValue;
+      console.log('yes acct', this.filterValue);
+    } else if (this.filter == 'phoneNumber') {
+      this.phoneNumber = this.filterValue;
+      console.log('yes num', this.filterValue);
+    }else if(this.filter == 'cardRRN'){
+      this.cardRRN = this.filterValue;
     }
-    console.log('date range' + this.newRange);
+
   }
-
-  async openCalendar() {
-    const options: CalendarModalOptions = {
-      pickMode: 'range',
-      title: 'Select Date Range',
-      canBackwardsSelected: true,
-      defaultDate: this.deafaultDate,
-      to:this.deafaultDate,
-      // defaultDateRange: 
-    };
-
-    const myCalendar = await this.modalCtrl.create({
-      component: CalendarModal,
-      componentProps: { options }
-    });
-
-    myCalendar.present();
-
-    const event: any = await myCalendar.onDidDismiss();
-    const date = event.data;
-    const from: CalendarResult = date.from;
-    const to: CalendarResult = date.to;
-
-    let strFrom = from.string;
-    let strTo = to.string;
-    let splittedFrom = strFrom.split("-", 3);
-    let splittedTo = strTo.split("-", 3);
-
-    this.newRange = `${splittedFrom[0]}/${splittedFrom[1]}/${splittedFrom[2]} - ${splittedTo[0]}/${splittedTo[1]}/${splittedTo[2]}`;
-
-    console.log(this.newRange)
-  }
-
-
 }

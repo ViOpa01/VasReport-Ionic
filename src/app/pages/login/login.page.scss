@@ -1,11 +1,5 @@
-.back-style{
-    width: 100% !important;
-    height: 100% !important;
-    // background: #00B4DB;  /* fallback for old browsers */
-// background: -webkit-linear-gradient(to right, #0083B0, #00B4DB);  /* Chrome 10-25, Safari 5.1-6 */
-// background: linear-gradient(to right, #0083B0, #00B4DB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.scroll-content { padding-bottom: 0 !important; }
 
-}
 .text-login{
 position: relative;
 top: -25px;
@@ -34,10 +28,26 @@ color: #333333;
     right: 1px;
     top: 16px;
     font-size: 30px;
+    z-index: 99999999999;
 }
-
+.no-pad{
+    padding-left: 0px !important;
+}
+.font-13{
+    font-size: 13px;
+}
+.check-box-margin{
+    margin-left: 0px;
+    margin-right: 6px;
+}
 ion-item{
     --ion-item-background : transparent !important;
     --ion-background-color : transparent !important;
+    --background-activated:  transparent !important;
+    --background-focused: transparent !important;
+    // --inner-padding-start: 0px !important;
+    --inner-padding-end: 0px !important;
+    --padding-start: 0px !important;
+    --padding-end: 0px !important;
 }
 

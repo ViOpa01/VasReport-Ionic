@@ -21,6 +21,10 @@ export const Endpoint = {
     TRANSACTION: {
         transaction: `${BASE_URL}/transaction/details`
     },
+    
+    REVERSED: {
+        REVERSED: `${BASE_URL}/transaction/reversed`
+    },
     TRANSACTION_SUMMARY: {
         transaction_summary: `${BASE_URL}/transaction/details/summary`
     },

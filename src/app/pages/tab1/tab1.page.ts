@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { ToastController } from '@ionic/angular';
-import { Endpoint } from '../../common/endpoints';
-import { Network } from '@ionic-native/network/ngx';
+import { Platform, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LoaderService } from 'src/app/services/loader.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { interval, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -10,7 +12,6 @@ import { Network } from '@ionic-native/network/ngx';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-
 
   querySuccess: any;
   queryFailed: any;
@@ -33,7 +34,6 @@ export class Tab1Page implements OnInit {
   isDataProduct: boolean;
 
   date: string = 'Day';
-  changeColor: number;
 
   //headers array for display
   channelHeader: string[];
@@ -45,21 +45,20 @@ export class Tab1Page implements OnInit {
   responseSuccess: any;
   responseFail: any;
 
-  previousSuccess: any;
-  previousFailed: any;
-  previousTotal: any;
+  previousSuccess: any = null;
+  previousFailed: any = null;
+  previousTotal: any = null;
 
   //response holder for success and  fail count
   successCount: any;
   failCount: any;
 
   //response holder for success and  fail  amount
-  successAmount: any;
-  failAmount: any;
+  successAmount: any = null;
+  failAmount: any = null;
 
-  n
   //percentage change
-  percentChange: any;
+  percentChange: any = null;
 
   //response holder for success and  fail  percentage
   successPercent: any;
@@ -75,7 +74,7 @@ export class Tab1Page implements OnInit {
   firstStyle: any;
 
   //total amount and count
-  totalAmount: any;
+  totalAmount: any = null;
   totalCount: any;
 
   //previous
@@ -88,6 +87,9 @@ export class Tab1Page implements OnInit {
   outputProduct: any[] = [];
   outputPayment: any[] = [];
 
+  //refreh the page after every 15 minutes
+  refresh:Subscription;
+
   sliderConfig = {
     slidesPerView: 1.7,
     spaceBetween: 1,
@@ -95,41 +97,16 @@ export class Tab1Page implements OnInit {
     loop: false
   };
 
-
-  constructor(public dashboardService: DashboardService, private toast: ToastController, public network:Network) { 
-    this.checkNetwork();
+  backButtonSubscription;
+  constructor(public dashboardService: DashboardService,
+    public platform: Platform,
+    public router: Router,
+    public loader: LoaderService,
+    public nav: NavController,
+    public authService: AuthService) {
   }
 
-  checkNetwork() {
-    // watch network for a disconnection
-    this.network.onDisconnect().subscribe(() => {
-       this.toast.create({
-        message: 'Network disconnect',
-        duration: 3000
-      });
-      console.log('network was disconnected :-(');
-    });
 
-    this.network.onConnect().subscribe(() => {
-      // console.log('network connected!');
-      this.toast.create({
-        message: 'Connected',
-        duration: 3000
-      });
-      // We just got a connection but we need to wait briefly
-      // before we determine the connection type. Might need to wait.
-      // prior to doing any api requests as well.
-      setTimeout(() => {
-        if (this.network.type === 'wifi') {
-          console.log('we got a wifi connection, woohoo!');
-          this.toast.create({
-            message: 'Connected to wifi',
-            duration: 3000
-          });
-        }
-      }, 3000);
-    });
-  }
 
   productArray: any = ['mtnvtu', 'mtndata', 'glovtu', 'glodata', 'airtelvtu', 'AIRTELPIN', 'withdrawal', 'ETISALAT', 'VTU', 'multichoice',
     'ikedc', 'eedc', 'transfer', 'ekedc', 'kedco', 'startimes', 'ibedc', 'aedc', 'RCN_FUND_TRANSFER', 'PHED'];
@@ -146,20 +123,33 @@ export class Tab1Page implements OnInit {
     this.channelHeader = ['Channel', 'Success', 'Fail', 'Total'];
     this.productHeader = ['Product', 'Success', 'Fail', 'Total'];
     this.paymentHeader = ['Payment', 'Success', 'Fail', 'Total'];
+    
+    this.refresh = interval(15* 60*1000).subscribe(() => {
+       this.defaultData(this.date);
+       this.getTopfiveChannel(this.date, 'channels', this.channelArray);
+       this.getTopfiveProduct(this.date, 'products', this.productArray);
+       this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
 
+    })
     // console.log(this.productArray.length);
+  }
+
+  ngOnDestroy() {
+    this.refresh.unsubscribe();
   }
 
   defaultData(date) {
     this.isPresent = true;
-    this.getSummary(date);
+    this.getSummary(date.toLowerCase());
   }
 
   async optionsFn(event) {
     this.date = event;
+    console.log
     this.secondStyle = 0;
     this.firstStyle = 1;
     this.isPresent = true;
+    this.previousTotal = null;
     if (this.date == 'Day') {
 
       this.second = 'Yesterday';
@@ -181,7 +171,7 @@ export class Tab1Page implements OnInit {
       await this.getSummary(this.date.toLowerCase());
       await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
       await this.getTopfiveProduct(this.date, 'products', this.productArray);
-      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray); 
+      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
     }
     console.log('present : ' + this.isPresent);
   }
@@ -239,9 +229,11 @@ export class Tab1Page implements OnInit {
   getSummary(date) {
     this.isLoadingSummary = true;
     this.isPresent = true;
+    this.isDataSummary = false;
     // let present:boolean = tru
+
+    this.previousTotal = null;
     this.dashboardService.summary(date).subscribe(resposeList => {
-      // console.log('This is my Response List', resposeList);
 
       this.isLoadingSummary = false;
       this.isDataSummary = true;
@@ -270,16 +262,21 @@ export class Tab1Page implements OnInit {
 
       //summary of the data for previous  success and fail
 
-      this.previousTotal = parseInt(this.previousSuccess.data.amount) + parseInt(this.previousFailed.data.amount);
+      // console.log('end previous success : ' , this.previousSuccess);
+      // console.log('end previous fail : ' , this.previousFailed);
+      // console.log('end present total : ' , this.totalAmount);
+
+      const previousSuccess = parseFloat(this.previousSuccess.data.amount);
+      const previousFailed = parseFloat(this.previousFailed.data.amount);
+      this.previousTotal = previousSuccess + previousFailed;
+
       this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
 
-      console.log(`previous total : ${this.previousTotal} and current total is : ${this.totalAmount}`);
-      console.log('change '+ (this.totalAmount - this.previousTotal))
 
     }, error => {
       this.isLoadingSummary = false;
       this.isDataSummary = false;
-      console.log('Error now: ' + error.message)
+      console.log('Error now: ' + error.error)
     });
   }
 

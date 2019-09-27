@@ -18,7 +18,7 @@
           <ion-label style="background: #2D9CDB !important; padding: 10.5px; color: #2D9CDB; " text-center>Date
           </ion-label>
           <ion-select value="Day"
-            style="background: #2d9cdb; color: #fff; padding: 10.41px; border-left: #2d9cdb; margin-left: -2px;"
+            style="background: #2d9cdb; color: #fff; padding: 10.3px; border-left: #2d9cdb; margin-left: -2px;"
             okText="Okay" cancelText="Dismiss" [(ngModel)]="date" (ngModelChange)="optionsFn($event)">
             <ion-select-option value="Day" selected="true">Day</ion-select-option>
             <ion-select-option value="Week">Week</ion-select-option>
@@ -76,7 +76,7 @@
 
                     <span *ngIf="!isLoadingSummary" text-right [ngClass]="{
                           'danger' : percentChange < 0, 
-                          'success' : percentChange >= 0
+                          'success-color  ' : percentChange >= 0
                           }">{{ percentChange | percent }}
                     </span>
                     <span style="font-size: 11px;"> Previous {{ date }}</span>
@@ -95,7 +95,7 @@
               <ion-col>
                 <span *ngIf="!isLoadingSummary">{{totalCount | thousandSuff }}</span> Transaction
               </ion-col>
-              <ion-col offset="4" class="mega-money">
+              <ion-col offset="3" class="mega-money">
                 <span class="mega">&#8358; {{ totalAmount | thousandSuff :1 }}</span>
               </ion-col>
             </ion-row>
@@ -117,7 +117,7 @@
                     <ion-col>
                       <div class="success circle">
                         <span
-                          class="text-position">{{ successPercent ==  undefined  ?  'Nil' : successPercent | percent }}</span>
+                          class="text-position">{{ successPercent ==  undefined  ?  '' : successPercent | percent }}</span>
                       </div>
                     </ion-col>
                   </ion-row>
@@ -153,7 +153,7 @@
                     <ion-col>
                       <div class="danger-bg circle">
                         <span
-                          class="text-position">{{ failPercent ==  undefined  ?  'Nil' : failPercent | percent }}</span>
+                          class="text-position">{{ failPercent ==  undefined  ?  '' : failPercent | percent }}</span>
                       </div>
                     </ion-col>
                   </ion-row>

@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewChildren, QueryList } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ToastController } from '@ionic/angular';
 import { LoaderService } from '../../services/loader.service';
-import { Network } from '@ionic-native/network/ngx';
+
 
 @Component({
   selector: 'app-login',
@@ -17,30 +16,39 @@ export class LoginPage implements OnInit {
   user: any;
   passwordType: string = 'password';
   passwordIcon: string = 'eye-off';
+  isChecked: any = localStorage.getItem('rememberMe');
+  username: any = localStorage.getItem('username');
 
-  constructor(private toast: ToastController,
+  constructor(
     private authService: AuthService,
     private router: Router,
     private formBuilder: FormBuilder,
-    public loader: LoaderService,
-    public network: Network) {
-    
-    this.loginForm = formBuilder.group({
+    public loader: LoaderService) {
+    this.loginForm = this.formBuilder.group({
       email: ['', Validators.compose([Validators.required])],
       password: ['', Validators.compose([Validators.required])],
     });
+    
   }
+
 
   ngOnInit() {
     // this.hideShowPassword();
   }
+  checkBox(ev) {
+    this.isChecked = ev.detail.checked;
+    if (this.isChecked) {
+      localStorage.setItem('remeberMe', ev.detail.checked);
+      // console.log('i will save the value', this.isChecked);
+    } else {
+      localStorage.removeItem('remeberMe');
+      // console.log('I will remove the value', this.isChecked);
+    }
 
+  }
   hideShowPassword() {
-    // console.log('password click');
     this.passwordType = this.passwordType === 'text' ? 'password' : 'text';
     this.passwordIcon = this.passwordIcon === 'eye-off' ? 'eye' : 'eye-off';
-    // console.log(this.passwordType);
-
   }
 
   validateAllFormFields(formGroup: FormGroup) {
@@ -66,24 +74,20 @@ export class LoginPage implements OnInit {
         username: this.loginForm.value.email,
         password: this.loginForm.value.password
       }).subscribe(user => {
-        console.log(JSON.stringify(user));
+        // console.log(JSON.stringify(user));
         //hide loader and navigate to dash board Page
         this.user = user;
+        // localStorage.setItem('username', this.loginForm.value.email);
         this.loader.hideLoader();
-        this.router.navigate(['/tabs/tab1'])
+        this.router.navigate(['/tabs/tab1']);
+
       }, error => {
-        console.log('Error now: ' + error.message);
+        // console.log('Error: ' + JSON.stringify(error.error.error));
+        this.loader.presentToast(error.error.error);
         this.loader.hideLoader();
-        this.presentToast('Opps Server Error Check you Network Connectivity!');
+
       });
   }
 
-  async presentToast(message) {
-    const toast = await this.toast.create({
-      message: message,
-      duration: 2000
-    });
-    await toast.present();
-  }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-tab4',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class Tab4Page implements OnInit {
 
-  constructor() { }
+  constructor(public nav:NavController) { }
 
   ngOnInit() {
   }
 
+  logOut(){
+    localStorage.removeItem('TOKEN');
+    this.nav.navigateRoot(['/login']);
+  }
 }

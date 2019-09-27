@@ -3,50 +3,56 @@
     <ion-title>login</ion-title>
   </ion-toolbar>
 </ion-header> -->
-
-<div class="back-style">
+<ion-content padding>
   <div class="logo">
     <img src="assets/logo.svg" />
     <h5 class="text-login">Login to access Dashboard</h5>
   </div>
-  <!--Body-->
-    <!-- Dots -->
-    <!-- <ion-spinner name="dots" *ngIf="isLoading"></ion-spinner> -->
   <form [formGroup]=loginForm>
-    <div class="container" padding>
+    <div class="containers" padding>
       <ion-item class="transparent">
 
         <ion-label position="floating">
           <ion-icon item-left name="person"> </ion-icon>
-          Username
+          Username 
         </ion-label>
-        <ion-input type="text" formControlName="email"
+        <ion-input type="text" formControlName="email" 
           [class.invalid]="!loginForm.controls.email.valid && (loginForm.controls.email.dirty || submitAttempt)">
         </ion-input>
       </ion-item>
 
       <ion-item class="transparent">
         <ion-label position="floating">
-          <ion-icon item-left name="finger-print" item-right> </ion-icon>
+          <ion-icon item-left name="lock" item-right> </ion-icon>
           Password
         </ion-label>
-        <ion-input [type]="passwordType" formControlName="password"  #passwordinput clearOnEdit="false"
-         [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.dirty || submitAttempt)">
+        <ion-input [type]="passwordType" formControlName="password" #passwordinput clearOnEdit="false"
+          [class.invalid]="!loginForm.controls.password.valid && (loginForm.controls.password.dirty || submitAttempt)">
         </ion-input>
-        <ion-icon item-end [name]="passwordIcon" class="showPass"  (click)="hideShowPassword()" > </ion-icon>
+        <ion-icon item-end [name]="passwordIcon" (keyup)="signIn()" class="showPass" (click)="hideShowPassword()">
+        </ion-icon>
       </ion-item>
-      <!-- <p text-center>Forgot Password?</p> -->
     </div>
 
     <ion-grid text-center>
 
       <ion-row>
         <ion-col>
-          <ion-button [disabled]="loginForm.invalid" color="dark" expand="full" shape="round" fill="outline"
-            (click)="signIn()">LOGIN</ion-button>
+          <ion-button [disabled]="loginForm.invalid" color="primary" expand="full" (click)="signIn()">LOGIN
+          </ion-button>
         </ion-col>
       </ion-row>
-
+      <ion-row>
+        <!-- <ion-col >
+          <ion-item class="font-13" lines="none">
+            <ion-label>Remeber Me</ion-label>
+            <ion-checkbox color="secondary" class="check-box-margin" slot="start" checked="{{isChecked}}" (ionChange)="checkBox($event)"></ion-checkbox>
+          </ion-item>
+        </ion-col> -->
+        <ion-col>
+          <p text-right class="font-13" style="padding-top: 8px;">Forgot Password?</p>
+        </ion-col>
+      </ion-row>
     </ion-grid>
   </form>
-</div>
+</ion-content>

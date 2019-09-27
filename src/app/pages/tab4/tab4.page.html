@@ -1,12 +1,17 @@
-<div class="header" fixed ion-fixed>
-  <ion-grid>
-    <ion-row class="m-t-t">
-      <ion-col>
-        <span>More</span>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
-</div>
+<!-- start header  -->
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      <ion-row>
+        <ion-col size="3">
+          <img src="assets/logo.svg" />
+        </ion-col>
+
+      </ion-row>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
   <ion-list>
     <ion-item routerLink="/service-status">
@@ -14,11 +19,16 @@
       <ion-icon name="switch"></ion-icon>
       <ion-label>Service Status</ion-label>
     </ion-item>
-    <ion-item routerLink="/service-status">
-      <!--Basic: auto-select the icon based on the platform -->
-      <ion-icon name="information-circle"></ion-icon>
-      <ion-label>About</ion-label>
-    </ion-item>
   </ion-list>
-
+  <ion-footer style="position: absolute; bottom: 0px;">
+    <ion-toolbar>
+      <ion-list color="primary">
+        <ion-item (click)="logOut()">
+          <!--Basic: auto-select the icon based on the platform -->
+          <ion-icon name="log-out"></ion-icon>
+          <ion-label>Log Out</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

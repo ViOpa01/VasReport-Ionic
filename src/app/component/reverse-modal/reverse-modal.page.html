@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="font-size: 11px; color: #696464 ">
+      <div class="left">
+        <p class="title-head">{{channel}}</p>
+        <p>{{ channel }}</p>
+      </div>
+      <div class="right" (click)="closeReversedModal()">
+        <span>
+          <ion-icon name="close" item-end class="round"></ion-icon>
+        </span>
+      </div>
+
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="content-style" padding>
+  <ion-grid>
+    <ion-row>
+      <span class="head">Product Details</span>
+    </ion-row>
+
+    <div class="pad-5">
+      <ion-row>
+        <ion-col size="8">Terminal ID</ion-col>
+        <ion-col class="weight">{{terminalId}}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="8">Amount</ion-col>
+        <ion-col class="weight">&#8358;{{amount}}</ion-col>
+      </ion-row>
+    </div>
+
+    <div class="pad-5">
+
+      <ion-row>
+        <ion-col size="8">Channel</ion-col>
+        <ion-col class="weight">{{channel}}</ion-col>
+      </ion-row>
+
+      <ion-row style="line-height: 0px;">
+        <ion-col size="4">Reference</ion-col>
+        <ion-col class="weight" style="line-height: 10px;">{{reference}}</ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8">Sequence</ion-col>
+        <ion-col class="weight">{{sequence}}</ion-col>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-col size="8">Date</ion-col>
+        <ion-col class="weight">{{date}}</ion-col>
+      </ion-row>
+    </div>
+
+  </ion-grid>
+</ion-content>

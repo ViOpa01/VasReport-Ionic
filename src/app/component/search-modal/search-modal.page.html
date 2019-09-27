@@ -1,73 +1,109 @@
 <ion-content padding>
     <form [formGroup]="searchForm">
         <ion-grid>
-            <span>Select Date</span>
-            <ion-row>
-                <ion-col size="3">
-                    <span (click)="getDate('today')">
-                        <ion-badge color="primary">Today</ion-badge>
-                    </span>
+            <span class="search-title">Search By</span>
+            <ion-row class="margin-top">
+                <ion-col class="select-form">
+                    <ion-select value="select" style="text-transform: capitalize" okText="Okay" cancelText="Dismiss"
+                        class="no-pad-input" (ionChange)="getFilter($event)">
+                        <ion-select-option value="select">Select transaction</ion-select-option>
+                        <ion-select-option value="{{ item }}" *ngFor="let item of filterArray">
+                            {{ item.toLocaleUpperCase() }}
+                        </ion-select-option>
+                    </ion-select>
                 </ion-col>
-                <ion-col size="4">
-                    <span (click)="getDate('yesterday')">
-                        <ion-badge color="secondary">Yesterday</ion-badge>
-                    </span>
+                <ion-col class="select-input">
+                    <ion-input typ="text" class="no-pad-input position" formControlName="filter"
+                        [(ngModel)]="filterValue"></ion-input>
+                </ion-col>
+            </ion-row>
+            <ion-row class="margin-top">
+                <ion-col>
+                    <ion-datetime class="date-style date-pad" placeholder="Start Date" displayFormat="YYYY/MM/DD"
+                        max="{{ deafaultDateTwo }}" (ionChange)="startDate($event)" [(ngModel)]="deafaultDateOne"
+                        formControlName="start">
+                    </ion-datetime>
                 </ion-col>
                 <ion-col>
-                    <span (click)="openCalendar()">
-                        <ion-badge color="primary">Custom Date</ion-badge>
-                    </span>
+                    <ion-datetime class="date-style date-pad" placeholder="End Date" displayFormat="YYYY/MM/DD"
+                        max="{{ deafaultDateTwo }}" min="{{ deafaultDateTwo }}" (ionChange)="endDate($event)"
+                        [(ngModel)]="deafaultDateTwo" formControlName="end"></ion-datetime>
                 </ion-col>
             </ion-row>
             <ion-row>
-                <ion-col>
-                    <ion-item>
-                        <ion-label position="floating">Terminal ID</ion-label>
-                        <ion-input formControlName="terminalId"></ion-input>
-                    </ion-item>
-                </ion-col>
-                <ion-col>
-                    <ion-item>
-                        <ion-label position="floating">Agent ID</ion-label>
-                        <ion-input formControlName="walletId"></ion-input>
-                    </ion-item>
+                <ion-col class="font-13">
+                    <span>Filter By: </span><span style="color: #aaaaaa"> Optional</span>
                 </ion-col>
             </ion-row>
-            <ion-row>
-                <ion-col>
-                    <ion-item>
-                        <ion-label position="floating">Terminal ID</ion-label>
-                        <ion-input></ion-input>
-                    </ion-item>
-                </ion-col>
-                <ion-col>
-                    <ion-item>
-                        <ion-label position="floating">Agent ID</ion-label>
-                        <ion-input></ion-input>
-                    </ion-item>
+            <ion-row class="margin-top">
+                <ion-col class="select-form-others" text-center>
+                    <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+                        (ionChange)="getChannel($event)">
+                        <ion-select-option value="select">Select Channel</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of channelArray">
+                            {{ item.toLocaleUpperCase() }}
+                        </ion-select-option>
+                    </ion-select>
                 </ion-col>
             </ion-row>
-            <ion-row>
-                <ion-col>
-                    <ion-item>
-                        <ion-label position="floating">Terminal ID</ion-label>
-                        <ion-input></ion-input>
-                    </ion-item>
-                </ion-col>
-                <ion-col>
-                    <ion-item>
-                        <ion-label position="floating">Agent ID</ion-label>
-                        <ion-input></ion-input>
-                    </ion-item>
+            <ion-row class="margin-top">
+                <ion-col class="select-form-others" text-center>
+                    <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+                        (ionChange)="getType($event)">
+                        <ion-select-option value="select">Select Type</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of TypeArray">{{ item }}
+                        </ion-select-option>
+                    </ion-select>
                 </ion-col>
             </ion-row>
-            <ion-row>
+            <ion-row class="margin-top">
+                <ion-col class="select-form-others" text-center>
+                    <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+                        (ionChange)="getProduct($event)">
+                        <ion-select-option value="select">Select Product</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of productArray">
+                            {{ item.toLocaleUpperCase() }}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-col>
+            </ion-row>
+            <ion-row class="margin-top">
+                <ion-col class="select-form-others" text-center>
+                    <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+                        (ionChange)="getMethod($event)">
+                        <ion-select-option value="select">Select Method</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of paymentMethodArray">
+                            {{ item.toLocaleUpperCase() }}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-col>
+            </ion-row>
+
+            <ion-row class="margin-top">
+                <ion-col class="select-form-others" text-center>
+                    <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+                        (ionChange)="getVendor($event)">
+                        <ion-select-option value="select">Select Vendor</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of vendorArray">
+                            {{ item.toLocaleUpperCase() }}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-col>
+            </ion-row>
+            <ion-row class="margin-top">
+                <ion-col class="select-form-others" text-center>
+                    <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+                        (ionChange)="getVendor($event)">
+                        <ion-select-option value="select">Select Vendor Type</ion-select-option>
+                        <ion-select-option value="{{item }}" *ngFor="let item of vendorTypeArray">
+                            {{ item.toLocaleUpperCase() }}
+                        </ion-select-option>
+                    </ion-select>
+                </ion-col>
+            </ion-row>
+            <ion-row class="margin-top">
                 <ion-col>
-                    <ion-button fill="outline" expand="full" (click)="searchTrans()">
-                        <!-- Advanced: explicity set the icon for each platform -->
-                        <ion-icon ios="ios-search" md="md-search"></ion-icon>
-                        Search
-                    </ion-button>
+                    <ion-button expand="full" (click)="searchTrans()">Search</ion-button>
                 </ion-col>
             </ion-row>
         </ion-grid>

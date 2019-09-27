@@ -1,0 +1,68 @@
+<ion-content padding>
+  <form [formGroup]="searchForm">
+    <ion-grid>
+      <span class="search-title">Search By</span>
+      <ion-row class="margin-top">
+        <ion-col>
+          <ion-datetime class="date-style date-pad" placeholder="Start Date" displayFormat="YYYY/MM/DD"
+            max="{{ deafaultDateTwo }}" (ionChange)="startDate($event)" [(ngModel)]="deafaultDateOne" formControlName="start">
+          </ion-datetime>
+        </ion-col>
+        <ion-col>
+          <ion-datetime class="date-style date-pad" placeholder="End Date" displayFormat="YYYY/MM/DD"
+            max="{{ deafaultDateTwo }}" min="{{ deafaultDateTwo }}" (ionChange)="endDate($event)" [(ngModel)]="deafaultDateTwo"
+            formControlName="end"></ion-datetime>
+        </ion-col>
+      </ion-row>
+      <ion-row class="margin-top">
+        <ion-item>
+          <ion-label position="floating">Terminal Id</ion-label>
+          <ion-input formControlName="terminalID"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Agent Id</ion-label>
+          <ion-input formControlName="agentId"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Transaction Reference</ion-label>
+          <ion-input formControlName="transRef"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Sequence Number</ion-label>
+          <ion-input formControlName="seqNum"></ion-input>
+        </ion-item>
+      </ion-row>
+      <ion-row class="margin-top">
+        <ion-col class="select-form-others" text-center>
+          <ion-select value="select" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+            (ionChange)="getProduct($event)">
+            <ion-select-option value="select">Select Product</ion-select-option>
+            <ion-select-option value="{{item }}" *ngFor="let item of productArray" style="text-transform: capitalize">
+              {{ item.toLocaleUpperCase() }}
+            </ion-select-option>
+          </ion-select>
+        </ion-col>
+      </ion-row>
+      
+      <ion-row class="margin-top">
+          <ion-col class="select-form-others" text-center>
+            <ion-select value="status" okText="Okay" cancelText="Dismiss" class="no-pad-input"
+              (ionChange)="getProduct($event)">
+              <ion-select-option value="status">Status</ion-select-option>
+              <ion-select-option value="{{item }}" *ngFor="let item of statusArray">
+                {{ item.toLocaleUpperCase() }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+        </ion-row>
+      <ion-row class="margin-top">
+        <ion-col>
+          <ion-button expand="full" (click)="searchTrans()">Search</ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+
+
+
+</ion-content>
