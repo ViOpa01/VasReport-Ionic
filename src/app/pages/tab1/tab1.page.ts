@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { Platform, NavController } from '@ionic/angular';
-import { Router } from '@angular/router';
-import { LoaderService } from 'src/app/services/loader.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { interval, Subscription} from 'rxjs';
 
 @Component({
@@ -12,9 +8,6 @@ import { interval, Subscription} from 'rxjs';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page implements OnInit {
-
-  querySuccess: any;
-  queryFailed: any;
 
   //loading and data check for summary
   isLoadingSummary: boolean;
@@ -42,27 +35,25 @@ export class Tab1Page implements OnInit {
 
 
   //response holder for success and  fail 
-  responseSuccess: any;
-  responseFail: any;
+  responseCurrent: any;
+  responsePrevious: any;
 
-  previousSuccess: any = null;
-  previousFailed: any = null;
   previousTotal: any = null;
 
   //response holder for success and  fail count
-  successCount: any;
-  failCount: any;
+  successCountCurrent: any;
+  failCountCurrent: any;
 
   //response holder for success and  fail  amount
-  successAmount: any = null;
-  failAmount: any = null;
+  successAmountCurrent: any = null;
+  failAmountCurrent: any = null;
 
   //percentage change
   percentChange: any = null;
 
   //response holder for success and  fail  percentage
-  successPercent: any;
-  failPercent: any;
+  successPercentCurrent: any;
+  failPercentCurrent: any;
 
   //second tab button to determin the logic
   second: any;
@@ -74,8 +65,8 @@ export class Tab1Page implements OnInit {
   firstStyle: any;
 
   //total amount and count
-  totalAmount: any = null;
-  totalCount: any;
+  totalAmountCurrent: any;
+  totalCountCurrent: any;
 
   //previous
   isPresent: boolean;
@@ -97,13 +88,8 @@ export class Tab1Page implements OnInit {
     loop: false
   };
 
-  backButtonSubscription;
-  constructor(public dashboardService: DashboardService,
-    public platform: Platform,
-    public router: Router,
-    public loader: LoaderService,
-    public nav: NavController,
-    public authService: AuthService) {
+  
+  constructor(public dashboardService: DashboardService) {
   }
 
 
@@ -204,7 +190,6 @@ export class Tab1Page implements OnInit {
     this.secondDate = event;
     this.secondStyle = 1;
     this.firstStyle = 0;
-    console.log('second Tab test: ' + event);
     if (event) {
       this.secondDate = event;
       console.log('second Parameter : ' + this.secondDate);
@@ -216,7 +201,6 @@ export class Tab1Page implements OnInit {
     }
     else if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
-      console.log('second Parameter present : ' + this.secondDate);
       await this.getSummary(this.secondDate.replace(" ", "_").toLowerCase());
       await this.getTopfiveChannel(this.secondDate.replace(" ", "_").toLowerCase(), 'channels', this.channelArray);
       await this.getTopfiveProduct(this.secondDate.replace(" ", "_").toLowerCase(), 'products', this.productArray);
@@ -224,54 +208,43 @@ export class Tab1Page implements OnInit {
 
     }
     this.isPresent = false;
-    console.log('present : ' + this.isPresent);
   }
   getSummary(date) {
     this.isLoadingSummary = true;
     this.isPresent = true;
     this.isDataSummary = false;
     // let present:boolean = tru
-
-    this.previousTotal = null;
-    this.dashboardService.summary(date).subscribe(resposeList => {
+    this.dashboardService.summary_V2(date).subscribe(resposeList => {
 
       this.isLoadingSummary = false;
       this.isDataSummary = true;
-      this.responseSuccess = resposeList[0];
-      this.responseFail = resposeList[1];
-
-      this.previousSuccess = resposeList[2];
-      this.previousFailed = resposeList[3];
+      this.responseCurrent = resposeList[0];
+      this.responsePrevious = resposeList[1];
 
       //summary of the data for success and fail
-      this.successCount = parseInt(this.responseSuccess.data.count);
-      this.failCount = parseInt(this.responseFail.data.count);
+      this.successCountCurrent = parseInt(this.responseCurrent.data.successfulCount);
+      this.failCountCurrent = parseInt(this.responseCurrent.data.failedCount);
 
       //summary of the data for success and fail
-      this.successAmount = parseFloat(this.responseSuccess.data.amount);
-      this.failAmount = parseFloat(this.responseFail.data.amount);
+      this.successAmountCurrent = parseFloat(this.responseCurrent.data.successfulAmount)/100;
+      this.failAmountCurrent = parseFloat(this.responseCurrent.data.failedAmount)/100;
 
       //output response to display
-      this.totalCount = (this.successCount + this.failCount);
-      this.totalAmount = parseFloat(this.successAmount + this.failAmount);
+      this.totalCountCurrent = this.responseCurrent.data.transactionCount;
+      this.totalAmountCurrent = this.responseCurrent.data.totalAmount/100;
 
 
       //summary of the data for success and fail
-      this.successPercent = (this.successCount / this.totalCount);
-      this.failPercent = (this.failCount / this.totalCount);
+      this.successPercentCurrent = this.responseCurrent.data.successfulPercent;
+      this.failPercentCurrent = this.responseCurrent.data.failedPercent;
 
       //summary of the data for previous  success and fail
 
-      // console.log('end previous success : ' , this.previousSuccess);
-      // console.log('end previous fail : ' , this.previousFailed);
-      // console.log('end present total : ' , this.totalAmount);
+      const previousAmountSuccess = parseFloat(this.responsePrevious.data.successfulAmount);
+      const previousAmountFailed = parseFloat(this.responsePrevious.data.failedAmount);
+      this.previousTotal = previousAmountSuccess + previousAmountFailed/100;
 
-      const previousSuccess = parseFloat(this.previousSuccess.data.amount);
-      const previousFailed = parseFloat(this.previousFailed.data.amount);
-      this.previousTotal = previousSuccess + previousFailed;
-
-      this.percentChange = ((this.totalAmount - this.previousTotal) / this.previousTotal);
-
+      this.percentChange = ((this.totalAmountCurrent - this.previousTotal) / this.previousTotal);
 
     }, error => {
       this.isLoadingSummary = false;

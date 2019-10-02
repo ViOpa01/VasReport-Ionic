@@ -93,10 +93,10 @@
             </div>
             <ion-row class="font-11" *ngIf="isDataSummary">
               <ion-col>
-                <span *ngIf="!isLoadingSummary">{{totalCount | thousandSuff }}</span> Transaction
+                <span *ngIf="!isLoadingSummary">{{totalCountCurrent | thousandSuff }}</span> Transaction
               </ion-col>
               <ion-col offset="3" class="mega-money">
-                <span class="mega">&#8358; {{ totalAmount | thousandSuff :1 }}</span>
+                <span class="mega">&#8358; {{ totalAmountCurrent | thousandSuff :1 }}</span>
               </ion-col>
             </ion-row>
             <span *ngIf="!isDataSummary" class="no-data-overall">No Data Available</span>
@@ -117,7 +117,7 @@
                     <ion-col>
                       <div class="success circle">
                         <span
-                          class="text-position">{{ successPercent ==  undefined  ?  '' : successPercent | percent }}</span>
+                          class="text-position">{{ successPercentCurrent ==  undefined  ?  '' : successPercentCurrent + '%' }}</span>
                       </div>
                     </ion-col>
                   </ion-row>
@@ -130,11 +130,11 @@
                 </div>
                 <ion-row class="font-11 pull-left" style="margin-top:30px;" *ngIf="isDataSummary">
                   <ion-col size="6">
-                    <span *ngIf="!isLoadingSummary"> {{successCount | thousandSuff}} Trans</span>
+                    <span *ngIf="!isLoadingSummary"> {{successCountCurrent | thousandSuff}} Trans</span>
                   </ion-col>
                   <ion-col size="6">
                     <span text-right class="text-money-position" *ngIf="!isLoadingSummary">&#8358;
-                      {{ successAmount | thousandSuff :1  }}</span>
+                      {{ successAmountCurrent | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
                 <!-- <span *ngIf="!isDataSummary" class="no-data">No Data Available</span> -->
@@ -153,7 +153,7 @@
                     <ion-col>
                       <div class="danger-bg circle">
                         <span
-                          class="text-position">{{ failPercent ==  undefined  ?  '' : failPercent | percent }}</span>
+                          class="text-position">{{ failPercentCurrent ==  undefined  ?  '' : failPercentCurrent  + '%' }}</span>
                       </div>
                     </ion-col>
                   </ion-row>
@@ -166,11 +166,11 @@
                 </div>
                 <ion-row class="font-11 pull-left" style="margin-top:30px;">
                   <ion-col size="6">
-                    <span *ngIf="!isLoadingSummary"> {{failCount | thousandSuff}} Trans</span>
+                    <span *ngIf="!isLoadingSummary"> {{failCountCurrent | thousandSuff}} Trans</span>
                   </ion-col>
                   <ion-col size="6">
                     <span text-right class="text-money-position" *ngIf="!isLoadingSummary">&#8358;
-                      {{ failAmount | thousandSuff :1  }}</span>
+                      {{ failAmountCurrent | thousandSuff :1  }}</span>
                   </ion-col>
                 </ion-row>
                 <!-- <span *ngIf="!isDataSummary" class="no-data">No Data Available</span> -->

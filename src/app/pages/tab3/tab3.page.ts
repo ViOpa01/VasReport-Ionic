@@ -48,7 +48,7 @@ export class Tab3Page {
 
     await this.reversedService.getReversedTransactions(payload, page).subscribe(data => {
       this.isDataTransaction = true;
-      // console.log('data: ' + data.data.totalCount)
+      console.log('data: ' + data.data.totalCount)
       this.isLoadingTransaction = false;
       this.reveres = data.data.transactions;
       this.reversedAmount = data.data.reversedAmount;

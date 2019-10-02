@@ -23,8 +23,6 @@ export class Tab2Page implements OnInit {
   isLoadingSummary: boolean;
 
   trans: any;
-  isSummaryData: any;
-
 
   summaryTotalCount: any;
   summaryTotalAmount: any;
@@ -40,12 +38,6 @@ export class Tab2Page implements OnInit {
   uniqueUser: any;
 
   page: any = 1;
-  // dateRange: any;
-
-  private subs: any;
-  dataSocket: any[];
-
-  notFound: boolean;
 
   DateObj = new Date();
   dateRange = (String)(this.DateObj.getFullYear() + '/' + (this.DateObj.getMonth() + 1) + '/' + this.DateObj.getDate());
@@ -107,9 +99,8 @@ export class Tab2Page implements OnInit {
 
     //socket data comming from server
     setTimeout(() => {
-      console.log('for socket data');
       this.getSocketData();
-    }, 3000);
+    }, 5000);
   }
 
   exportAsXLSX(): void {
@@ -121,7 +112,6 @@ export class Tab2Page implements OnInit {
     await this.transService.getTransactionsDetails(this.payloadDownload, this.page).subscribe(
       response => {
         const data = response.data.transactions;
-        // console.log('download data : ', data);
         this.excelService.exportAsExcelFile(data, `Itex Report for ${this.payloadDownload.dateRange}`);
         this.toast.hideLoader();
       }, error => {
@@ -135,7 +125,6 @@ export class Tab2Page implements OnInit {
   async getSocketData() {
     this.socket.connect();
     await this.socket.getMessage().subscribe((Socketdata: any) => {
-      console.log("this is socket data", Socketdata.data)
       this.trans.unshift(Socketdata.data);
 
       if (Socketdata.data.status == "failed") {
@@ -149,7 +138,6 @@ export class Tab2Page implements OnInit {
         this.summaryTotalCount = this.summaryTotalCount + 1;
         this.summarySuccessCount = this.summarySuccessCount + 1;
       }
-      console.log(`transactions ${this.trans.length}`);
     });
   }
 
@@ -159,11 +147,8 @@ export class Tab2Page implements OnInit {
 
     await this.transService.getTransactionsDetails(payload, page).subscribe(data => {
       this.isDataTransaction = true;
-      // console.log('data: ' + data.data.totalCount)
       this.isLoadingTransaction = false;
       this.trans = data.data.transactions;
-      // console.log(this.trans);
-      // console.log(this.trans)
     }, error => {
       this.isDataTransaction = false;
       this.isLoadingTransaction = false;
@@ -197,7 +182,6 @@ export class Tab2Page implements OnInit {
       // unique user count
       this.uniqueUser = data.data.usersCount;
 
-      console.log(this.uniqueUser)
     }, error => {
       this.isDataTransaction = false;
       this.isLoadingTransaction = false;
@@ -207,7 +191,6 @@ export class Tab2Page implements OnInit {
 
 
   async detailsModal(info) {
-    console.log(info)
     const detailsmodal = await this.modalController.create({
       component: InfoModalPage,
       cssClass: 'select-modal-details',
@@ -246,8 +229,6 @@ export class Tab2Page implements OnInit {
       // this.trans = data.data;
       this.socket.disconnect();
       if (data.data != undefined) {
-        // console.log(data);
-        console.log((data.data));
         this.transactionSummary(data.data);
         this.transactionDetails(data.data, this.page);
       }
@@ -258,10 +239,8 @@ export class Tab2Page implements OnInit {
 
   doRefresh(event) {
     setTimeout(() => {
-      console.log('Async operation has ended');
       this.transactionDetails(this.payload, this.page = 1);
       this.transactionSummary(this.payload);
-      // console.log(`current page is : ${this.page}`)
       this.getSocketData();
       event.target.complete();
 
@@ -270,10 +249,8 @@ export class Tab2Page implements OnInit {
 
   loadMoreTrans(event) {
     setTimeout(() => {
-      console.log('Begin async operation');
       this.page = this.page + 1;
       this.transactionDetails(this.payload, this.page);
-      console.log(`current page is : ${this.page}`)
       event.target.complete();
     }, 500);
   }
