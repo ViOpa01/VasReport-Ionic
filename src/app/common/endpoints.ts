@@ -4,6 +4,8 @@ const  BASE_URL = environment.production ? "http://197.253.19.76:6200/api/v1" : 
 const auth = `${BASE_URL}/auth`;
 const summary = `${BASE_URL}/summary`;
 const summary_V2 = `${BASE_URL}/transaction/dashboard`;
+
+const top5 = `${BASE_URL}/transaction/top5`;
 export const Endpoint = {
     AUTH: {
         login: `${auth}/login`,
@@ -19,6 +21,13 @@ export const Endpoint = {
      
     SUMMARY_V2: {
         url:  `${summary_V2}/`,
+    },
+
+    
+    TOP5: {
+        PRODUCT:  `${top5}/product/`,
+        CHANNEL:  `${top5}/channel/`,
+        PAYMENT:  `${top5}/payment/`,
     },
 
     BASE_URL: {

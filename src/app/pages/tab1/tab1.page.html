@@ -215,7 +215,7 @@
                     <div *ngFor="let menu of outputChannel">
                       <ion-row class="weight">
                         <ion-col size="4" class="font-11 table" text-left>{{menu.name }}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.success | thousandSuff }}</ion-col>
                         <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
                         <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
                       </ion-row>
@@ -251,7 +251,7 @@
                     <div *ngFor="let menu of outputProduct">
                       <ion-row class="weight">
                         <ion-col size="4" class="font-11 table" text-left style="font-size: 8px;">{{menu.name }}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.success | thousandSuff }}</ion-col>
                         <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
                         <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
                       </ion-row>
@@ -288,9 +288,9 @@
                     <div *ngFor="let menu of outputPayment">
                       <ion-row class="weight">
                         <ion-col size="4" class="font-11 table" text-left style="font-size: 8px;">{{menu.name}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.successful | thousandSuff}}</ion-col>
-                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff}}</ion-col>
-                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff}}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.success | thousandSuff }}</ion-col>
+                        <ion-col size="3" class="font-11 table">{{menu.failed | thousandSuff }}</ion-col>
+                        <ion-col size="2" class="font-11 table">{{menu.total | thousandSuff }}</ion-col>
                       </ion-row>
                     </div>
 

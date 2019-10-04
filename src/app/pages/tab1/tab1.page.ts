@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DashboardService } from '../../services/dashboard.service';
-import { interval, Subscription} from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -76,10 +76,11 @@ export class Tab1Page implements OnInit {
 
   outputChannel: any[] = [];
   outputProduct: any[] = [];
+  outputProductArray: any[] = [];
   outputPayment: any[] = [];
 
   //refreh the page after every 15 minutes
-  refresh:Subscription;
+  refresh: Subscription;
 
   sliderConfig = {
     slidesPerView: 1.7,
@@ -88,7 +89,7 @@ export class Tab1Page implements OnInit {
     loop: false
   };
 
-  
+
   constructor(public dashboardService: DashboardService) {
   }
 
@@ -100,21 +101,21 @@ export class Tab1Page implements OnInit {
   channelArray: any = ['POS', 'WEB', 'ANDROID', 'ANDROIDPOS', 'ATM', 'DEFAULT', 'OTHERS'];
   paymentMethodArray: any = ['CARD', 'MCARD', 'CASH'];
 
-  async ngOnInit() {
-    await this.defaultData(this.date);
-    await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
-    await this.getTopfiveProduct(this.date, 'products', this.productArray);
-    await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
+  ngOnInit() {
+    this.defaultData(this.date);
+    this.getTopfiveChannel(this.date);
+    this.getTopfiveProduct(this.date);
+    this.getTopfivePayment(this.date);
 
     this.channelHeader = ['Channel', 'Success', 'Fail', 'Total'];
     this.productHeader = ['Product', 'Success', 'Fail', 'Total'];
     this.paymentHeader = ['Payment', 'Success', 'Fail', 'Total'];
-    
-    this.refresh = interval(15* 60*1000).subscribe(() => {
-       this.defaultData(this.date);
-       this.getTopfiveChannel(this.date, 'channels', this.channelArray);
-       this.getTopfiveProduct(this.date, 'products', this.productArray);
-       this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
+
+    this.refresh = interval(15 * 60 * 1000).subscribe(() => {
+      this.defaultData(this.date);
+      // this.getTopfiveChannel(this.date);
+      this.getTopfiveProduct(this.date);
+      // this.getTopfivePayment(this.date);
 
     })
     // console.log(this.productArray.length);
@@ -131,7 +132,7 @@ export class Tab1Page implements OnInit {
 
   async optionsFn(event) {
     this.date = event;
-    console.log
+    console.log(this.date)
     this.secondStyle = 0;
     this.firstStyle = 1;
     this.isPresent = true;
@@ -141,23 +142,23 @@ export class Tab1Page implements OnInit {
       this.second = 'Yesterday';
       //logic to fetch the data for today and yesterday
       await this.getSummary(this.date.toLowerCase());
-      await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.date, 'products', this.productArray);
-      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.date);
+      await this.getTopfiveProduct(this.date);
+      await this.getTopfivePayment(this.date);
     } else if (this.date == 'Week') {
       this.second = 'Last Week';
       //logic to fetch the data for current week and Last Week
       await this.getSummary(this.date.toLowerCase());
-      await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.date, 'products', this.productArray);
-      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.date);
+      await this.getTopfiveProduct(this.date);
+      await this.getTopfivePayment(this.date);
     } else if (this.date == 'Month') {
       this.second = 'Last Month';
       //logic to fetch the data for current month  and last month
       await this.getSummary(this.date.toLowerCase());
-      await this.getTopfiveChannel(this.date, 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.date, 'products', this.productArray);
-      await this.getTopfivePayment(this.date, 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.date);
+      await this.getTopfiveProduct(this.date);
+      await this.getTopfivePayment(this.date);
     }
     console.log('present : ' + this.isPresent);
   }
@@ -170,23 +171,24 @@ export class Tab1Page implements OnInit {
 
     if (event) {
       await this.getSummary(event.toLowerCase());
-      await this.getTopfiveChannel(this.firstdDate, 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.firstdDate, 'products', this.productArray);
-      await this.getTopfivePayment(this.firstdDate, 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.firstdDate);
+      await this.getTopfiveProduct(this.firstdDate);
+      await this.getTopfivePayment(this.firstdDate);
 
     }
     if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
       await this.getSummary(this.secondDate.toLowerCase());
-      await this.getTopfiveChannel(this.secondDate, 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.secondDate, 'products', this.productArray);
-      await this.getTopfivePayment(this.secondDate, 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.secondDate);
+      await this.getTopfiveProduct(this.secondDate);
+      await this.getTopfivePayment(this.secondDate);
 
     }
     console.log('present : ' + this.isPresent);
   }
 
   async  secondTabClick(event) {
+    console.log('second Parameter : ' + event);
     this.secondDate = event;
     this.secondStyle = 1;
     this.firstStyle = 0;
@@ -194,17 +196,17 @@ export class Tab1Page implements OnInit {
       this.secondDate = event;
       console.log('second Parameter : ' + this.secondDate);
       await this.getSummary(this.secondDate.replace(" ", "_").toLowerCase());
-      await this.getTopfiveChannel(this.secondDate.replace(" ", "_").toLowerCase(), 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.secondDate.replace(" ", "_").toLowerCase(), 'products', this.productArray);
-      await this.getTopfivePayment(this.secondDate.replace(" ", "_").toLowerCase(), 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.secondDate.replace(" ", "_").toLowerCase());
+      await this.getTopfiveProduct(this.secondDate.replace(" ", "_").toLowerCase());
+      await this.getTopfivePayment(this.secondDate.replace(" ", "_").toLowerCase());
 
     }
     else if (this.secondDate == null || this.secondDate == undefined) {
       this.secondDate = 'Yesterday';
       await this.getSummary(this.secondDate.replace(" ", "_").toLowerCase());
-      await this.getTopfiveChannel(this.secondDate.replace(" ", "_").toLowerCase(), 'channels', this.channelArray);
-      await this.getTopfiveProduct(this.secondDate.replace(" ", "_").toLowerCase(), 'products', this.productArray);
-      await this.getTopfivePayment(this.secondDate.replace(" ", "_").toLowerCase(), 'payments', this.paymentMethodArray);
+      await this.getTopfiveChannel(this.secondDate.replace(" ", "_").toLowerCase());
+      await this.getTopfiveProduct(this.secondDate.replace(" ", "_").toLowerCase());
+      await this.getTopfivePayment(this.secondDate.replace(" ", "_").toLowerCase());
 
     }
     this.isPresent = false;
@@ -221,17 +223,19 @@ export class Tab1Page implements OnInit {
       this.responseCurrent = resposeList[0];
       this.responsePrevious = resposeList[1];
 
+      // console.log(this.responsePrevious);
+      
       //summary of the data for success and fail
       this.successCountCurrent = parseInt(this.responseCurrent.data.successfulCount);
       this.failCountCurrent = parseInt(this.responseCurrent.data.failedCount);
 
       //summary of the data for success and fail
-      this.successAmountCurrent = parseFloat(this.responseCurrent.data.successfulAmount)/100;
-      this.failAmountCurrent = parseFloat(this.responseCurrent.data.failedAmount)/100;
+      this.successAmountCurrent = parseFloat(this.responseCurrent.data.successfulAmount);
+      this.failAmountCurrent = parseFloat(this.responseCurrent.data.failedAmount);
 
       //output response to display
       this.totalCountCurrent = this.responseCurrent.data.transactionCount;
-      this.totalAmountCurrent = this.responseCurrent.data.totalAmount/100;
+      this.totalAmountCurrent = this.responseCurrent.data.totalAmount;
 
 
       //summary of the data for success and fail
@@ -242,7 +246,7 @@ export class Tab1Page implements OnInit {
 
       const previousAmountSuccess = parseFloat(this.responsePrevious.data.successfulAmount);
       const previousAmountFailed = parseFloat(this.responsePrevious.data.failedAmount);
-      this.previousTotal = previousAmountSuccess + previousAmountFailed/100;
+      this.previousTotal = previousAmountSuccess + previousAmountFailed / 100;
 
       this.percentChange = ((this.totalAmountCurrent - this.previousTotal) / this.previousTotal);
 
@@ -253,45 +257,22 @@ export class Tab1Page implements OnInit {
     });
   }
 
-  getTopfiveChannel(date, type, arrayLength) {
+  async getTopfiveChannel(date) {
     this.isLoadingChannel = true;
     this.isDataChannel = false;
 
-    this.dashboardService.getTopFive(date, type, arrayLength).subscribe(resposeList => {
-      // console.log('This is my Response List', resposeList);
+   await  this.dashboardService.getTopFiveChannel(date).subscribe(resposeData => {
       this.isLoadingChannel = false;
       this.isDataChannel = true;
-      let halfLength = resposeList.length / 2;
+      this.outputChannel = resposeData.data.response;
 
-      let success = resposeList.splice(0, halfLength);
-      let fail = resposeList;
-      let TotalAmount: any;
-
-      for (let index = 0; index < halfLength; index++) {
-        let successVal = success[index];
-        let failedVal = fail[index];
-        let keys = arrayLength[index];
-        arrayLength.forEach(element => {
-          let pushedSuccess = {};
-          let pushedFailed = {};
-          let key = element;
-          this.arraySuccess = pushedSuccess[key] = successVal;
-          this.arrayFailed = pushedFailed[key] = failedVal;
-          TotalAmount = parseFloat(successVal.data.amount) + parseFloat(failedVal.data.amount);
-
-        });
-
-        this.outputChannel[index] = { 'name': keys, 'successful': parseFloat(successVal.data.amount), 'failed': parseFloat(failedVal.data.amount), 'total': TotalAmount };
-      }
-
-      //sort the array from the highest price to lowest price
       this.outputChannel = this.outputChannel.sort((a, b) => (a.total > b.total) ? -1 : 1);
 
       //splice the array and pick the top five
       let sortArray = this.outputChannel;
-      this.outputChannel = sortArray.splice(0, 5);
-      // console.log('channel');
-      // console.log(JSON.stringify( this.outputChannel));
+       this.outputChannel = sortArray.splice(0, 5);
+
+      // console.log('This is my Response List', this.outputChannel);
 
     }, error => {
       this.isLoadingChannel = false;
@@ -300,93 +281,44 @@ export class Tab1Page implements OnInit {
     });
   }
 
-  getTopfivePayment(date, type, arrayLength) {
+  async getTopfivePayment(date) {
     this.isLoadingPayment = true;
     this.isDataPayment = false;
 
-    this.dashboardService.getTopFive(date, type, arrayLength).subscribe(resposeList => {
-      // console.log('This is my Response List', resposeList);
+   await this.dashboardService.getTopFivePayment(date).subscribe(resposeData => {
+      // console.log('Unsort Array', resposeData.data);
       this.isLoadingPayment = false;
-      let halfLength = resposeList.length / 2;
 
-      let success = resposeList.splice(0, halfLength);
-      let fail = resposeList;
-      let TotalAmount: any;
-
-      for (let index = 0; index < halfLength; index++) {
-        let successVal = success[index];
-        let failedVal = fail[index];
-        let keys = arrayLength[index];
-        arrayLength.forEach(element => {
-          let pushedSuccess = {};
-          let pushedFailed = {};
-          let key = element;
-          this.arraySuccess = pushedSuccess[key] = successVal;
-          this.arrayFailed = pushedFailed[key] = failedVal;
-          TotalAmount = parseFloat(successVal.data.amount) + parseFloat(failedVal.data.amount);
-
-        });
-
-        this.outputPayment[index] = { 'name': keys, 'successful': parseFloat(successVal.data.amount), 'failed': parseFloat(failedVal.data.amount), 'total': TotalAmount };
-
-      }
-
-      //sort the array from the highest price to lowest price
+      this.outputPayment = resposeData.data.response;
       this.outputPayment = this.outputPayment.sort((a, b) => (a.total > b.total) ? -1 : 1);
 
       //splice the array and pick the top five
       let sortArray = this.outputPayment;
-      this.outputPayment = sortArray.splice(0, 3);
-      // console.log('Payment');
-      // console.log(JSON.stringify(this.outputPayment));
+      this.outputPayment = sortArray.splice(0, 5);
+      // console.log('Sort Array', resposeData.data.response);
 
     }, error => {
       this.isLoadingPayment = false;
       this.isDataPayment = false;
-      console.log('Error now: ' + error.message)
+      // console.log('Error now: ' + error.message)
     });
   }
 
-  getTopfiveProduct(date, type, arrayLength) {
+  async getTopfiveProduct(date) {
     this.isLoadingProduct = true;
     this.isDataProduct = false;
 
-    this.dashboardService.getTopFive(date, type, arrayLength).subscribe(resposeList => {
-      // console.log('This is my Response List', resposeList);
+    await this.dashboardService.getTopFiveProduct(date).subscribe(resposeData => {
+      // console.log('This is my Response List', resposeData);
       this.isLoadingProduct = false;
       this.isDataProduct = true;
-      let halfLength = resposeList.length / 2;
-
-      let success = resposeList.splice(0, halfLength);
-      let fail = resposeList;
-      let TotalAmount: any;
-
-      for (let index = 0; index < halfLength; index++) {
-        let successVal = success[index];
-        let failedVal = fail[index];
-        let keys = arrayLength[index];
-        arrayLength.forEach(element => {
-          let pushedSuccess = {};
-          let pushedFailed = {};
-          let key = element;
-          this.arraySuccess = pushedSuccess[key] = successVal;
-          this.arrayFailed = pushedFailed[key] = failedVal;
-          TotalAmount = parseFloat(successVal.data.amount) + parseFloat(failedVal.data.amount);
-
-        });
-
-        this.outputProduct[index] = { 'name': keys, 'successful': parseFloat(successVal.data.amount), 'failed': parseFloat(failedVal.data.amount), 'total': TotalAmount };
-
-      }
-
-      //sort the array from the highest price to lowest price
+      this.outputProduct = resposeData.data.response;
       this.outputProduct = this.outputProduct.sort((a, b) => (a.total > b.total) ? -1 : 1);
 
       //splice the array and pick the top five
       let sortArray = this.outputProduct;
       this.outputProduct = sortArray.splice(0, 5);
-      // console.log('Payment');
-      // console.log(JSON.stringify( this.outputProduct));
+      // console.log('This is my Response List', this.outputProduct);
 
     }, error => {
       this.isLoadingProduct = false;
